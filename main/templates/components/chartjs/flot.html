@@ -1,0 +1,119 @@
+{% extends "partials/base.html" %} 
+{% load static %} 
+
+{% block title %}Flot{% endblock title %} 
+
+{% block extra_css %} 
+{% endblock extra_css %} 
+
+
+{% block pagetitle %}
+{% include "partials/page-title.html" with subtitle="Icons" title="Flot" %}
+{% endblock pagetitle %}
+
+{% block content %} 
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Multiple Statistics</h4>
+                <div id="website-stats" style="height: 350px;" class="flot-chart mt-5" data-colors="#f06292,#348cd4"></div>
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col -->
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Line Chart</h4>
+                <div id="website-stats1" style="height: 350px;" class="flot-chart mt-5" data-colors="#f06292,#348cd4"></div>
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div>
+<!-- end row -->
+
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Donut Pie</h4>
+                <div id="donut-chart" class="flot-chart mt-5" data-colors="#675aa9,#45bbe0,#348cd4,#78c350,#f7531f" style="height: 350px;"></div> <!-- end card -->
+            </div>
+        </div> <!-- end col -->
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Realtime Statistics</h4>
+                <div id="flotRealTime" style="height: 350px;" data-colors="#adb5bd" class="flot-chart mt-5"></div>
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col -->
+</div>
+<!-- end row -->
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Line Chart</h4>
+                <div id="line-chart-alt" class="mt-5" data-colors="#675aa9,#45bbe0" style="height:350px;"></div>
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col -->
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Combine Chart</h4>
+                <div id="combine-chart" data-colors="#ced4da,#45bbe0,#675aa9" class="flot-chart mt-5" style="height: 350px;"></div>
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col -->
+</div>
+<!-- end row -->
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Stacked Bar chart</h4>
+                <div id="ordered-bars-chart" style="height: 350px;" class="mt-5" data-colors="#348cd4,#f06292,#adb5bd"></div>
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col -->
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Pie Chart</h4>
+                <div id="pie-chart" class="flot-chart mt-5" data-colors="#675aa9,#45bbe0,#348cd4,#78c350,#f7531f" style="height: 350px;"></div>
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col -->
+</div>
+<!-- end row -->
+
+{% endblock content %} 
+
+{% block extra_js %} 
+
+<!-- Third Party js-->
+<script src="{% static 'libs/flot-charts/jquery.flot.js' %}"></script>
+<script src="{% static 'libs/flot-charts/jquery.flot.time.js' %}"></script>
+<script src="{% static 'libs/jquery.flot.tooltip/js/jquery.flot.tooltip.min.js' %}"></script>
+<script src="{% static 'libs/flot-charts/jquery.flot.resize.js' %}"></script>
+<script src="{% static 'libs/flot-charts/jquery.flot.pie.js' %}"></script>
+<script src="{% static 'libs/flot-charts/jquery.flot.selection.js' %}"></script>
+<script src="{% static 'libs/flot-charts/jquery.flot.stack.js' %}"></script>
+<script src="{% static 'libs/flot-orderbars/js/jquery.flot.orderBars.js' %}"></script>
+<script src="{% static 'libs/flot-charts/jquery.flot.crosshair.js' %}"></script>
+
+<!-- init js -->
+<script src="{% static 'js/pages/flot.init.js' %}"></script>
+
+<!-- App js -->
+<script src="{% static 'js/app.min.js' %}"></script>
+
+{% endblock extra_js %}
+

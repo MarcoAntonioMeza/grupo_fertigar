@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+GRUPOS DE PERMISOS
+{% endblock title %}
+{% block pagetitle %}
+{% include "partials/page-title.html" with subtitle="GRUPOS PERMISOS" title="NUEVO" %}
+{% endblock pagetitle %}
+
+{% block content %}
+{% include 'adminv2/grupos/form.html' %}
+{% endblock content %}
+
+{% block extra_js %}
+<script src="{% static 'js/app.min.js' %}"></script>
+{% endblock extra_js %}

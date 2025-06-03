@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+GRUPOS
+{% endblock title %}
+{% block pagetitle %}
+{% include "partials/page-title.html" with subtitle="GRUPOS DE PERMISOS" title="TODOS" %}
+{% endblock pagetitle %}
+
+{% block content %}
+
+{% if messages %}
+<div class="alert alert-dismissible fade show" role="alert">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="card shadow-lg p-3">
+    <div class="d-flex justify-content-between align-items-center mt-3">
+        <h2 class="h4 text-dark fw-bold">Gestión de grupos</h2>
+        {% if perms.auth.can_create_grupo %}
+
+        <a href="{% url 'grupos_create' %}" class="btn btn-primary shadow-sm">
+            <i class="fas fa-plus me-1"></i>NUEVO</a>
+    </div>
+
+    {% endif %}
+</div>
+
+
+
+
+
+
+
+
+<div class="row ">
+    <div class="col-lg-12">
+        <div class="card shadow-lg border-0">
+
+
+            <!-- Contenido del card -->
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="users-table" class="table align-items-center table-flush">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col" class="sort">ID</th>
+
+                                <th scope="col">GRUPO</th>
+
+                                <th scope="col" class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="list"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock content %}
+{% block extra_js %}
+<script src="{% static 'js/app.min.js' %}"></script>
+{% endblock extra_js %}
+<!-- Specific JS goes HERE -->
+{% block extrajs %}
+
+
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        var table = $('#users-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{% url 'list_ajax_grupos' %}",
+                type: "GET"
+            },
+            columns: [
+                { data: "id" },
+                //{ data: "usuario" },
+                { data: "name" },
+                //{ data: "email" },
+                //{ data: "created_by" },
+                //{ data: "created_at" },
+                {
+                    data: null,
+                    defaultContent: '<button class="btn btn-sm btn-info btn-eye"><i class="fas fa-eye"></i> Ver</button>'
+                }
+            ],
+            dom: 'Bfrtip', // Activa la barra de botones
+            buttons: [
+                //{
+                //    extend: 'copyHtml5',
+                //    text: 'Copiar',
+                //    className: 'btn btn-secondary btn-sm mx-1',
+                //    exportOptions: {
+                //        columns: ':visible'
+                //    }
+                //},
+                {
+                    extend: 'excelHtml5',
+                    text: 'Excel',
+                    className: 'btn btn-success btn-sm mx-1',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    //extend: 'csvHtml5',
+                    text: 'CSV',
+                    className: 'btn btn-primary btn-sm mx-1',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                //{
+                //    extend: 'pdfHtml5',
+                //    text: 'PDF',
+                //    className: 'btn btn-danger btn-sm mx-1',
+                //    exportOptions: {
+                //        columns: ':visible'
+                //    }
+                //},
+                //{
+                //    extend: 'print',
+                //    text: 'Imprimir',
+                //    className: 'btn btn-info btn-sm mx-1',
+                //    exportOptions: {
+                //        columns: ':visible'
+                //    }
+                //}
+            ]
+        });
+
+        // Evento de doble clic en una fila
+        $('#users-table tbody').on('dblclick', 'tr', function () {
+            var data = table.row(this).data();
+            if (data && data.id) {
+                window.location.href = "{% url 'grupos_view' 0 %}".replace('0', data.id);
+            }
+        });
+        $('#users-table tbody').on('click', '.btn-eye', function () {
+            var data = table.row($(this).closest('tr')).data();
+            if (data && data.id) {
+                window.location.href = "{% url 'grupos_view' 0 %}".replace('0', data.id);
+            }
+        });
+    });
+
+</script>
+
+{% endblock extrajs %}

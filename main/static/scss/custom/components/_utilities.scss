@@ -1,0 +1,38 @@
+// Utilities
+
+// Background lighten
+
+@each $color, $value in $theme-colors-rgb {
+    .bg-soft-#{$color} {
+        --#{$prefix}bg-opacity: 0.25;
+        background-color: rgba(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}bg-opacity)) !important;
+    }
+}
+
+html[data-bs-theme="dark"] {
+    .bg-secondary {
+        background-color: var(--#{$prefix}gray-700)!important;
+    }
+}
+
+// Dark Mode
+
+html[data-bs-theme="dark"] {
+    .text-body {
+        color: var(--#{$prefix}gray-500) !important;
+    }
+
+    .text-light {
+        color: var(--#{$prefix}gray-300) !important;
+    }
+
+    .text-secondary {
+        color: var(--#{$prefix}gray-700) !important;
+    }
+}
+
+// border style
+.border-dashed {
+    border-style: dashed !important;
+}
+

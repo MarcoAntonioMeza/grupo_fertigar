@@ -1,0 +1,125 @@
+{% extends "partials/base.html" %} 
+{% load static %} 
+
+{% block title %}Editors{% endblock title %} 
+
+{% block extra_css %} 
+
+<!-- SimpleMDE css -->
+<link href="{% static 'libs/simplemde/simplemde.min.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- Quill css -->
+<link href="{% static 'libs/quill/quill.core.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'libs/quill/quill.snow.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'libs/quill/quill.bubble.css' %}" rel="stylesheet" type="text/css" />
+
+{% endblock extra_css %} 
+
+
+{% block pagetitle %}
+{% include "partials/page-title.html" with subtitle="Forms" title="Editors" %}
+{% endblock pagetitle %}
+
+{% block content %} 
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <div class="mb-2">
+                        <h4 class="header-title mt-2">Quill Editor</h4>
+                        <p class="text-muted font-14">Snow is a clean, flat toolbar theme.</p>
+
+                        <div id="snow-editor" style="height: 300px;">
+                            <h3><span class="ql-size-large">Hello World!</span></h3>
+                            <p><br></p>
+                            <h3>This is an simple editable area.</h3>
+                            <p><br></p>
+                            <ul>
+                                <li>
+                                    Select a text to reveal the toolbar.
+                                </li>
+                                <li>
+                                    Edit rich document on-the-fly, so elastic!
+                                </li>
+                            </ul>
+                            <p><br></p>
+                            <p>
+                                End of simple area
+                            </p>
+                        </div><!-- end Snow-editor-->
+
+                    </div>
+                </li>
+
+                <li class="list-group-item">
+                    <div class="mb-2">
+                        <h5 class="mb-1">Bubble Editor</h5>
+                        <p class="text-muted font-14">Bubble is a simple tooltip based theme.</p>
+
+                        <div id="bubble-editor" style="height: 300px;">
+                            <h3><span class="ql-size-large">Hello World!</span></h3>
+                            <p><br></p>
+                            <h3>This is an simple editable area.</h3>
+                            <p><br></p>
+                            <ul>
+                                <li>
+                                    Select a text to reveal the toolbar.
+                                </li>
+                                <li>
+                                    Edit rich document on-the-fly, so elastic!
+                                </li>
+                            </ul>
+                            <p><br></p>
+                            <p>
+                                End of simple area
+                            </p>
+                        </div> <!-- end Snow-editor-->
+
+                    </div>
+                </li>
+            </ul> <!-- end list-->
+        </div> <!-- end card-->
+    </div> <!-- end col-->
+</div>
+<!-- end row -->
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">SimpleMDE</h4>
+                <p class="text-muted font-14">SimpleMDE is a light-weight, simple, embeddable, and beautiful JS markdown editor</p>
+
+                <div>
+                    <textarea id="simplemde1"></textarea>
+                </div>
+
+            </div> <!-- end card-body-->
+        </div> <!-- end card-->
+    </div> <!-- end col-->
+</div>
+<!-- end row -->
+
+{% endblock content %} 
+
+{% block extra_js %} 
+
+    <!-- Quill Editor js -->
+    <script src="{% static 'libs/quill/quill.js' %}"></script>
+
+    <!-- Quill Demo js -->
+    <script src="{% static 'js/pages/demo.quilljs.js' %}"></script>
+
+    <!-- Simplemde Editor js -->
+    <script src="{% static 'libs/simplemde/simplemde.min.js' %}"></script>
+
+    <!-- Simplemde Demo js -->
+    <script src="{% static 'js/pages/demo.simplemde.js' %}"></script>
+
+    <!-- App js -->
+    <script src="{% static 'js/app.min.js' %}"></script>
+
+{% endblock extra_js %}
+

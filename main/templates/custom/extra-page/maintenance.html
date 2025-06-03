@@ -1,0 +1,58 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" >
+    
+    <head>
+    {% include "partials/title-meta.html" with title="Extra Page" %}
+
+    {% include "partials/head-css.html" %}
+
+</head>
+
+
+
+<body class="loading authentication-bg-img">
+
+    <div class="mt-5 mb-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-11">
+                    <div>
+                        <div class="d-flex justify-content-center">
+                            <a href="/">
+                                <img src="{% static 'images/logo-light.png' %}" alt="" height="22">
+                            </a>
+                        </div>
+
+                        <div class="text-center my-5">
+                            <img src="{% static 'images/animat-rocket-color.gif' %}" alt="" height="180">
+                            <h2 class="home-text text-uppercase text-primary">Site is Under Maintenance</h2>
+                            <p class="text-white">We're making the system more awesome.we'll be back shortly.</p>
+
+                        </div>
+
+                    </div>
+
+                </div> <!-- end col -->
+            </div>
+            <!-- end row -->
+        </div>
+        <!-- end container -->
+    </div>
+    <!-- end page -->
+
+    <footer class="footer footer-alt">
+        <script>document.write(new Date().getFullYear())</script> &copy; Codefox theme by &nbsp;<a href="https://coderthemes.com/" target="_blank" class="link-light text-light text-decoration-underline">Coderthemes</a>
+    </footer>
+
+
+    @@include('./partials/footer-scripts.html')
+
+    <!-- App js -->
+    <script src="{% static 'js/vendor.js' %}"></script>
+    <script src="{% static 'js/app.min.js' %}"></script>
+    
+</body>
+
+</html>

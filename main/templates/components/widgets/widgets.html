@@ -1,0 +1,590 @@
+{% extends "partials/base.html" %} 
+{% load static %} 
+
+{% block title %}Apex Area Chart{% endblock title %} 
+
+{% block extra_css %} 
+
+ <!-- Plugin css -->
+ <link href="{% static 'libs/fullcalendar/main.min.css' %}" rel="stylesheet" type="text/css" />
+
+{% endblock extra_css %} 
+
+
+{% block pagetitle %}
+{% include "partials/page-title.html" with subtitle="Calendar" title="Calendar" %}
+{% endblock pagetitle %}
+
+{% block content %} 
+
+<div class="row">
+    <div class="col-md-6 col-xl-3">
+        <div class="widget-rounded-circle card bg-purple shadow-none">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="avatar-lg rounded-circle bg-soft-light">
+                            <i class="fe-bar-chart-line- font-22 avatar-title text-white"></i>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-end">
+                            <h2 class="text-white mt-2">$<span data-plugin="counterup">92,847</span></h2>
+                            <p class="text-white mb-0 text-truncate">Statistics</p>
+                        </div>
+                    </div>
+                </div> <!-- end row-->
+            </div>
+        </div> <!-- end widget-rounded-circle-->
+    </div> <!-- end col-->
+
+    <div class="col-md-6 col-xl-3">
+        <div class="widget-rounded-circle card bg-info shadow-none">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="avatar-lg rounded-circle bg-soft-light">
+                            <i class="fe-users font-22 avatar-title text-white"></i>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-end">
+                            <h2 class="text-white mt-2"><span data-plugin="counterup">56</span>k</h2>
+                            <p class="text-white mb-0 text-truncate">Users Today</p>
+                        </div>
+                    </div>
+                </div> <!-- end row-->
+            </div>
+        </div> <!-- end widget-rounded-circle-->
+    </div> <!-- end col-->
+
+    <div class="col-md-6 col-xl-3">
+        <div class="widget-rounded-circle card bg-pink shadow-none">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="avatar-lg rounded-circle bg-soft-light">
+                            <i class="fe-shuffle font-22 avatar-title text-white"></i>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-end">
+                            <h2 class="text-white mt-2"><span data-plugin="counterup">2568</span></h2>
+                            <p class="text-white mb-0 text-truncate">Request Per Minute</p>
+                        </div>
+                    </div>
+                </div> <!-- end row-->
+            </div>
+        </div> <!-- end widget-rounded-circle-->
+    </div> <!-- end col-->
+
+    <div class="col-md-6 col-xl-3">
+        <div class="widget-rounded-circle card bg-success shadow-none">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="avatar-lg rounded-circle bg-soft-light">
+                            <i class="fe-download font-22 avatar-title text-white"></i>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-end">
+                            <h2 class="text-white mt-2"><span data-plugin="counterup">523</span></h2>
+                            <p class="text-white mb-0 text-truncate">New Downloads</p>
+                        </div>
+                    </div>
+                </div> <!-- end row-->
+            </div>
+        </div> <!-- end widget-rounded-circle-->
+    </div> <!-- end col-->
+</div>
+<!-- end row-->
+
+<div class="row">
+    <div class="col-md-6 col-xl-3">
+        <div class="widget-rounded-circle card bg-primary shadow-none">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h2 class="text-white mt-2">$<span data-plugin="counterup">8654</span></h2>
+                        <p class="text-white mb-0 text-truncate">Revenue Received</p>
+                    </div>
+                    <div class="col-6">
+                        <div class="avatar-lg rounded-circle bg-soft-light ms-auto">
+                            <i class="fe-alert-octagon font-24 avatar-title text-white"></i>
+                        </div>
+                    </div>
+                </div> <!-- end row-->
+            </div>
+        </div> <!-- end widget-rounded-circle-->
+    </div> <!-- end col-->
+
+    <div class="col-md-6 col-xl-3">
+        <div class="widget-rounded-circle card bg-warning shadow-none">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h2 class="text-white mt-2"><span data-plugin="counterup">3652</span></h2>
+                        <p class="text-white mb-0 text-truncate">Project Done</p>
+                    </div>
+                    <div class="col-6">
+                        <div class="avatar-lg rounded-circle bg-soft-light ms-auto">
+                            <i class="fe-briefcase font-24 avatar-title text-white"></i>
+                        </div>
+                    </div>
+                </div> <!-- end row-->
+            </div>
+        </div> <!-- end widget-rounded-circle-->
+    </div> <!-- end col-->
+
+    <div class="col-md-6 col-xl-3">
+        <div class="widget-rounded-circle card bg-danger shadow-none">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h2 class="text-white mt-2"><span data-plugin="counterup">2,847</span>k</h2>
+                        <p class="text-white mb-0 text-truncate">Images Download</p>
+                    </div>
+                    <div class="col-6">
+                        <div class="avatar-lg rounded-circle bg-soft-light ms-auto">
+                            <i class="fe-image font-24 avatar-title text-white"></i>
+                        </div>
+                    </div>
+                </div> <!-- end row-->
+            </div>
+        </div> <!-- end widget-rounded-circle-->
+    </div> <!-- end col-->
+
+    <div class="col-md-6 col-xl-3">
+        <div class="widget-rounded-circle card bg-dark shadow-none">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h2 class="text-muted mt-2"><span data-plugin="counterup">4485</span></h2>
+                        <p class="text-muted mb-0 text-truncate">Authors</p>
+                    </div>
+                    <div class="col-6">
+                        <div class="avatar-lg rounded-circle bg-soft-light ms-auto">
+                            <i class="fe-layers font-24 avatar-title text-white"></i>
+                        </div>
+                    </div>
+                </div> <!-- end row-->
+            </div>
+        </div> <!-- end widget-rounded-circle-->
+    </div> <!-- end col-->
+</div>
+<!-- end row-->
+
+
+<div class="row">
+    <div class="col-xl-3 col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div class="avatar-lg text-center bg-light rounded-circle">
+                        <img class="avatar-title" src="{% static 'images/icons/clock.svg' %}" alt="" title="clock.svg' %}">
+                    </div>
+                    <div class="text-end">
+                        <p class="text-uppercase">Product Sold</p>
+                        <h2 class="mb-0"><span data-plugin="counterup">2,562</span></h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card ">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div class="bg-icon avatar-lg text-center bg-light rounded-circle">
+                        <img class="avatar-title" src="{% static 'images/icons/butting_in.svg' %}" alt="" title="advertising.svg' %}">
+                    </div>
+                    <div class="text-end">
+                        <p class="text-uppercase">User This Month</p>
+                        <h2 class="mb-0"><span data-plugin="counterup">8,542</span></h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card ">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div class="bg-icon avatar-lg text-center bg-light rounded-circle">
+                        <img class="avatar-title" src="{% static 'images/icons/globe.svg' %}" alt="" title="paid.svg' %}">
+                    </div>
+                    <div class="text-end">
+                        <p class="text-uppercase">Request Per Minute</p>
+                        <h2 class="mb-0"><span data-plugin="counterup">6,254</span></h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card ">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div class="bg-icon avatar-lg text-center bg-light rounded-circle">
+                        <img class="avatar-title" src="{% static 'images/icons/doughnut_chart.svg' %}" alt="" title="timeline.svg' %}">
+                    </div>
+                    <div class="text-end">
+                        <p class="text-uppercase">Total Users</p>
+                        <h2 class="mb-0"><span data-plugin="counterup">7,524</span></h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- end row -->
+
+<div class="row">
+    <div class="col-xl-3 col-md-6">
+        <div class="card widget-user">
+            <div class="card-body">
+                <img src="{% static 'images/users/user-3.jpg' %}" class="img-fluid d-block rounded-circle avatar-md" alt="user">
+                <div class="wid-u-info">
+                    <h5 class="mt-3 mb-1">Chadengle</h5>
+                    <p class="text-muted mb-0">coderthemes@gmail.com</p>
+                    <div class="user-position">
+                        <span class="text-warning">Admin</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card widget-user">
+            <div class="card-body">
+                <img src="{% static 'images/users/user-2.jpg' %}" class="img-fluid d-block rounded-circle avatar-md" alt="user">
+                <div class="wid-u-info">
+                    <h5 class="mt-3 mb-1"> Michael Zenaty</h5>
+                    <p class="text-muted mb-0">coderthemes@gmail.com</p>
+                    <div class="user-position">
+                        <span class="text-info">User</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card widget-user">
+            <div class="card-body">
+                <img src="{% static 'images/users/user-1.jpg' %}" class="img-fluid d-block rounded-circle avatar-md" alt="user">
+                <div class="wid-u-info">
+                    <h5 class="mt-3 mb-1">Stillnotdavid</h5>
+                    <p class="text-muted mb-0">coderthemes@gmail.com</p>
+                    <div class="user-position">
+                        <span class="text-success">Admin</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card widget-user">
+            <div class="card-body">
+                <img src="{% static 'images/users/user-10.jpg' %}" class="img-fluid d-block rounded-circle avatar-md" alt="user">
+                <div class="wid-u-info">
+                    <h5 class="mt-3 mb-1">Tomaslau</h5>
+                    <p class="text-muted mb-0">coderthemes@gmail.com</p>
+                    <div class="user-position">
+                        <span class="text-pink">User</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end row -->
+
+
+<div class="row">
+    <div class="col-md-6 col-xl-3">
+        <div class="widget-rounded-circle card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <div class="avatar-lg">
+                            <img src="{% static 'images/users/user-3.jpg' %}" class="img-fluid rounded-circle" alt="user-img" />
+                        </div>
+                    </div>
+                    <div class="col">
+                        <h5 class="mb-1 mt-2">Thelma Fridley</h5>
+                        <p class="mb-2 text-muted">Admin User</p>
+                    </div>
+                </div> <!-- end row-->
+            </div>
+        </div> <!-- end widget-rounded-circle-->
+    </div> <!-- end col-->
+
+    <div class="col-md-6 col-xl-3">
+        <div class="widget-rounded-circle card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <div class="avatar-lg">
+                            <img src="{% static 'images/users/user-4.jpg' %}" class="img-fluid rounded-circle" alt="user-img" />
+                        </div>
+                    </div>
+                    <div class="col">
+                        <h5 class="mb-1 mt-2">Chandler Hervieux</h5>
+                        <p class="mb-2 text-muted">Manager</p>
+                    </div>
+                </div> <!-- end row-->
+            </div>
+        </div> <!-- end widget-rounded-circle-->
+    </div> <!-- end col-->
+
+    <div class="col-md-6 col-xl-3">
+        <div class="widget-rounded-circle card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <div class="avatar-lg">
+                            <img src="{% static 'images/users/user-5.jpg' %}" class="img-fluid rounded-circle" alt="user-img" />
+                        </div>
+                    </div>
+                    <div class="col">
+                        <h5 class="mb-1 mt-2">Percy Demers</h5>
+                        <p class="mb-2 text-muted">Product Manager</p>
+                    </div>
+                </div> <!-- end row-->
+            </div>
+        </div> <!-- end widget-rounded-circle-->
+    </div> <!-- end col-->
+
+    <div class="col-md-6 col-xl-3">
+        <div class="widget-rounded-circle card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <div class="avatar-lg">
+                            <img src="{% static 'images/users/user-6.jpg' %}" class="img-fluid rounded-circle" alt="user-img" />
+                        </div>
+                    </div>
+                    <div class="col">
+                        <h5 class="mb-1 mt-2">Antoine Masson</h5>
+                        <p class="mb-2 text-muted">Premium User</p>
+                    </div>
+                </div> <!-- end row-->
+            </div>
+        </div> <!-- end widget-rounded-circle-->
+    </div> <!-- end col-->
+</div>
+<!-- end row-->
+
+
+<div class="row">
+    <div class="col-12">
+        <h4 class="mb-4">Chart Widgets</h4>
+    </div> <!-- end col-->
+</div>
+<!-- end row -->
+
+<div class="row">
+    <div class="col-xl-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="avatar-sm bg-warning rounded-circle">
+                            <i class="fe-aperture avatar-title font-22 text-white"></i>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-end">
+                            <h3 class="my-1">$<span data-plugin="counterup">8,145</span></h3>
+                            <p class="text-muted mb-1 text-truncate">Income Status</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <span data-plugin="peity-bar" data-colors="#f7b84b,#ebeff2" data-width="100%" data-height="45">5,3,9,6,5,9,7,3,5,2,9,7,2,1,3,5,2,9,7,2,5,3,9,6,5,9,7</span>
+                </div>
+            </div>
+        </div> <!-- end card-->
+    </div> <!-- end col -->
+
+    <div class="col-xl-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="avatar-sm bg-blue rounded-circle">
+                            <i class="fe-shopping-bag avatar-title font-22 text-white"></i>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-end">
+                            <h3 class="my-1"><span data-plugin="counterup">367</span></h3>
+                            <p class="text-muted mb-1 text-truncate">Sales Status</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 text-center">
+                    <span data-plugin="peity-line" data-fill="transparent" data-stroke="#4a81d4" data-width="100%" data-height="48">5,3,9,6,5,9,7,3,5,2</span>
+                </div>
+            </div>
+        </div> <!-- end card-->
+    </div> <!-- end col -->
+
+    <div class="col-xl-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="avatar-sm bg-success rounded-circle">
+                            <i class="fe-users avatar-title font-22 text-white"></i>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-end">
+                            <h3 class="my-1"><span data-plugin="counterup">7204</span></h3>
+                            <p class="text-muted mb-1 text-truncate">Recent Users</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <span data-plugin="peity-line" data-fill="#78c350" data-stroke="#78c350" data-width="100%" data-height="48">3,5,2,9,7,2,5,3,9,6,5,9,7</span>
+                </div>
+            </div>
+        </div> <!-- end card-->
+    </div> <!-- end col -->
+
+</div>
+<!-- end row -->
+
+
+<div class="row">
+    <div class="col-xl-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title mb-3">Total Revenue</h4>
+
+                <div class="widget-chart text-center" dir="ltr">
+                    <input data-plugin="knob" data-width="120" data-height="120" data-linecap=round data-bgColor="rgba(0,0,0,0.1)" data-fgColor="#f1556c" value="60" data-skin="tron" data-angleOffset="180" data-readOnly=true data-thickness=".12" />
+                    <h5 class="text-muted mt-3">Total sales made today</h5>
+                    <h2>$178</h2>
+
+                    <div class="row mt-3">
+                        <div class="col-4">
+                            <p class="text-muted font-15 mb-1 text-truncate">Target</p>
+                            <h4>$12k</h4>
+                        </div>
+                        <div class="col-4">
+                            <p class="text-muted font-15 mb-1 text-truncate">Last week</p>
+                            <h4>$2487</h4>
+                        </div>
+                        <div class="col-4">
+                            <p class="text-muted font-15 mb-1 text-truncate">Last Month</p>
+                            <h4>$14.5k</h4>
+                        </div>
+                    </div> <!-- end row -->
+
+                </div>
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col-->
+
+    <div class="col-xl-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title mb-3">Sales Status</h4>
+
+                <div class="widget-chart text-center" dir="ltr">
+                    <input data-plugin="knob" data-width="120" data-height="120" data-linecap=round data-bgColor="rgba(0,0,0,0.1)" data-fgColor="#6658dd" value="37" data-skin="tron" data-angleOffset="180" data-readOnly=true data-thickness=".12" />
+                    <h5 class="text-muted mt-3">Total sales made today</h5>
+                    <h2>29</h2>
+
+                    <div class="row mt-3">
+                        <div class="col-4">
+                            <p class="text-muted font-15 mb-1 text-truncate">Target</p>
+                            <h4>480</h4>
+                        </div>
+                        <div class="col-4">
+                            <p class="text-muted font-15 mb-1 text-truncate">Last week</p>
+                            <h4>136</h4>
+                        </div>
+                        <div class="col-4">
+                            <p class="text-muted font-15 mb-1 text-truncate">Last Month</p>
+                            <h4>514</h4>
+                        </div>
+                    </div> <!-- end row -->
+
+                </div>
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col-->
+
+    <div class="col-xl-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title mb-3">Recent Users</h4>
+
+                <div class="widget-chart text-center" dir="ltr">
+                    <input data-plugin="knob" data-width="120" data-height="120" data-linecap=round data-bgColor="rgba(0,0,0,0.1)" data-fgColor="#78c350" value="81" data-skin="tron" data-angleOffset="180" data-readOnly=true data-thickness=".12" />
+                    <h5 class="text-muted mt-3">Total sales made today</h5>
+                    <h2>72</h2>
+
+                    <div class="row mt-3">
+                        <div class="col-4">
+                            <p class="text-muted font-15 mb-1 text-truncate">Target</p>
+                            <h4>8k</h4>
+                        </div>
+                        <div class="col-4">
+                            <p class="text-muted font-15 mb-1 text-truncate">Last week</p>
+                            <h4>2.5k</h4>
+                        </div>
+                        <div class="col-4">
+                            <p class="text-muted font-15 mb-1 text-truncate">Last Month</p>
+                            <h4>10.2k</h4>
+                        </div>
+                    </div> <!-- end row -->
+
+                </div>
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col-->
+</div>
+<!-- end row -->
+
+
+{% endblock content %} 
+
+{% block extra_js %} 
+
+ <!-- Plugins js -->
+ <script src="{% static 'libs/peity/jquery.peity.min.js' %}"></script>
+ <script src="{% static 'libs/jquery-knob/jquery.knob.min.js' %}"></script>
+ <script src="{% static 'libs/jquery-sparkline/jquery.sparkline.min.js' %}"></script>
+ <script src="{% static 'libs/moment/min/moment.min.js' %}"></script>
+ <script src="{% static 'libs/jquery.scrollto/jquery.scrollTo.min.js' %}"></script>
+ <script src="{% static 'libs/sweetalert2/sweetalert2.min.js' %}"></script>
+
+ <!-- Chat js -->
+ <script src="{% static 'js/pages/jquery.chat.js' %}"></script>
+
+ <!-- TODO js-->
+ <script src="{% static 'js/pages/jquery.todo.js' %}"></script>
+
+ <!-- Widgets demo js-->
+ <script src="{% static 'js/pages/widgets.init.js' %}"></script>
+
+ <!-- App js -->
+ <script src="{% static 'js/app.min.js' %}"></script>
+
+{% endblock extra_js %}
+

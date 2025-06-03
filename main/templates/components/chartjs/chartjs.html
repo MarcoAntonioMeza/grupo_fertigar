@@ -1,0 +1,109 @@
+{% extends "partials/base.html" %} 
+{% load static %} 
+
+{% block title %}Chartjs{% endblock title %} 
+
+{% block extra_css %} 
+{% endblock extra_css %} 
+
+
+{% block pagetitle %}
+{% include "partials/page-title.html" with subtitle="Icons  " title="Chartjs" %}
+{% endblock pagetitle %}
+
+{% block content %} 
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Line Chart</h4>
+                <div class="mt-4 chartjs-chart">
+                    <canvas id="line-chart-example" height="350" data-colors="#675aa9,#45bbe0"></canvas>
+                </div>
+            </div> <!-- end card-body-->
+        </div> <!-- end card-->
+    </div> <!-- end col -->
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Bar Chart</h4>
+
+                <div class="mt-4 chartjs-chart">
+                    <canvas id="bar-chart-example" height="350" data-colors="#348cd4,#ecf2f5"></canvas>
+                </div>
+            </div> <!-- end card-body-->
+        </div> <!-- end card-->
+    </div> <!-- end col -->
+</div>
+<!-- end row -->
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Pie Chart</h4>
+
+                <div class="mt-4 chartjs-chart">
+                    <canvas id="pie-chart-example" height="350" class="mt-4" data-colors="#348cd4,#f06292,#ff9800,#ecf2f5"></canvas>
+                </div>
+
+            </div> <!-- end card-body-->
+        </div> <!-- end card-->
+    </div> <!-- end col -->
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Donut Chart</h4>
+
+                <div class="mt-4 chartjs-chart">
+                    <canvas id="donut-chart-example" height="350" data-colors="#348cd4,#f06292,#ecf2f5"></canvas>
+                </div>
+
+            </div> <!-- end card-body-->
+        </div> <!-- end card-->
+    </div> <!-- end col -->
+</div>
+<!-- end row -->
+
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Polar area Chart</h4>
+
+                <div class="mt-4 chartjs-chart">
+                    <canvas id="polar-chart-example" height="350" data-colors="#348cd4,#f06292,#ff9800,#ecf2f5"> </canvas>
+                </div>
+
+            </div> <!-- end card-body-->
+        </div> <!-- end card-->
+    </div> <!-- end col -->
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Radar Chart</h4>
+
+                <div class="mt-4 chartjs-chart">
+                    <canvas id="radar-chart-example" height="350" data-colors="#348cd4,#f06292"></canvas>
+                </div>
+            </div> <!-- end card-body-->
+        </div> <!-- end card-->
+    </div> <!-- end col -->
+</div>
+<!-- end row -->
+{% endblock content %} 
+
+{% block extra_js %} 
+
+<!-- Chart JS -->
+<script src="{% static 'libs/chart.js/Chart.bundle.min.js' %}"></script>
+
+<!-- Init js -->
+<script src="{% static 'js/pages/chartjs.init.js' %}"></script>
+
+<!-- App js -->
+<script src="{% static 'js/app.min.js' %}"></script>
+
+{% endblock extra_js %}
+

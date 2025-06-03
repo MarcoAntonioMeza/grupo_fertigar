@@ -1,0 +1,119 @@
+{% extends "partials/base.html" %}
+{% load static %}
+
+{% block title %}"Extra Page{% endblock title %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+
+{% block pagetitle %}
+{% include "partials/page-title.html" with subtitle="Extras" title="Contact" %}
+{% endblock pagetitle %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row justify-content-center">
+                    <div class="col-xl-3 col-md-4">
+                        <div class="text-center">
+                            <div class=" bg-soft-primary border border-primary avatar-lg mb-3 rounded-circle mx-auto">
+                                <i class="dripicons-user avatar-title text-primary h2 m-0"></i>
+                            </div>
+                            <p class="font-15">
+                                795 Folsom Ave, Suite 600<br>
+                                San Francisco, CA 94107
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-4">
+                        <div class="text-center">
+                            <div class=" bg-soft-primary border border-primary avatar-lg mb-3 rounded-circle mx-auto">
+                                <i class="dripicons-phone avatar-title text-primary h2 m-0"></i>
+                            </div>
+                            <p class="font-15">
+                                (120) 456-789-123
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-4">
+                        <div class="text-center">
+                            <div class=" bg-soft-primary border border-primary avatar-lg mb-3 rounded-circle mx-auto">
+                                <i class="dripicons-message avatar-title text-primary h2 m-0"></i>
+                            </div>
+                            <p class="font-15">
+                                <a href="">support@yourmail.com</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="contact-map">
+                                    <iframe src="https://www.google.com/maps/embed/v1/place?q=New+York+University&key=AIzaSyBSFRN6WWGYwmFi498qXXsD2UwkbmD74v4" style="width: 100%; height: 400px; overflow:hidden; border:0;"></iframe>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <form name="ajax-form" action="#" method="post" class="contact-form mt-4 mt-lg-0" data-parsley-validate="" novalidate="">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="name1" class="form-label">First Name</label>
+                                                <input class="form-control" id="name1" name="name" placeholder="First name" type="text" value="" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="name2" class="form-label">Last Name</label>
+                                                <input class="form-control" id="name2" name="name" placeholder="Last name" type="text" value="" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="mb-3">
+                                                <label for="email" class="form-label">Your Email</label>
+                                                <input class="form-control" id="email2" name="email" type="email" placeholder="Your email" value="" required="">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="mb-3">
+                                                <label for="message2" class="form-label">Message</label>
+                                                <textarea class="form-control" id="message2" name="message" rows="6" placeholder="Message" required=""></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="">
+                                        <button type="submit" class="btn btn-primary" id="send">Submit</button>
+                                    </div>
+
+                                </form> <!-- /form -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+{% endblock content %}
+
+{% block extra_js %}
+
+<!-- App js -->
+<script src="{% static 'js/app.min.js' %}"></script>
+
+{% endblock extra_js %}

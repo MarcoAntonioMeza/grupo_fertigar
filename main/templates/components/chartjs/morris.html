@@ -1,0 +1,136 @@
+{% extends "partials/base.html" %} 
+{% load static %} 
+
+{% block title %}Morris Charts{% endblock title %} 
+
+{% block extra_css %} 
+{% endblock extra_css %} 
+
+
+{% block pagetitle %}
+{% include "partials/page-title.html" with subtitle="Icons" title="Morris Charts" %}
+{% endblock pagetitle %}
+
+{% block content %} 
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card" dir="ltr">
+            <div class="card-body">
+                <h4 class="header-title mb-3">Stacked Bar Chart</h4>
+                <div class="text-center">
+                    <p class="text-muted font-15 font-family-secondary mb-0">
+                        <span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-purple"></i> Bitcoin</span>
+                        <span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-info"></i> Ethereum</span>
+                        <span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-light"></i> Litecoin</span>
+                    </p>
+                </div>
+                <div id="morris-bar-stacked" style="height: 350px;" class="morris-chart" data-colors="#8892d6,#45bbe0,#ecf2f5"></div>
+            </div>
+        </div> <!-- end card-->
+    </div> <!-- end col-->
+
+    <div class="col-lg-6">
+        <div class="card" dir="ltr">
+            <div class="card-body">
+                <h4 class="header-title mb-3">Area Chart</h4>
+                <div class="text-center">
+                    <p class="text-muted font-15 font-family-secondary mb-0">
+                        <span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-purple"></i> Bitcoin</span>
+                        <span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-info"></i> Ethereum</span>
+                    </p>
+                </div>
+                <div id="morris-area-example" style="height: 350px;" class="morris-chart" data-colors="#45bbe0,#8892d6"></div>
+            </div>
+        </div> <!-- end card-->
+    </div> <!-- end col-->
+</div>
+<!-- end row -->
+
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card" dir="ltr">
+            <div class="card-body">
+                <h4 class="header-title mb-3">Line Chart</h4>
+                <div class="text-center">
+                    <p class="text-muted font-15 font-family-secondary mb-0">
+                        <span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-primary"></i> Bitcoin</span>
+                        <span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-pink"></i> Ethereum</span>
+                    </p>
+                </div>
+                <div id="morris-line-example" style="height: 350px;" class="morris-chart" data-colors="#348cd4,#f06292"></div>
+            </div>
+        </div> <!-- card -->
+    </div> <!-- end row -->
+
+    <div class="col-lg-6">
+        <div class="card" dir="ltr">
+            <div class="card-body">
+                <h4 class="header-title mb-3">Bar Chart</h4>
+                <div class="text-center">
+                    <p class="text-muted font-15 font-family-secondary mb-0">
+                        <span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-primary"></i> Bitcoin</span>
+                        <span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-pink"></i> Ethereum</span>
+                        <span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-light"></i> Litecoin</span>
+                    </p>
+                </div>
+                <div id="morris-bar-example" style="height: 350px;" class="morris-chart" data-colors="#348cd4,#f06292,#ecf2f5"></div>
+            </div>
+        </div> <!-- end card-->
+    </div> <!-- end col-->
+</div>
+<!-- end row -->
+
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card" dir="ltr">
+            <div class="card-body">
+                <h4 class="header-title mb-3">Area Chart with Point</h4>
+                <div class="text-center">
+                    <p class="text-muted font-15 font-family-secondary mb-0">
+                        <span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-purple"></i> Bitcoin</span>
+                        <span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-light"></i> Ethereum</span>
+                    </p>
+                </div>
+                <div id="morris-area-with-dotted" style="height: 350px;" class="morris-chart" data-colors="#ecf2f5,#8892d6"></div>
+            </div>
+        </div> <!-- end card-->
+    </div> <!-- end col-->
+
+    <div class="col-lg-6">
+        <div class="card" dir="ltr">
+            <div class="card-body">
+                <h4 class="header-title mb-3">Donut Chart</h4>
+                <div id="morris-donut-example" style="height: 350px;" class="morris-chart" data-colors="#45bbe0,#8892d6,#ecf2f5"></div>
+                <div class="text-center">
+                    <p class="text-muted font-15 font-family-secondary mb-0">
+                        <span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-info"></i> Bitcoin</span>
+                        <span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-purple"></i> Ethereum</span>
+                        <span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-light"></i> Litecoin</span>
+                    </p>
+                </div>
+            </div>
+        </div> <!-- end card-->
+    </div> <!-- end col-->
+</div>
+<!-- end row -->
+
+
+{% endblock content %} 
+
+{% block extra_js %}
+
+<!--Morris Chart-->
+<script src="{% static 'libs/morris.js06/morris.min.js' %}"></script>
+<script src="{% static 'libs/raphael/raphael.min.js' %}"></script>
+
+<!-- Init js -->
+<script src="{% static 'js/pages/morris.init.js' %}"></script>
+
+<!-- App js -->
+<script src="{% static 'js/app.min.js' %}"></script>
+
+{% endblock extra_js %}
+

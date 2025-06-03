@@ -1,0 +1,21 @@
+{% extends "partials/base.html" %} 
+{% load static %} 
+
+{% block title %}Apwx Area Chart{% endblock title %} 
+
+{% block extra_css %} 
+{% endblock extra_css %} 
+
+
+{% block pagetitle %}
+{% include "partials/page-title.html" with subtitle="Extras" title="Starter" %}
+{% endblock pagetitle %}
+
+
+
+{% block extra_js %} 
+
+ <!-- App js -->
+ <script src="{% static 'js/app.min.js' %}"></script>
+
+{% endblock extra_js %}

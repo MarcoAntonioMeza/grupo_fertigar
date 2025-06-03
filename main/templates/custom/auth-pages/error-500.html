@@ -1,0 +1,71 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" >
+    
+    <head>
+        
+    {% include "partials/title-meta.html" with title="Error Page | 500" %}
+
+    {% include "partials/head-css.html" %}
+
+</head>
+
+<body class="loading authentication-bg">
+
+    <div class="account-pages my-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6 col-xl-4">
+                    <div class="card shadow-none">
+
+                        <div class="card-body p-3">
+
+                            <div class="auth-logo">
+                                <a href="/" class="logo logo-dark text-center">
+                                    <span class="logo-lg">
+                                        <img src="{% static 'images/logo-dark.png' %}" alt="" height="22">
+                                    </span>
+                                </a>
+
+                                <a href="/" class="logo logo-light text-center">
+                                    <span class="logo-lg">
+                                        <img src="{% static 'images/logo-light.png' %}" alt="" height="22">
+                                    </span>
+                                </a>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <img src="{% static 'images/icons/globe.svg' %}" alt="globe.svg" height="60">
+                                <h1 class="display-3 fw-semibold mt-4">500</h1>
+                                <p class="text-muted mt-4">Why not try refreshing your page? or you can contact <a href="#" class="text-primary">support</a></p>
+
+                                <a href="/" class="btn btn-primary waves-effect waves-light mt-3">Return Home</a>
+                            </div>
+
+                        </div> <!-- end card-body -->
+                    </div>
+                    <!-- end card -->
+
+                </div> <!-- end col -->
+            </div>
+            <!-- end row -->
+        </div>
+        <!-- end container -->
+    </div>
+    <!-- end page -->
+
+
+    <footer class="footer footer-alt">
+        <script>document.write(new Date().getFullYear())</script> &copy; Codefox theme by <a href="#!" class="text-dark text-decoration-underline">Coderthemes</a>
+    </footer>
+
+    {% include "partials/footer-script.html" %}
+
+
+    <!-- App js -->
+    <script src="{% static 'js/app.min.js' %}"></script>
+
+</body>
+
+</html>

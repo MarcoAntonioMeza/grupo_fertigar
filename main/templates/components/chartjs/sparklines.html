@@ -1,0 +1,144 @@
+{% extends "partials/base.html" %} 
+{% load static %} 
+
+{% block title %}Sparkline{% endblock title %} 
+
+{% block extra_css %} 
+{% endblock extra_css %} 
+
+
+{% block pagetitle %}
+{% include "partials/page-title.html" with subtitle="Icons" title="Sparkline" %}
+{% endblock pagetitle %}
+
+{% block content %} 
+
+<div class="row">
+    <div class="col-md-6 col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Line Charts</h4>
+                <div class="mt-4">
+                    <div id="sparkline1" data-colors="#45bbe0,#675aa9"></div>
+                </div>
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col -->
+
+    <div class="col-md-6 col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Bar Chart</h4>
+                <div class="mt-4">
+                    <div id="sparkline2" data-colors="#348cd4" class="text-center"></div>
+                </div>
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col -->
+
+    <div class="col-md-6 col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Pie Chart</h4>
+                <div class="mt-4">
+                    <div id="sparkline3" data-colors="#348cd4,#f06292,#45bbe0,#ecf2f5" class="text-center"></div>
+                </div>
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col -->
+
+    <div class="col-md-6 col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Custom Line Chart</h4>
+                <div class="mt-4">
+                    <div id="sparkline4" data-colors="#348cd4,#f06292" class="text-center"></div>
+                </div>
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col -->
+
+    <div class="col-md-6 col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Mouse Speed Chart</h4>
+                <div class="mt-4">
+                    <div id="sparkline5" data-colors="#343a40" class="text-center"></div>
+                </div>
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col -->
+
+    <div class="col-md-6 col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Composite bar Chart</h4>
+                <div class="text-center mt-4">
+                    <div id="sparkline6" data-colors="#ecf2f5,#348cd4" class="text-center"></div>
+                </div>
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col -->
+
+    <div class="col-md-6 col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Discrete Chart</h4>
+                <div class="text-center mt-4">
+                    <div id="sparkline7" data-colors="#f06292" class="text-center"></div>
+                </div>
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col -->
+
+    <div class="col-md-6 col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Bullet Chart</h4>
+                <div class="text-center mt-4" style="min-height: 164px;">
+                    <div id="sparkline8" data-colors="#675aa9,#45bbe0" class="text-center"></div>
+                </div>
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col -->
+
+    <div class="col-md-6 col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Box Plot Chart</h4>
+                <div class="text-center mt-4" style="min-height: 164px;">
+                    <div id="sparkline9" data-colors="#348cd4,#f06292" class="text-center"></div>
+                </div>
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col -->
+
+    <div class="col-md-6 col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Tristate Charts</h4>
+                <div class="text-center mt-4" style="min-height: 164px;">
+                    <div id="sparkline10" data-colors="#675aa9,#ecf2f5,#45bbe0" class="text-center"></div>
+                </div>
+            </div>
+        </div> <!-- end card -->
+    </div> <!-- end col -->
+
+</div>
+<!-- end row -->
+
+{% endblock content %} 
+
+{% block extra_js %} 
+
+ <!-- Sparkline charts -->
+ <script src="{% static 'libs/jquery-sparkline/jquery.sparkline.min.js' %}"></script>
+
+ <!-- init js -->
+ <script src="{% static 'js/pages/sparkline.init.js' %}"></script>
+
+ <!-- App js -->
+ <script src="{% static 'js/app.min.js' %}"></script>
+
+{% endblock extra_js %}
+

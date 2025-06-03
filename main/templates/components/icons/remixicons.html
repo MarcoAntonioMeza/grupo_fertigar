@@ -1,0 +1,32 @@
+{% extends "partials/base.html" %} 
+{% load static %} 
+
+{% block title %}Remix Icons{% endblock title %} 
+
+{% block extra_css %} 
+{% endblock extra_css %} 
+
+
+{% block pagetitle %}
+{% include "partials/page-title.html" with subtitle="Icons" title="Remix Icons" %}
+{% endblock pagetitle %}
+
+{% block content %} 
+
+<div class="row">
+    <div class="col-12" id="icons"></div> <!-- end col-->
+</div><!-- end row -->
+<!-- end row -->
+
+{% endblock content %} 
+
+{% block extra_js %} 
+
+        <!-- Remixicons Icons Demo js -->
+        <script src="{% static 'js/pages/demo.remixicons.js' %}"></script>        
+        
+        <!-- App js -->
+        <script src="{% static 'js/app.min.js' %}"></script>
+
+{% endblock extra_js %}
+

@@ -1,0 +1,293 @@
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <!-- Botones de Acción (Fijos arriba) -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center py-3">
+                    <button type="submit" class="btn btn-primary btn-lg me-3">
+                        <i class="fas fa-save me-2"></i>GUARDAR
+                    </button>
+                    <a href="{% url 'user_index' %}" class="btn btn-lg btn-secondary">
+                        <i class="fas fa-times me-2"></i>CANCELAR
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección Principal: Cuenta y Personal -->
+    <div class="row mb-4">
+        <!-- CUENTA -->
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 class="mb-0">
+                        <i class="fas fa-user-cog me-2"></i>CUENTA
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <!-- Usuario y Email -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            {{ user_form.username.label_tag }}
+                            {{ user_form.username }}
+                            {% if user_form.username.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in user_form.username.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            {{ user_form.email.label_tag }}
+                            {{ user_form.email }}
+                            {% if user_form.email.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in user_form.email.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Contraseñas -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="id_password1" class="form-label">Contraseña</label>
+                            {{ user_form.password1 }}
+                            {% if user_form.password1.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in user_form.password1.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="id_password2" class="form-label">Confirmar Contraseña</label>
+                            {{ user_form.password2 }}
+                            {% if user_form.password2.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in user_form.password2.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Grupos y Permisos -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">GRUPOS</label>
+                            {{ user_form.grupos }}
+                            {% if user_form.grupos.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in user_form.grupos.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">PERMISOS INDIVIDUALES</label>
+                            {{ user_form.permisos }}
+                            {% if user_form.permisos.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in user_form.permisos.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PERSONAL -->
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-header bg-success text-white text-center">
+                    <h3 class="mb-0">
+                        <i class="fas fa-user me-2"></i>INFORMACIÓN PERSONAL
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <!-- Nombres -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="id_nombre" class="form-label">Primer Nombre</label>
+                            {{ user_form.nombre }}
+                            {% if user_form.nombre.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in user_form.nombre.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="id_segundo_nombre" class="form-label">Segundo Nombre</label>
+                            {{ user_form.segundo_nombre }}
+                            {% if user_form.segundo_nombre.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in user_form.segundo_nombre.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Apellidos -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="id_apellido_paterno" class="form-label">Apellido Paterno</label>
+                            {{ user_form.apellido_paterno }}
+                            {% if user_form.apellido_paterno.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in user_form.apellido_paterno.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="id_apellido_materno" class="form-label">Apellido Materno</label>
+                            {{ user_form.apellido_materno }}
+                            {% if user_form.apellido_materno.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in user_form.apellido_materno.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección Dirección -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-info text-white text-center">
+                    <h3 class="mb-0">
+                        <i class="fas fa-map-marker-alt me-2"></i>DIRECCIÓN
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <!-- Código Postal centrado -->
+                    <div class="row mb-4">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                {{ direccion_form.codigo_postal.label_tag }}
+                                {{ direccion_form.codigo_postal }}
+                                {% if direccion_form.codigo_postal.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in direccion_form.codigo_postal.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
+
+                    <!-- Estado, Municipio, Colonia -->
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            {{ direccion_form.estado.label_tag }}
+                            {{ direccion_form.estado }}
+                            {% if direccion_form.estado.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in direccion_form.estado.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4">
+                            {{ direccion_form.municipio.label_tag }}
+                            {{ direccion_form.municipio }}
+                            {% if direccion_form.municipio.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in direccion_form.municipio.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4">
+                            {{ direccion_form.colonia.label_tag }}
+                            {{ direccion_form.colonia }}
+                            {% if direccion_form.colonia.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in direccion_form.colonia.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Calle (centrada y más ancha) -->
+                    <div class="row mb-3">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8">
+                            {{ direccion_form.calle.label_tag }}
+                            {{ direccion_form.calle }}
+                            {% if direccion_form.calle.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in direccion_form.calle.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-2"></div>
+                    </div>
+
+                    <!-- Números Interior y Exterior -->
+                    <div class="row mb-3">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3">
+                            {{ direccion_form.numero_interior.label_tag }}
+                            {{ direccion_form.numero_interior }}
+                            {% if direccion_form.numero_interior.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in direccion_form.numero_interior.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-3">
+                            {{ direccion_form.numero_exterior.label_tag }}
+                            {{ direccion_form.numero_exterior }}
+                            {% if direccion_form.numero_exterior.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in direccion_form.numero_exterior.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
