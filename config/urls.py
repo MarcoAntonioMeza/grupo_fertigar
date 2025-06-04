@@ -35,6 +35,9 @@ urlpatterns = [
     path("components/", include("main.components.urls")),
     path("direccion/", include("main.direccion.urls")),
     
+    #CRM 
+    path("crm/", include("main.crm.urls")),
+    
     # ...
     # Media files
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),

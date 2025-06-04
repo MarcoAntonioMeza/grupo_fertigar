@@ -1,7 +1,14 @@
 from django.db import models
-from main.adminv2.models import BaseModel
+from main.adminv2.models import BaseModel, BaseDireccion
+from main.users.models import User
+
+
 # Create your models here.
 
+
+# ================================================================
+#             PARA PRODUCTOS Y CATEGORÍAS
+# =================================================================
 class Categoria(BaseModel):
     """
     Modelo que representa una categoría de productos.
@@ -10,11 +17,13 @@ class Categoria(BaseModel):
         nombre (str): Nombre de la categoría.
         descripcion (str): Descripción opcional de la categoría.
     """
+
     nombre = models.CharField(max_length=50)
     descripcion = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.nombre
+
 
 class Producto(BaseModel):
     """
@@ -35,22 +44,30 @@ class Producto(BaseModel):
         save(): Sobrescribe el método save para aplicar formato y validaciones antes de guardar.
     """
 
-    STATUS_ACTIVO = 'ACT'
-    STATUS_INACTIVO = 'INA'
+    STATUS_ACTIVO = "ACT"
+    STATUS_INACTIVO = "INA"
     STATUS_CHOICES = [
-        (STATUS_ACTIVO, 'Activo'),
-        (STATUS_INACTIVO, 'Inactivo'),
+        (STATUS_ACTIVO, "Activo"),
+        (STATUS_INACTIVO, "Inactivo"),
     ]
 
     nombre = models.CharField(max_length=50)
-    status = models.CharField(max_length=3, choices=STATUS_CHOICES, default=STATUS_ACTIVO)
-    imagen = models.ImageField(upload_to='productos/', blank=True, null=True)
+    status = models.CharField(
+        max_length=3, choices=STATUS_CHOICES, default=STATUS_ACTIVO
+    )
+    imagen = models.ImageField(upload_to="productos/", blank=True, null=True)
     descripcion = models.TextField(blank=True, null=True)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     clave_sat = models.CharField(max_length=10, blank=True, null=True)
     iva = models.DecimalField(max_digits=5, decimal_places=2, default=0.16)
     ieps = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
-    categoria = models.ForeignKey(Categoria, on_delete=models.SET_NULL, blank=True, null=True, related_name='productos')
+    categoria = models.ForeignKey(
+        Categoria,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="productos",
+    )
 
     def __str__(self):
         return self.nombre
@@ -58,8 +75,9 @@ class Producto(BaseModel):
     def save(self, *args, **kwargs):
         # Formatea nombre y descripción antes de guardar
         self.nombre = self.nombre.strip().upper()
-        self.descripcion = self.descripcion.strip() if self.descripcion else ''
+        self.descripcion = self.descripcion.strip() if self.descripcion else ""
         super().save(*args, **kwargs)
+
 
 class Precio(BaseModel):
     """
@@ -69,8 +87,154 @@ class Precio(BaseModel):
         producto (FK): Producto al que pertenece este precio.
         precio (Decimal): Valor monetario del precio.
     """
-    producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='precios')
+
+    ESPECIAL = "ESP"
+    SUBDISTRIBUIDOR = "SUB"
+    MAYOREO = "MAY"
+    PUBLICO = "PUB"
+    TIPO_PRECIO_CHOICES = [
+        (ESPECIAL, "Especial"),
+        (SUBDISTRIBUIDOR, "Subdistribuidor"),
+        (MAYOREO, "Mayoreo"),
+        (PUBLICO, "Público"),
+    ]
+    producto = models.ForeignKey(
+        Producto, on_delete=models.CASCADE, related_name="precios"
+    )
     precio = models.DecimalField(max_digits=10, decimal_places=2)
+    tipo_precio = models.CharField(
+        max_length=3, choices=TIPO_PRECIO_CHOICES, default=PUBLICO
+    )
 
     def __str__(self):
         return f"{self.producto.nombre} - {self.precio}"
+
+
+# =================================================================
+#                    PROVEEDORES
+# ================================================================
+
+
+class Proveedor(BaseModel):
+    STATUS_ACTIVO = "ACT"
+    STATUS_INACTIVO = "INA"
+    STATUS_CHOICES = [
+        (STATUS_ACTIVO, "Activo"),
+        (STATUS_INACTIVO, "Inactivo"),
+    ]
+    nombre = models.CharField(
+        max_length=200, verbose_name="Nombre del Proveedor", blank=False, null=False
+    )
+    razon_social = models.CharField(
+        max_length=200, verbose_name="Razón Social", blank=False, null=False
+    )
+    rfc = models.CharField(max_length=13, verbose_name="RFC", blank=False, null=False)
+    telefono = models.CharField(
+        max_length=20, verbose_name="Teléfono", blank=True, null=True
+    )
+    correo = models.EmailField(
+        max_length=254, verbose_name="Correo Electrónico", blank=True, null=True
+    )
+    status = models.CharField(
+        max_length=3,
+        choices=STATUS_CHOICES,
+        default=STATUS_ACTIVO,
+        verbose_name="Estado",
+    )
+
+    def __str__(self):
+        return self.nombre
+
+
+class DireccionProveedor(BaseDireccion):
+    proveedor = models.ForeignKey(
+        Proveedor, on_delete=models.CASCADE, related_name="direccion_proveedor"
+    )
+
+    def __str__(self):
+        return f"{self.calle}, {self.colonia}, {self.municipio.nombre}, {self.estado.nombre}"
+
+
+# =================================================================
+#                    ALAMCEN
+# ================================================================
+class Almacen(BaseModel):
+    STATUS_ACTIVO = "ACT"
+    STATUS_INACTIVO = "INA"
+    STATUS_DELETE = "DEL"
+    STATUS_CHOICES = [
+        (STATUS_ACTIVO, "Activo"),
+        (STATUS_INACTIVO, "Inactivo"),
+    ]
+    nombre = models.CharField(
+        max_length=200, verbose_name="Nombre", blank=False, null=False
+    )
+    status = models.CharField(
+        max_length=3,
+        choices=STATUS_CHOICES,
+        default=STATUS_ACTIVO,
+        verbose_name="Estado",
+    )
+    codigo = models.CharField(
+        max_length=20,
+        verbose_name="Código",
+        blank=False,
+        null=True,
+        unique=True,
+    )
+    telefono = models.CharField(
+        max_length=20, verbose_name="Teléfono", blank=True, null=True
+    )
+    encargado = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="almacen_encargado",
+        verbose_name="Encargado",
+    )
+    comentarios = models.TextField(blank=True, null=True, verbose_name="Comentarios")
+    info_extra = models.TextField(
+        blank=True, null=True, verbose_name="Información Extra"
+    )
+
+    def __str__(self):
+        return self.nombre
+
+
+class DireccionAlmacen(BaseDireccion):
+    almacen = models.ForeignKey(
+        Almacen, on_delete=models.CASCADE, related_name="direccion_almacen"
+    )
+
+    def __str__(self):
+        return f"{self.calle}, {self.colonia}, {self.municipio.nombre}, {self.estado.nombre}"
+
+
+# =================================================================
+#                       AGENTES
+# ================================================================
+class Agente(BaseModel):
+    STATUS_ACTIVO = "ACT"
+    STATUS_INACTIVO = "INA"
+    STATUS_CHOICES = [
+        (STATUS_ACTIVO, "Activo"),
+        (STATUS_INACTIVO, "Inactivo"),
+    ]
+
+    nombre = models.CharField(
+        max_length=200, verbose_name="Nombre del Agente", blank=False, null=False
+    )
+    status = models.CharField(
+        max_length=3,
+        choices=STATUS_CHOICES,
+        verbose_name="Estado",
+        default=STATUS_ACTIVO,
+    )
+    codigo = models.CharField(
+        max_length=20,
+        verbose_name="Código del Agente",
+        blank=False,
+        null=True,
+        unique=True,
+    )

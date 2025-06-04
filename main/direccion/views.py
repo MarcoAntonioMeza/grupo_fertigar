@@ -17,19 +17,19 @@ def buscar_direccion(request):
     if codigo_postal:
         try:
             codigo = CodigoPostal.objects.get(codigo_postal=codigo_postal)
-            colonias = Colonia.objects.filter(codigo_postal=codigo)
-            municipios = Municipio.objects.filter(id__in=colonias.values('municipio'))
+            colonias = Colonia.objects.filter(codigo_postal=codigo).order_by('d_asenta')
+            municipios = Municipio.objects.filter(id__in=colonias.values('municipio')).order_by('nombre')
             #estado = Estado.objects.get(id= municipios[0].estado_id)
         except CodigoPostal.DoesNotExist:
             return JsonResponse({'municipios': [], 'colonias': [] })
 
     # Buscar por estado
     elif estado_id:
-        municipios = Municipio.objects.filter(estado_id=estado_id)
+        municipios = Municipio.objects.filter(estado_id=estado_id).order_by('nombre')
 
     # Buscar por municipio
     elif municipio_id:
-        colonias = Colonia.objects.filter(municipio_id=municipio_id)
+        colonias = Colonia.objects.filter(municipio_id=municipio_id).order_by('d_asenta')
 
     # Preparar los datos para la respuesta
     municipios_data = [{'id': municipio.id, 'nombre': municipio.nombre, 'estado_id': municipio.estado.id} for municipio in municipios]

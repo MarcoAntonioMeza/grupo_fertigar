@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+ALMACENES
+{% endblock title %}
+{% block pagetitle %}
+{% include "partials/page-title.html" with subtitle="CATALOGOS" title=title %}
+{% endblock pagetitle %}
+
+
+{% block content %}
+
+<div class="row mb-1">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body text-center py-3">
+                <div class="row">
+                    <div class="col-md-12">
+                        {% if can.update %}
+                        <a href="{% url 'crm_almacen_update' model.id %}" class="btn btn-lg btn-primary">
+                            <i class="fas fa-plus me-2"></i>EDITAR
+                        </a>
+                        {% endif %}
+
+                        {% if can.delete %}
+                        <a href="{% url 'crm_almacen_delete' model.id %}" class="btn btn-danger btn-lg "
+                            onclick="return confirm('¿Eliminar a {{ model }} permanentemente?')">
+                            <i class="fas fa-trash-alt"></i> ELIMINAR
+                        </a>
+                        {% endif %}
+
+                        <a href="{% url 'crm_almacen_index' %}" class="btn btn-lg btn-secondary">
+                            <i class="fas fa-cancel me-2"></i>CANCELAR
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-end">
+                        <div class="btn-group" role="group" aria-label="Detalles de movimientos">
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="popover"
+                                data-bs-trigger="hover" data-bs-title="Creado" data-bs-html="true" data-bs-content="
+                    <strong>Usuario:</strong> {{ model.get_created_by }}<br>
+                    <strong>Fecha:</strong> {{ model.get_created_at }}">
+                                <i class="fas fa-plus-circle me-1"></i>Creado
+                            </button>
+
+                            <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="popover"
+                                data-bs-trigger="hover" data-bs-title="Modificado" data-bs-html="true" data-bs-content="
+                    <strong>Usuario:</strong> {{ model.get_updated_by }}<br>
+                    <strong>Fecha:</strong> {{ model.get_updated_at }}">
+                                <i class="fas fa-edit me-1"></i>Modificado
+                            </button>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+
+            <div class="card-header bg-primary text-white text-center">
+                <h3 class="mb-0">
+                    <i class="fa fa-archive me-2"></i> DETALLE
+                </h3>
+            </div>
+
+            <div class="card-body text-start text-dark text-center">
+                <!-- Nombre y Código -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Nombre</label>
+                        <div>{{ model.nombre }}</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Código</label>
+                        <div>{{ model.codigo }}</div>
+                    </div>
+                </div>
+
+                <!-- Status, Encargado y Teléfono -->
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Estado</label>
+                        <div>{{ model.get_status_display }}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Encargado</label>
+                        <div>{{ model.encargado }}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Teléfono</label>
+                        <div>{{ model.telefono }}</div>
+                    </div>
+                </div>
+
+                <!-- Info Extra y Comentarios -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Información Extra</label>
+                        <div>{{ model.info_extra }}</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Comentarios</label>
+                        <div>{{ model.comentarios }}</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header bg-info text-white text-center">
+                <h3 class="mb-0">
+                    <i class="fas fa-map-marker-alt me-2"></i>DIRECCIÓN
+                </h3>
+            </div>
+            <div class="card-body">
+
+                <!-- Código Postal centrado -->
+                <div class="row mb-4">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4 text-center">
+                        <label class="form-label fw-bold">Código postal</label>
+                        <div>{{ direccion.codigo_postal }}</div>
+                    </div>
+                    <div class="col-md-4"></div>
+                </div>
+
+                <!-- Estado, Municipio, Colonia -->
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Estado</label>
+                        <div>{{ direccion.estado }}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Municipio</label>
+                        <div>{{ direccion.municipio }}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Colonia</label>
+                        <div>{{ direccion.colonia }}</div>
+                    </div>
+                </div>
+
+                <!-- Calle -->
+                <div class="row mb-3">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">
+                        <label class="form-label fw-bold">Calle</label>
+                        <div>{{ direccion.calle }}</div>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+
+                <!-- Números Interior y Exterior -->
+                <div class="row mb-3">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Número interior</label>
+                        <div>{{ direccion.numero_interior }}</div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Número exterior</label>
+                        <div>{{ direccion.numero_exterior }}</div>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock content %}
+
+
+
+{% block extra_js %}
+<!-- App js -->
+<script src="{% static 'js/app.min.js' %}"></script>
+
+{% endblock extra_js %}
