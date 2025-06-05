@@ -4,6 +4,16 @@ from main.users.models import User
 
 
 # Create your models here.
+class RazonSocial(BaseModel):
+    codigo = models.CharField(max_length=20, verbose_name="Código", unique=True)
+    nombre = models.CharField(max_length=200, verbose_name="Nombre")
+
+    def __str__(self):
+        return self.nombre
+
+    def save(self, *args, **kwargs):
+        self.nombre.upper().strip()
+        super().save(*args, **kwargs)
 
 
 # ================================================================
@@ -238,3 +248,73 @@ class Agente(BaseModel):
         null=True,
         unique=True,
     )
+
+
+
+
+
+#=====================================================
+#                  CLIENTES
+#=====================================================
+
+class Cliente(BaseModel):
+    STATUS_ACTIVO = "ACT"
+    STATUS_INACTIVO = "INA"
+    STATUS_DELETE = "DEL"
+    STATUS_CHOICES = [
+        (STATUS_ACTIVO, "Activo"),
+        (STATUS_INACTIVO, "Inactivo"),
+    ]
+    
+    TIPO_POTENCIAL       = 10
+    TIPO_ESTANDAR        = 20
+    TIPO_NO_CREDITO      = 30
+    TIPO_CREDITO_SEMANAL = 40
+    TIPO_EVENTUAL        = 50
+    TIPO_BUEN_CLIENTE    = 60 
+    TIPO_PREMIUM         = 70
+    
+    TIPO_LIST = [
+        (TIPO_POTENCIAL, "Potencial"),
+        (TIPO_ESTANDAR, "Estándar"),
+        (TIPO_NO_CREDITO, "No Crédito"),
+        (TIPO_CREDITO_SEMANAL, "Crédito Semanal"),
+        (TIPO_EVENTUAL, "Eventual"),
+        (TIPO_BUEN_CLIENTE, "Buen Cliente"),
+        (TIPO_PREMIUM, "Premium"),
+    ]
+    
+    status = models.CharField(max_length=3,choices=STATUS_CHOICES,verbose_name="Estado",default=STATUS_ACTIVO)
+    codigo = models.CharField(max_length=20, verbose_name="Código", blank=False, null=True, unique=True)
+    nombre = models.CharField(max_length=200, verbose_name="Nombre", blank=False, null=False)
+    apellidos = models.CharField(max_length=200, verbose_name="Apellidos", blank=True, null=True)
+    telefono = models.CharField(max_length=15, verbose_name="Teléfono", blank=True, null=True)
+    email = models.EmailField(max_length=150,verbose_name="Correo Electrónico", blank=True, null=True)
+    tipo = models.IntegerField(choices=TIPO_LIST,verbose_name="Tipo de Cliente",default=TIPO_ESTANDAR)
+    #filacal
+    rfc = models.CharField(max_length=15, verbose_name="RFC", blank=True, null=True)
+   
+    regimen_fiscal = models.CharField(max_length=100, verbose_name="Régimen Fiscal", blank=True, null=True)
+    uso_cfdi = models.CharField(max_length=100, verbose_name="Uso CFDI", blank=True, null=True)
+    razon_social = models.ForeignKey(RazonSocial, on_delete=models.SET_NULL, blank=True, null=True,verbose_name="Razón Social", related_name="cliente_razon_social")
+    #credito
+    limite_credito = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Límite de crédito", default=0.00)
+    total_credito = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total de crédito", default=0.00, blank=True, null=True)
+    plazos_semanas = models.IntegerField(verbose_name="Plazos en semanas", default=0, blank=True, null=True)
+    
+    def __str__(self):
+        return self.get_full_name
+    
+    
+    @property
+    def get_full_name(self):
+        return f"{self.nombre} {self.apellidos} [{self.id}]"  
+    
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.strip().upper()
+        self.apellidos = self.apellidos.strip().upper()
+        super().save(*args, **kwargs)
+        
+
+class DireccionCliente(BaseDireccion):
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name="direccion_cliente")

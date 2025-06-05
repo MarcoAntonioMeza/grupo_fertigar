@@ -2,7 +2,7 @@ from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_migrate
 from django.dispatch import receiver
-from .models import Categoria, Producto, Agente, Almacen
+from .models import Categoria, Producto, Agente, Almacen,Cliente
 
 @receiver(post_migrate)
 def crear_permisos_personalizados(sender, **kwargs):
@@ -12,6 +12,8 @@ def crear_permisos_personalizados(sender, **kwargs):
                   ('producto', 'PRODUCTO',Producto),
                   ('agente', 'agente',Agente),
                   ('alamcen', 'almacen',Almacen),
+                  ('cliente', 'cliente',Cliente),
+                  
                   ]
    
     for model_name_permiso, model_name_str, model_class in models_str:

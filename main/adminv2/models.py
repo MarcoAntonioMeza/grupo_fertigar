@@ -55,7 +55,6 @@ class BaseModel(models.Model):
     def get_updated_by(self):
         return self.updated_by.full_name() if self.updated_by else "N/A"
 
-    
     def save(self, *args, **kwargs):
 
         if not self.created_at:
@@ -78,3 +77,5 @@ class BaseDireccion(models.Model):
     class Meta:
         abstract = True
         # ordering = ['-created_at']
+
+

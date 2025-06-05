@@ -18,11 +18,13 @@ from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import Permission
 
-from .models import Almacen, DireccionAlmacen, Producto, Categoria, Agente
+from .models import Almacen, DireccionAlmacen, Producto, Categoria, Agente, Cliente
 
 # FORMS
-from .forms import AlmacenForm, DireccionAlmacenForm
-from django.forms import inlineformset_factory
+from .forms import AlmacenForm, DireccionAlmacenForm, ClienteForm, DireccionClienteForm
+
+# ======================================================
+from .services.data_tables import clientes_list 
 
 APP_NAME = "crm"
 
@@ -57,6 +59,8 @@ class AlmacenListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Almacenes"
+        context["sub_title"] = "CATALOGOS"
+
         context["can"] = {
             key: self.request.user.has_perm(value) for key, value in CAN_ALMACEN.items()
         }
@@ -83,6 +87,7 @@ class AlmacenDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         # context["title"] = "ALMACENES -"
         context["title"] = f"ALMACENES - {self.object.nombre}".upper()
+        context["sub_title"] = "CATALOGOS"
         context["direccion"] = DireccionAlmacen.objects.filter(
             almacen=self.object
         ).first()
@@ -98,10 +103,14 @@ class AlmacenCreateView(LoginRequiredMixin, CreateView):
     model = Almacen
     form_class = AlmacenForm
     template_name = BASE_TEMPLATE_ALMACEN + "create.html"
+    permission_required = ALMACEN_CREATE
+    raise_exception = True
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "ALMACENES - CREAR"
+        context["sub_title"] = "CATALOGOS"
+
         if self.request.POST:
             context["direccion_form"] = DireccionAlmacenForm(self.request.POST)
         else:
@@ -161,6 +170,7 @@ class AlmacenUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = f"ALMACENES - {self.object} - EDITAR"
+        context["sub_title"] = "CATALOGOS"
 
         # Obtenemos la primera dirección asociada (o creamos formulario vacío si no existe)
         direccion_instance = self.object.direccion_almacen.first()
@@ -268,3 +278,246 @@ class AlmacenDeleteView(LoginRequiredMixin, DeleteView):
         if obj.status == Almacen.STATUS_DELETE:
             raise Http404("Este almacén ya ha sido eliminado")
         return obj
+
+
+# =====================================================
+#                  CLIENTES
+# =====================================================
+
+# CAN
+MODEL_NAME_CLIENTE = "cliente"
+CLIENTE_VIEW = f"{APP_NAME}.can_view_{MODEL_NAME_CLIENTE}"
+CLIENTE_CREATE = f"{APP_NAME}.can_create_{MODEL_NAME_CLIENTE}"
+CLIENTE_UPDATE = f"{APP_NAME}.can_update_{MODEL_NAME_CLIENTE}"
+CLIENTE_DELETE = f"{APP_NAME}.can_baja_{MODEL_NAME_CLIENTE}"
+CAN_CLIENTE = {
+    "view": CLIENTE_VIEW,
+    "create": CLIENTE_CREATE,
+    "update": CLIENTE_UPDATE,
+    "delete": CLIENTE_DELETE,
+}
+BASE_TEMPLATE_CLIENTE = "crm/cliente/"
+
+
+# LIST VIEW
+class ClienteListView(LoginRequiredMixin, ListView):
+    model = Cliente
+    permission_required = CLIENTE_VIEW
+    raise_exception = True
+    template_name = BASE_TEMPLATE_CLIENTE + "index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "CLIENTES"
+        context["sub_title"] = "CATALOGOS"
+
+        context["can"] = {
+            key: self.request.user.has_perm(value) for key, value in CAN_CLIENTE.items()
+        }
+        return context
+
+
+class ClienteCreateView(LoginRequiredMixin, CreateView):
+    model = Cliente
+    permission_required = CLIENTE_CREATE
+    raise_exception = True
+    form_class = ClienteForm
+    template_name = BASE_TEMPLATE_CLIENTE + "create.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "CLIENTE - CREAR"
+        context["sub_title"] = "CATALOGOS"
+        if self.request.POST:
+            context["direccion_form"] = DireccionClienteForm(self.request.POST)
+        else:
+            context["direccion_form"] = DireccionClienteForm()
+        return context
+
+    def get_success_url(self):
+        messages.success(self.request, "Almacén creado exitosamente!")
+        return reverse("crm_cliente_view", kwargs={"id": self.object.pk})
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        context = self.get_context_data()
+        direccion_form = context["direccion_form"]  # Usamos el form del contexto
+        if not direccion_form.is_valid():
+            messages.error(
+                self.request, "Por favor corrija los errores en la dirección."
+            )
+            return self.render_to_response(self.get_context_data(form=form))
+        try:
+            # Primero guardamos el cliente
+            self.object = form.save()
+            # Luego guardamos la dirección asociada al cliente
+            if (
+                direccion_form.cleaned_data.get("estado")
+                and direccion_form.cleaned_data.get("municipio")
+                and direccion_form.cleaned_data.get("colonia")
+            ):
+                direccion = direccion_form.save(commit=False)
+                direccion.cliente = self.object  # Asignamos la relación
+                direccion.save()
+        except Exception as e:
+            messages.error(self.request, f"Error al guardar: {str(e)}")
+            return self.render_to_response(self.get_context_data(form=form))
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(
+            self.request,
+            f"Por favor corrija los errores en el formulario.  {form.errors}",
+        )
+        return super().form_invalid(form)
+
+
+class ClienteDetailView(LoginRequiredMixin, DetailView):
+    model = Cliente
+    permission_required = CLIENTE_VIEW
+    raise_exception = True
+    template_name = BASE_TEMPLATE_CLIENTE + "view.html"
+    pk_url_kwarg = "id"
+    context_object_name = "model"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = f"CLIENTE - {self.object.get_full_name}"
+        context["sub_title"] = "CATALOGOS"
+        context["direccion"] = self.object.direccion_cliente.first()
+        context["labels"] = {
+            field.name: field.verbose_name for field in Cliente._meta.fields
+        }
+        context["can"] = {
+            key: self.request.user.has_perm(value) for key, value in CAN_CLIENTE.items()
+        }
+        return context
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        if obj.status == Cliente.STATUS_DELETE:
+            raise Http404("EELEMENTO NO ENCONTRADO")
+        return obj
+
+
+class ClienteUpdateView(LoginRequiredMixin, UpdateView):
+    model = Cliente
+    permission_required = CLIENTE_UPDATE
+    raise_exception = True
+    form_class = ClienteForm
+    template_name = BASE_TEMPLATE_CLIENTE + "update.html"
+    pk_url_kwarg = "id"
+    context_object_name = "model"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = f"CLIENTE - {self.object.get_full_name}"
+        context["sub_title"] = "CATALOGOS"
+        # context['direccion_form'] = self.object.direccion_cliente.first()
+        context["can"] = {
+            key: self.request.user.has_perm(value) for key, value in CAN_CLIENTE.items()
+        }
+        instancia = self.object.direccion_cliente.first()
+        context["direccion_form"] = (
+            DireccionClienteForm(self.request.POST, instance=instancia)
+            if self.request.method == "POST"
+            else DireccionClienteForm(instance=instancia)
+        )
+
+        return context
+
+    def get_success_url(self):
+        messages.success(self.request, "Cliente actualizado exitosamente!")
+        return reverse("crm_cliente_view", kwargs={"id": self.object.pk})
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        if obj.status == Cliente.STATUS_DELETE:
+            raise Http404("ELEMENTO NO ENCONTRADO")
+        return obj
+
+    def form_valid(self, form):
+        form.instance.updated_by = self.request.user
+        context = self.get_context_data()
+        direccion_form = context["direccion_form"]  # Usamos el form del contexto
+
+        if not direccion_form.is_valid():
+            messages.error(
+                self.request, "Por favor corrija los errores en la dirección."
+            )
+            return self.render_to_response(self.get_context_data(form=form))
+
+        try:
+            with transaction.atomic():
+                # Primero guardamos el cliente
+                self.object = form.save()
+                # Luego guardamos la dirección asociada al cliente
+                if (
+                    direccion_form.cleaned_data.get("estado")
+                    and direccion_form.cleaned_data.get("municipio")
+                    and direccion_form.cleaned_data.get("colonia")
+                ):
+                    direccion = direccion_form.save(commit=False)
+                    direccion.cliente = self.object  # Asignamos la relación
+                    direccion.save()
+
+                    dirs_anteriores = self.object.direccion_cliente.exclude(
+                        pk=direccion.pk
+                    )
+                    dirs_anteriores.delete()
+        except Exception as e:
+            messages.error(self.request, f"Error al guardar: {str(e)}")
+            return self.render_to_response(self.get_context_data(form=form))
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, "Por favor corrija los errores en el formulario.")
+        return super().form_invalid(form)
+
+
+class ClienteDeleteView(LoginRequiredMixin, DeleteView):
+    model = Cliente
+    permission_required = CLIENTE_DELETE
+    raise_exception = True
+    pk_url_kwarg = "id"
+    success_url = reverse_lazy("crm_cliente_index")
+    
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.status = Cliente.STATUS_DELETE
+        self.object.save()
+        messages.success(self.request, "Cliente eliminado exitosamente!")
+        return HttpResponseRedirect(self.get_success_url())
+    
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        if obj.status == Cliente.STATUS_DELETE:
+            raise Http404("ELEMENTO NO ENCONTRADO")
+        return obj
+    
+    def post(self, request, *args, **kwargs):
+        """
+        Maneja las solicitudes POST (equivalente a delete)
+        """
+        return self.delete(request, *args, **kwargs)
+    
+    def get(self, request, *args, **kwargs):
+        """
+        Maneja las solicitudes GET (equivalente a get_object)
+        """
+        return self.delete(request, *args, **kwargs)
+    
+    
+@permission_required(CLIENTE_VIEW, raise_exception=True)
+def cliente_list_datatable(request):
+    draw = int(request.GET.get("draw", 0))
+    start = int(request.GET.get("start", 0))
+    length = int(request.GET.get("length", 10))
+    search_value = request.GET.get("search[value]", "").strip()
+    #user_id = request.user.id
+    #campo_formativo = request.GET.get("campo_formativo", "").strip()
+    #grupo = request.GET.get("grupo", "").strip()
+    
+    return JsonResponse(clientes_list(draw=draw, start=start, length=length, search_value=search_value))
