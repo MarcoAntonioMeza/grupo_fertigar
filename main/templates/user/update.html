@@ -5,7 +5,7 @@ NUEVO USUARIO
 {% endblock title %}
 {% block pagetitle %}
 
-{% include "partials/page-title.html" with subtitle="USUARIOS" title=model %}
+{% include "partials/page-title.html" with subtitle="ADMIN" title=title %}
 
 {% endblock pagetitle %}
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
@@ -80,9 +80,12 @@ NUEVO USUARIO
                 $('#id_colonia').empty().append('<option value="">Seleccione una Colonia</option>').prop('disabled', true);
             }
         });
-
+        let timeout = null;
         $('#id_codigo_postal').on('input', function () {
             var codigoPostal = $(this).val();
+            clearTimeout(timeout); // Limpiar el temporizador anterior
+            timeout = setTimeout(function () {
+
             if (codigoPostal.length === 4) {
                 //geocodePostalCode(codigoPostal);
                 $.get("{% url 'search_dir' %}", { codigo_postal: codigoPostal }, function (data) {
@@ -119,6 +122,7 @@ NUEVO USUARIO
                 });
 
             }
+            }, 500); // 500 milisegundos (0.5 segundos)
         });
 
 

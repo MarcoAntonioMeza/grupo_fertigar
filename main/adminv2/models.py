@@ -10,8 +10,8 @@ from datetime import datetime
 
 
 class BaseModel(models.Model):
-    created_at = models.BigIntegerField(blank=True, null=True)
-    updated_at = models.BigIntegerField(blank=True, null=True)
+    created_at = models.BigIntegerField(blank=True, null=True, default=None)
+    updated_at = models.BigIntegerField(blank=True, null=True, default=None)
     created_by = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
@@ -43,7 +43,7 @@ class BaseModel(models.Model):
     def get_updated_at(self):
         return (
             datetime.fromtimestamp(self.updated_at).strftime("%d-%h-%Y %H:%M:%S")
-            if self.updated_at
+            if self.updated_at and self.updated_by != None 
             else "N/A"
         )
 
@@ -56,11 +56,16 @@ class BaseModel(models.Model):
         return self.updated_by.full_name() if self.updated_by else "N/A"
 
     def save(self, *args, **kwargs):
-
-        if not self.created_at:
-            self.created_at = int(time.time())
+        current_time = int(time.time())
+        if self._state.adding:
+            self.created_at = current_time
+            #self.updated_at = None
+            #print("Created at:", self.created_at)
         else:
-            self.updated_at = int(time.time())
+            self.updated_at = current_time
+            #print("Updated at:", self.updated_at)
+        #if self.created_by != None:
+        #    self.updated_at = current_time
 
         super().save(*args, **kwargs)
 
@@ -73,9 +78,16 @@ class BaseDireccion(models.Model):
     calle = models.CharField(max_length=200)
     numero_exterior = models.CharField(max_length=20, null=True, blank=True)
     numero_interior = models.CharField(max_length=20, null=True, blank=True)
+    
+    
 
     class Meta:
         abstract = True
         # ordering = ['-created_at']
 
 
+    def save(self, *args, **kwargs):
+        self.numero_exterior = self.numero_exterior.upper().strip() if self.numero_exterior else "N/A"
+        self.numero_interior = self.numero_interior.upper().strip() if self.numero_interior else "N/A"
+        self.calle = self.calle.upper().strip() if self.calle else "N/A"
+        super().save(*args, **kwargs)

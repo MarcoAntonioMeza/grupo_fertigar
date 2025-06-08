@@ -13,6 +13,7 @@ def clientes_list(draw=0, start=0, length=10, search_value=""):
             Q(nombre__icontains=search_value)
             | Q(id__istartswith=search_value)  # Mejor para búsqueda por ID
             | Q(codigo__icontains=search_value)
+            | Q(razon_social__icontains=search_value)
         ).distinct()
 
     # Ordenación inicial (asegurar que haya índice en apellido_paterno)
@@ -32,6 +33,7 @@ def clientes_list(draw=0, start=0, length=10, search_value=""):
     list_data = ordered_query.values(
         "id",
         "nombre",
+        "razon_social",
         "codigo",
         "tipo",
         "status",
@@ -49,6 +51,8 @@ def clientes_list(draw=0, start=0, length=10, search_value=""):
         {
             "id": item["id"],
             "name": f"{item['nombre']}".strip(),
+            "codigo": f"{item['codigo']}".strip(),
+            "razon_social": f"{item['razon_social']}".strip() if item["razon_social"] else "",
             "tipo": TIPO_DICT.get(item["tipo"], "--"),
             "status": STATUS_DICT.get(item["status"], "--"),
             "created_at": (item["created_at"] if item["created_at"] else ""),

@@ -9,9 +9,10 @@ urlpatterns = [
     path('create/', crear_usuario, name='user_create'),
     path('update/<int:id>', update_usuario, name='user_update'),
     path('view/<int:id>', view_usuario, name='user_view'),
-    path('solicitud-list-ajax/', index_list_ajax, name='list_ajax_usuarios'),
     path('delete/<int:id>', delete_usuario, name='user_delete'),
-    #path('solicitud-list/', index_list, name='list_solicituds'),
+    path('list-ajax/', index_list_ajax, name='list_ajax_usuarios'),
+    
+    #path('solicitud-list/', index_list_ajax, name='list_solicituds'),
     #path('solicitud-list-ajax/', index_list_ajax, name='list_solicituds_ajax'),
     
     

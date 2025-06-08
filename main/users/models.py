@@ -1,19 +1,17 @@
-from django.contrib.auth.models import AbstractUser
-from django.db import models
 import time
+from datetime import datetime
+
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import AbstractUser
+
+
 from main.direccion.models import   CodigoPostal, Estado, Municipio, Colonia
+from django.db import models
 
 
 
 class User(AbstractUser):
-    """
-    Default custom user model for codefox.
-    If adding fields that need to be filled at user signup,
-    check forms.SignupForm and forms.SocialSignupForms accordingly.
-    """
-
     nombre = models.CharField(max_length=200, null=False, verbose_name='Primer Nombre')
     segundo_nombre = models.CharField(max_length=200, null=True, verbose_name='Segundo Nombre')
     apellido_paterno = models.CharField(max_length=200, null=True, verbose_name='Apellido Paterno')
@@ -47,6 +45,30 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
     
+    @property
+    def get_created_at(self):
+        return (
+            datetime.fromtimestamp(self.created_at).strftime("%d-%h-%Y %H:%M:%S")
+            if self.created_at
+            else "N/A"
+        )
+
+    @property
+    def get_updated_at(self):
+        return (
+            datetime.fromtimestamp(self.updated_at).strftime("%d-%h-%Y %H:%M:%S")
+            if self.updated_at and self.updated_by != None 
+            else "N/A"
+        )
+
+    @property
+    def get_created_by(self):
+        return self.created_by.full_name() if self.created_by else "N/A"
+
+    @property
+    def get_updated_by(self):
+        return self.updated_by.full_name() if self.updated_by else "N/A"
+    
     
     
     def save(self, *args, **kwargs):
@@ -61,16 +83,19 @@ class User(AbstractUser):
         #elif not self.profile_picture and self.pk:
         #    old_instance = Usuario.objects.get(pk=self.pk)
         #    self.profile_picture = old_instance.profile_picture
-    
         # Asignar las fechas de creación y actualización
         if not self.created_at:
             self.created_at = int(time.time())
         else:
             self.updated_at = int(time.time())
+        
+        
         self.nombre = self.nombre.strip().upper()
         self.segundo_nombre = self.segundo_nombre.strip().upper() if self.segundo_nombre else None
         self.apellido_paterno = self.apellido_paterno.strip().upper() if self.apellido_paterno else None
         self.apellido_materno = self.apellido_materno.strip().upper() if self.apellido_materno else None
+    
+        
         
         super(User, self).save(*args, **kwargs)
 

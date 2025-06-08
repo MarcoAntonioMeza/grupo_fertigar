@@ -1,13 +1,13 @@
 from django.contrib import admin
+from .models import (
+    Categoria, Producto, Precio, Agente, Almacen, Cliente,
+    UnidadSAT, Proveedor, RegimenFiscal, Empresa
+)
 
-from .models import RazonSocial,Categoria, Producto, Precio, Agente, Almacen, Cliente
+# Registro optimizado de modelos
+models = [
+    Categoria, Producto, Precio, Agente, Almacen, Cliente,
+    UnidadSAT, Proveedor, RegimenFiscal, Empresa
+]
 
-# Register your models here.
-
-admin.site.register(Categoria)
-admin.site.register(Producto)
-admin.site.register(Precio)
-admin.site.register(Agente)
-admin.site.register(Almacen)
-admin.site.register(Cliente)
-admin.site.register(RazonSocial)
+admin.site.register(models)

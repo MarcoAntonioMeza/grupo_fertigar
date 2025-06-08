@@ -1,19 +1,73 @@
 from django.db import models
 from main.adminv2.models import BaseModel, BaseDireccion
 from main.users.models import User
+#?===============================================================
+#                      EMPRESAS
+# =================================================================
+class Empresa(BaseModel):
+    codigo = models.CharField(max_length=20, verbose_name="Código", unique=True)
+    nombre = models.CharField(max_length=200, verbose_name="Nombre", blank=False, null=False)
+    
 
-
-# Create your models here.
-class RazonSocial(BaseModel):
+class RegimenFiscal(BaseModel):
     codigo = models.CharField(max_length=20, verbose_name="Código", unique=True)
     nombre = models.CharField(max_length=200, verbose_name="Nombre")
 
     def __str__(self):
-        return self.nombre
+        return f"{self.codigo} - {self.nombre}"
 
     def save(self, *args, **kwargs):
         self.nombre.upper().strip()
         super().save(*args, **kwargs)
+
+
+#CODIGOS CFDI
+class UsoCfdi():
+    pass
+
+
+# =================================================================
+#                    PROVEEDORES
+# ================================================================
+
+
+class Proveedor(BaseModel):
+    ORIGEN_MEX = "MEX"
+    ORIGEN_USA = "USA"
+    
+    ORIGEN_LIST = [
+        (ORIGEN_MEX, "México"),
+        (ORIGEN_USA, "Estados Unidos"),
+    ]
+    
+    STATUS_ACTIVO = "ACT"
+    STATUS_INACTIVO = "INA"
+    STATUS_CHOICES = [
+        (STATUS_ACTIVO, "Activo"),
+        (STATUS_INACTIVO, "Inactivo"),
+    ]
+    origen = models.CharField(max_length=3,choices=ORIGEN_LIST,verbose_name="Origen",default=ORIGEN_MEX)
+    nombre = models.CharField(max_length=200, verbose_name="Nombre del Proveedor", blank=False, null=False)
+    razon_social = models.CharField(max_length=180,blank=True, null=True,default=None, verbose_name="Razón Social")
+
+    rfc = models.CharField(max_length=13, verbose_name="RFC", blank=False, null=False)
+    telefono = models.CharField(max_length=20, verbose_name="Teléfono", blank=True, null=True)
+    correo = models.EmailField(max_length=254, verbose_name="Correo Electrónico", blank=True, null=True)
+    status = models.CharField(max_length=3,choices=STATUS_CHOICES,default=STATUS_ACTIVO,verbose_name="Estado")
+
+    def __str__(self):
+        return self.nombre
+
+
+class DireccionProveedor(BaseDireccion):
+    proveedor = models.ForeignKey(
+        Proveedor, on_delete=models.CASCADE, related_name="direccion_proveedor"
+    )
+
+    def __str__(self):
+        return f"{self.calle}, {self.colonia}, {self.municipio.nombre}, {self.estado.nombre}"
+
+
 
 
 # ================================================================
@@ -34,7 +88,16 @@ class Categoria(BaseModel):
     def __str__(self):
         return self.nombre
 
-
+class UnidadSAT(BaseModel):
+    clave = models.CharField(max_length=10, unique=True,verbose_name="Clave")  # Ej: H87
+    nombre = models.CharField(max_length=100, verbose_name="Nombre")             # Ej: Pieza
+    def __str__(self):
+        return f"({self.clave}) {self.nombre} "
+    
+    def save(self, *args, **kwargs):
+        self.clave.upper().strip()
+        self.nombre.upper().strip()
+        super().save(*args, **kwargs)
 class Producto(BaseModel):
     """
     Modelo que representa un producto del catálogo.
@@ -56,29 +119,42 @@ class Producto(BaseModel):
 
     STATUS_ACTIVO = "ACT"
     STATUS_INACTIVO = "INA"
+    STATUS_DELETED = "DEL"
     STATUS_CHOICES = [
         (STATUS_ACTIVO, "Activo"),
         (STATUS_INACTIVO, "Inactivo"),
     ]
-
+    status = models.CharField(max_length=3, choices=STATUS_CHOICES, default=STATUS_ACTIVO, verbose_name="Estado")
     nombre = models.CharField(max_length=50)
-    status = models.CharField(
-        max_length=3, choices=STATUS_CHOICES, default=STATUS_ACTIVO
-    )
-    imagen = models.ImageField(upload_to="productos/", blank=True, null=True)
-    descripcion = models.TextField(blank=True, null=True)
-    precio = models.DecimalField(max_digits=10, decimal_places=2)
-    clave_sat = models.CharField(max_length=10, blank=True, null=True)
-    iva = models.DecimalField(max_digits=5, decimal_places=2, default=0.16)
-    ieps = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     categoria = models.ForeignKey(
         Categoria,
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
+        verbose_name="Categoría",
         related_name="productos",
     )
+    imagen = models.ImageField(upload_to="productos/", blank=True, null=True)
+    proveedores = models.ManyToManyField('Proveedor')
+    
+    precio_especial = models.DecimalField(max_digits=10, decimal_places=2,blank=False, null=True,verbose_name="Precio Especial")
+    precio_sub_dist = models.DecimalField(max_digits=10, decimal_places=2,blank=False, null=True,verbose_name="Precio Sub Distribuidor")
+    precio_mayoreo = models.DecimalField(max_digits=10, decimal_places=2,blank=False, null=True,verbose_name="Precio Mayoreo")
+    precio_publico = models.DecimalField(max_digits=10, decimal_places=2,blank=False, null=True,verbose_name="Precio Público")
+    
+    unidad_sat = models.ForeignKey(UnidadSAT, on_delete=models.PROTECT, blank=True, null=True, default=None, verbose_name="Unidad SAT")
+    clave_sat = models.CharField(max_length=10, blank=True, null=True, verbose_name="Clave SAT (Producto o Servicio)")
+    
+    iva = models.DecimalField(max_digits=5, decimal_places=2, default=0.16)
+    ieps = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
+    
+    descripcion = models.TextField(blank=True, null=True)
 
+
+    @property
+    def detalle_precios(self):
+        return f"Precio Especial: {self.precio_especial}\nPrecio Sub Distribuidor: {self.precio_sub_dist}\nPrecio Mayoreo: {self.precio_mayoreo}\nPrecio Público: {self.precio_publico}"
+    
     def __str__(self):
         return self.nombre
 
@@ -118,51 +194,6 @@ class Precio(BaseModel):
 
     def __str__(self):
         return f"{self.producto.nombre} - {self.precio}"
-
-
-# =================================================================
-#                    PROVEEDORES
-# ================================================================
-
-
-class Proveedor(BaseModel):
-    STATUS_ACTIVO = "ACT"
-    STATUS_INACTIVO = "INA"
-    STATUS_CHOICES = [
-        (STATUS_ACTIVO, "Activo"),
-        (STATUS_INACTIVO, "Inactivo"),
-    ]
-    nombre = models.CharField(
-        max_length=200, verbose_name="Nombre del Proveedor", blank=False, null=False
-    )
-    razon_social = models.CharField(
-        max_length=200, verbose_name="Razón Social", blank=False, null=False
-    )
-    rfc = models.CharField(max_length=13, verbose_name="RFC", blank=False, null=False)
-    telefono = models.CharField(
-        max_length=20, verbose_name="Teléfono", blank=True, null=True
-    )
-    correo = models.EmailField(
-        max_length=254, verbose_name="Correo Electrónico", blank=True, null=True
-    )
-    status = models.CharField(
-        max_length=3,
-        choices=STATUS_CHOICES,
-        default=STATUS_ACTIVO,
-        verbose_name="Estado",
-    )
-
-    def __str__(self):
-        return self.nombre
-
-
-class DireccionProveedor(BaseDireccion):
-    proveedor = models.ForeignKey(
-        Proveedor, on_delete=models.CASCADE, related_name="direccion_proveedor"
-    )
-
-    def __str__(self):
-        return f"{self.calle}, {self.colonia}, {self.municipio.nombre}, {self.estado.nombre}"
 
 
 # =================================================================
@@ -286,19 +317,17 @@ class Cliente(BaseModel):
     
     status = models.CharField(max_length=3,choices=STATUS_CHOICES,verbose_name="Estado",default=STATUS_ACTIVO)
     codigo = models.CharField(max_length=20, verbose_name="Código", blank=False, null=True, unique=True)
-    nombre = models.CharField(max_length=200, verbose_name="Nombre", blank=False, null=False)
+    nombre = models.CharField(max_length=200, verbose_name="Nombre", blank=True, null=False,default=None)
     apellidos = models.CharField(max_length=200, verbose_name="Apellidos", blank=True, null=True)
     telefono = models.CharField(max_length=15, verbose_name="Teléfono", blank=True, null=True)
     email = models.EmailField(max_length=150,verbose_name="Correo Electrónico", blank=True, null=True)
     tipo = models.IntegerField(choices=TIPO_LIST,verbose_name="Tipo de Cliente",default=TIPO_ESTANDAR)
-    #filacal
     rfc = models.CharField(max_length=15, verbose_name="RFC", blank=True, null=True)
-   
-    regimen_fiscal = models.CharField(max_length=100, verbose_name="Régimen Fiscal", blank=True, null=True)
-    uso_cfdi = models.CharField(max_length=100, verbose_name="Uso CFDI", blank=True, null=True)
-    razon_social = models.ForeignKey(RazonSocial, on_delete=models.SET_NULL, blank=True, null=True,verbose_name="Razón Social", related_name="cliente_razon_social")
+    razon_social = models.CharField(max_length=180, verbose_name="Razón social", blank=True, null=True)
+    uso_cfdi = models.CharField(max_length=100, verbose_name="Uso CFDI", blank=True, null=True,default=None)
+    regimen_fiscal = models.ForeignKey(RegimenFiscal, on_delete=models.SET_NULL, blank=True, null=True,default=None, verbose_name="Régimen Fiscal", related_name="cliente_regimen_fiscal")
     #credito
-    limite_credito = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Límite de crédito", default=0.00)
+    limite_credito = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Límite de crédito", default=None, blank=True, null=True)
     total_credito = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total de crédito", default=0.00, blank=True, null=True)
     plazos_semanas = models.IntegerField(verbose_name="Plazos en semanas", default=0, blank=True, null=True)
     
@@ -308,13 +337,26 @@ class Cliente(BaseModel):
     
     @property
     def get_full_name(self):
-        return f"{self.nombre} {self.apellidos} [{self.id}]"  
+        if self.nombre.strip() == "":
+            return f"{self.codigo} - {self.razon_social}"
+        return f"{self.codigo} - {self.nombre} {self.apellidos}" 
     
     def save(self, *args, **kwargs):
-        self.nombre = self.nombre.strip().upper()
-        self.apellidos = self.apellidos.strip().upper()
+        self.email = (self.email or "").lower()
+        self.telefono = (self.telefono or "").strip()
+        self.rfc = (self.rfc or "").strip().upper()
+        self.uso_cfdi = (self.uso_cfdi or "").strip().upper()
+        self.razon_social = (self.razon_social or "").strip().upper()
+
+        nombre = (self.nombre or "").strip()
+        if nombre == "":
+            self.nombre = self.razon_social
+        else:
+            self.nombre = nombre.upper()
+            self.apellidos = (self.apellidos or "").strip().upper()
+
         super().save(*args, **kwargs)
-        
+
 
 class DireccionCliente(BaseDireccion):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name="direccion_cliente")

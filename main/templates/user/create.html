@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}
-NUEVO USUARIO
+{{title}}
 {% endblock title %}
 {% block pagetitle %}
-{% include "partials/page-title.html" with subtitle="USUARIOS" title="NUEVO" %}
+{% include "partials/page-title.html" with subtitle="ADMIN" title=title %}
 {% endblock pagetitle %}
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 
@@ -24,7 +24,7 @@ NUEVO USUARIO
 <script>
     $(document).ready(function () {
 
-       
+
         //$('select.form-control').select2({
         //    width: '100%',
         //    allowClear: true,
@@ -78,45 +78,49 @@ NUEVO USUARIO
                 $('#id_colonia').empty().append('<option value="">Seleccione una Colonia</option>').prop('disabled', true);
             }
         });
-
+        let timeout = null;
         $('#id_codigo_postal').on('input', function () {
             var codigoPostal = $(this).val();
-            if (codigoPostal.length === 4) {
-                //geocodePostalCode(codigoPostal);
-                $.get("{% url 'search_dir' %}", { codigo_postal: codigoPostal }, function (data) {
-                    if (data.municipios.length > 0) {
-                        //$('#id_estado').val(data.municipios[0].estado_id);//.change();
-                        $('#id_estado').val(data.municipios[0].estado_id).trigger('change.select2');
+            clearTimeout(timeout);
+            timeout = setTimeout(function () {
 
-                        $('#id_municipio').empty().append('<option value="">Seleccione un Municipio</option>');
+                if (codigoPostal.length === 4) {
+                    //geocodePostalCode(codigoPostal);
+                    $.get("{% url 'search_dir' %}", { codigo_postal: codigoPostal }, function (data) {
+                        if (data.municipios.length > 0) {
+                            //$('#id_estado').val(data.municipios[0].estado_id);//.change();
+                            $('#id_estado').val(data.municipios[0].estado_id).trigger('change.select2');
 
-                        data.municipios.forEach(function (municipio) {
-                            $('#id_municipio').append('<option value="' + municipio.id + '">' + municipio.nombre + '</option>');
-                        });
-                        $('#id_municipio').val(data.municipios[0].id).change();
-                        $('#id_municipio').prop('disabled', false).trigger('change');
-                        $('#id_colonia').empty().append('<option value="">Seleccione una Colonia</option>').prop('disabled', true);
-                    }
-                });
-            } else {
-                //geocodePostalCode(codigoPostal);
-                $.get("{% url 'search_dir' %}", { codigo_postal: codigoPostal }, function (data) {
-                    if (data.municipios.length > 0) {
-                        //$('#id_estado').val(data.municipios[0].estado_id);//.change();
-                        $('#id_estado').val(data.municipios[0].estado_id).trigger('change.select2');
+                            $('#id_municipio').empty().append('<option value="">Seleccione un Municipio</option>');
 
-                        $('#id_municipio').empty().append('<option value="">Seleccione un Municipio</option>');
+                            data.municipios.forEach(function (municipio) {
+                                $('#id_municipio').append('<option value="' + municipio.id + '">' + municipio.nombre + '</option>');
+                            });
+                            $('#id_municipio').val(data.municipios[0].id).change();
+                            $('#id_municipio').prop('disabled', false).trigger('change');
+                            $('#id_colonia').empty().append('<option value="">Seleccione una Colonia</option>').prop('disabled', true);
+                        }
+                    });
+                } else {
+                    //geocodePostalCode(codigoPostal);
+                    $.get("{% url 'search_dir' %}", { codigo_postal: codigoPostal }, function (data) {
+                        if (data.municipios.length > 0) {
+                            //$('#id_estado').val(data.municipios[0].estado_id);//.change();
+                            $('#id_estado').val(data.municipios[0].estado_id).trigger('change.select2');
 
-                        data.municipios.forEach(function (municipio) {
-                            $('#id_municipio').append('<option value="' + municipio.id + '">' + municipio.nombre + '</option>');
-                        });
-                        $('#id_municipio').val(data.municipios[0].id).change();
-                        $('#id_municipio').prop('disabled', false).trigger('change');
-                        $('#id_colonia').empty().append('<option value="">Seleccione una Colonia</option>').prop('disabled', true);
-                    }
-                });
+                            $('#id_municipio').empty().append('<option value="">Seleccione un Municipio</option>');
 
-            }
+                            data.municipios.forEach(function (municipio) {
+                                $('#id_municipio').append('<option value="' + municipio.id + '">' + municipio.nombre + '</option>');
+                            });
+                            $('#id_municipio').val(data.municipios[0].id).change();
+                            $('#id_municipio').prop('disabled', false).trigger('change');
+                            $('#id_colonia').empty().append('<option value="">Seleccione una Colonia</option>').prop('disabled', true);
+                        }
+                    });
+
+                }
+            }, 500);
         });
 
 

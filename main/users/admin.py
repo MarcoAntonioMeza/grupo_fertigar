@@ -14,4 +14,5 @@ if settings.DJANGO_ADMIN_FORCE_ALLAUTH:
     admin.autodiscover()
     admin.site.login = secure_admin_login(admin.site.login)  # type: ignore[method-assign]
 
-admin.site.register(User, auth_admin.UserAdmin)  # type: ignore[call-arg]
+admin.site.register(User)  # type: ignore[call-arg]
+#admin.site.register(auth_admin.UserAdmin)  # type: ignore[call-arg]

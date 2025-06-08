@@ -297,8 +297,6 @@ CAN_CLIENTE = {
     "delete": CLIENTE_DELETE,
 }
 BASE_TEMPLATE_CLIENTE = "crm/cliente/"
-
-
 # LIST VIEW
 class ClienteListView(LoginRequiredMixin, ListView):
     model = Cliente
@@ -335,7 +333,7 @@ class ClienteCreateView(LoginRequiredMixin, CreateView):
         return context
 
     def get_success_url(self):
-        messages.success(self.request, "Almacén creado exitosamente!")
+        messages.success(self.request, "Cliente creado exitosamente!")
         return reverse("crm_cliente_view", kwargs={"id": self.object.pk})
 
     def form_valid(self, form):
@@ -349,7 +347,8 @@ class ClienteCreateView(LoginRequiredMixin, CreateView):
             return self.render_to_response(self.get_context_data(form=form))
         try:
             # Primero guardamos el cliente
-            self.object = form.save()
+            self.object = form.save(commit=False)
+            self.object.save()  # Aquí se ejecuta BaseModel.save() (creación o actualización)
             # Luego guardamos la dirección asociada al cliente
             if (
                 direccion_form.cleaned_data.get("estado")

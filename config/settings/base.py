@@ -61,7 +61,7 @@ LOCALE_PATHS = [str(BASE_DIR / "locale")]
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dev_ker',
+        'NAME': 'dev_fertigar',
         'USER': 'root',
         'PASSWORD': '2808',
         'HOST': 'localhost',  # o IP del servidor
@@ -88,6 +88,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # APPS
 # ------------------------------------------------------------------------------
 DJANGO_APPS = [
+    
     'jazzmin',
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -111,6 +112,7 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
+    "main.crm",
     "main.users",
     "main.adminv2",
     "main.apps",
@@ -118,7 +120,6 @@ LOCAL_APPS = [
     "main.custom",
     "main.layouts",
     "main.direccion",
-    "main.crm",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

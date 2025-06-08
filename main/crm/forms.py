@@ -183,7 +183,7 @@ class ClienteForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        items_not_required = ['total_credito']
+        items_not_required = ['regimen_fiscal','total_credito','razon_social','telefono','email','nombre','apellidos','total_credito','uso_cfdi']
         for field_name, field in self.fields.items():
             # Hacer campos requeridos o no requeridos
             if field_name not in self.Meta.exclude:
