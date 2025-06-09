@@ -8,7 +8,7 @@ NUEVO USUARIO
 {% include "partials/page-title.html" with subtitle="ADMIN" title=title %}
 
 {% endblock pagetitle %}
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
 
 {% block content %}
 
@@ -18,8 +18,8 @@ NUEVO USUARIO
 
 
 {% block extra_js %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+{% include "partials/jquery.html" %}
+
 <!-- App js -->
 <script src="{% static 'js/app.min.js' %}"></script>
 
@@ -27,14 +27,14 @@ NUEVO USUARIO
     $(document).ready(function () {
 
        
-        //$('select.form-control').select2({
-        //    width: '100%',
-        //    allowClear: true,
-        //    placeholder: function () {
-        //        return $(this).data('placeholder');
-        //    }
-        //});
-        //$('.select2-container .select2-selection--single').css('height', 'calc(2.55rem + 2px)');
+        $('select.form-control').select2({
+            width: '100%',
+            allowClear: true,
+            placeholder: function () {
+                return $(this).data('placeholder');
+            }
+        });
+        $('.select2-container .select2-selection--single').css('height', 'calc(1.85rem + 2px)');
 
         // Manejo de cambios en los campos (AJAX)
         // Manejo de cambios en los campos (AJAX)

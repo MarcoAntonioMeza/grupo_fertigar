@@ -10,7 +10,7 @@
                     <button type="submit" class="btn btn-primary btn-lg me-3">
                         <i class="fas fa-save me-2"></i>GUARDAR
                     </button>
-                    <a href="{% url 'crm_cliente_index' %}" class="btn btn-lg btn-secondary">
+                    <a href="{% url 'crm_proveedor_index' %}" class="btn btn-lg btn-secondary">
                         <i class="fas fa-times me-2"></i>CANCELAR
                     </a>
                 </div>
@@ -21,9 +21,8 @@
 
     <!-- Sección Dirección -->
     <div class="row">
-
         <!-- CUENTA -->
-        <div class="col-lg-9 mb-4 mb-lg-0">
+        <div class="col-lg-6 mb-4 mb-lg-0">
             <div class="card h-100">
                 <div class="card-header bg-primary text-white text-center">
                     <h3 class="mb-0">
@@ -36,6 +35,18 @@
 
                     <!-- status y tipo -->
                     <div class="row mt-3">
+
+                        <div class="col-md-4">
+                            {{ form.origen.label_tag }}
+                            {{ form.origen }}
+                            {% if form.origen.errors %}
+                            <div class="text-danger mt-1">
+                                {% for error in form.origen.errors %}
+                                <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
                         <div class="col-md-4">
                             {{ form.codigo.label_tag }}
                             {{ form.codigo }}
@@ -47,6 +58,7 @@
                             </div>
                             {% endif %}
                         </div>
+
                         <div class="col-md-4">
                             {{ form.status.label_tag }}
                             {{ form.status }}
@@ -58,20 +70,23 @@
                             </div>
                             {% endif %}
                         </div>
+
+                    </div>
+                    <!-- nombres -->
+                    <div class="row mt-3">
                         <div class="col-md-4">
-                            {{ form.tipo.label_tag }}
-                            {{ form.tipo }}
-                            {% if form.tipo.errors %}
+
+                            {{ form.rfc.label_tag }}
+                            {{ form.rfc }}
+                            {% if form.rfc.errors %}
                             <div class="text-danger mt-1">
-                                {% for error in form.tipo.errors %}
+                                {% for error in form.rfc.errors %}
                                 <small>{{ error }}</small>
                                 {% endfor %}
                             </div>
                             {% endif %}
+
                         </div>
-                    </div>
-                    <!-- nombres -->
-                    <div class="row mt-3">
                         <div class="col-md-4">
                             {{ form.nombre.label_tag }}
                             {{ form.nombre }}
@@ -83,61 +98,14 @@
                             </div>
                             {% endif %}
                         </div>
-                        <div class="col-md-3">
-                            {{ form.apellidos.label_tag }}
-                            {{ form.apellidos }}
-                            {% if form.apellidos.errors %}
-                            <div class="text-danger mt-1">
-                                {% for error in form.apellidos.errors %}
-                                <small>{{ error }}</small>
-                                {% endfor %}
-                            </div>
-                            {% endif %}
-                        </div>
 
-                        <div class="col-md-5">
+
+                        <div class="col-md-4">
                             {{ form.razon_social.label_tag }}
                             {{ form.razon_social }}
                             {% if form.razon_social.errors %}
                             <div class="text-danger mt-1">
                                 {% for error in form.razon_social.errors %}
-                                <small>{{ error }}</small>
-                                {% endfor %}
-                            </div>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <div class="row mt-3">
-                        <div class="col-md-3">
-                            {{ form.rfc.label_tag }}
-                            {{ form.rfc }}
-                            {% if form.rfc.errors %}
-                            <div class="text-danger mt-1">
-                                {% for error in form.rfc.errors %}
-                                <small>{{ error }}</small>
-                                {% endfor %}
-                            </div>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-5">
-                            {{ form.regimen_fiscal.label_tag }}
-                            {{ form.regimen_fiscal }}
-                            {% if form.regimen_fiscal.errors %}
-                            <div class="text-danger mt-1">
-                                {% for error in form.regimen_fiscal.errors %}
-                                <small>{{ error }}</small>
-                                {% endfor %}
-                            </div>
-                            {% endif %}
-                        </div>
-
-                        <div class="col-md-4">
-                            {{ form.uso_cfdi.label_tag }}
-                            {{ form.uso_cfdi }}
-                            {% if form.uso_cfdi.errors %}
-                            <div class="text-danger mt-1">
-                                {% for error in form.uso_cfdi.errors %}
                                 <small>{{ error }}</small>
                                 {% endfor %}
                             </div>
@@ -158,11 +126,11 @@
                             {% endif %}
                         </div>
                         <div class="col-md-6">
-                            {{ form.email.label_tag }}
-                            {{ form.email }}
-                            {% if form.email.errors %}
+                            {{ form.correo.label_tag }}
+                            {{ form.correo }}
+                            {% if form.correo.errors %}
                             <div class="text-danger mt-1">
-                                {% for error in form.email.errors %}
+                                {% for error in form.correo.errors %}
                                 <small>{{ error }}</small>
                                 {% endfor %}
                             </div>
@@ -173,63 +141,11 @@
             </div>
         </div>
 
-       
-
-        <div class="col-lg-3 mb-4 mb-lg-0">
-            <div class="card h-100">
-                <div class="card-header bg-primary text-white text-center">
-                    <h3 class="mb-0">
-
-                        <i class="fa fa-money me-2"></i> CONFIGURACIÓN DEL CRÉDITO
-
-
-                    </h3>
-                </div>
-                <div class="card-body">
-                    <div class="row mt-3">
-                        <div class="col-md-6">
-                            {{ form.limite_credito.label_tag }}
-                            {{ form.limite_credito }}
-                            {% if form.limite_credito.errors %}
-                            <div class="text-danger mt-1">
-                                {% for error in form.limite_credito.errors %}
-                                <small>{{ error }}</small>
-                                {% endfor %}
-                            </div>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-6">
-                            {{ form.plazos_semanas.label_tag }}
-                            {{ form.plazos_semanas }}
-                            {% if form.plazos_semanas.errors %}
-                            <div class="text-danger mt-1">
-                                {% for error in form.plazos_semanas.errors %}
-                                <small>{{ error }}</small>
-                                {% endfor %}
-                            </div>
-                            {% endif %}
-                        </div>
-                    </div>
-
-
-
-
-
-
-                </div>
-            </div>
-        </div>
-
-
-    </div>
-
-    <div class="row mt-4">
-        <div class="col-md-3"></div>
         <div class="col-md-6">
-            <div class="card">
+            <div class="card  h-100">
                 <div class="card-header bg-info text-white text-center">
                     <h3 class="mb-0">
-                        <i class="fas fa-map-marker-alt me-2"></i>DIRECCIÓN
+                        <i class="fas fa-map-marker-alt me-2"></i>DIRECCIÓN  MX
                     </h3>
                 </div>
                 <div class="card-body">
@@ -340,5 +256,10 @@
             </div>
         </div>
 
+
+
+
     </div>
+
+
 </form>

@@ -71,11 +71,11 @@ class BaseModel(models.Model):
 
 
 class BaseDireccion(models.Model):
-    estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
-    municipio = models.ForeignKey(Municipio, on_delete=models.CASCADE)
-    codigo_postal = models.ForeignKey(CodigoPostal, on_delete=models.CASCADE, null=True)
-    colonia = models.ForeignKey(Colonia, on_delete=models.CASCADE)
-    calle = models.CharField(max_length=200)
+    estado = models.ForeignKey(Estado, on_delete=models.CASCADE, null=True, blank=True)
+    municipio = models.ForeignKey(Municipio, on_delete=models.CASCADE, null=True, blank=True)
+    codigo_postal = models.ForeignKey(CodigoPostal, on_delete=models.CASCADE, null=True, blank=True)
+    colonia = models.ForeignKey(Colonia, on_delete=models.CASCADE, null=True, blank=True)
+    calle = models.CharField(max_length=200, null=True, blank=True)
     numero_exterior = models.CharField(max_length=20, null=True, blank=True)
     numero_interior = models.CharField(max_length=20, null=True, blank=True)
     

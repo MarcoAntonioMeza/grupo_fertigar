@@ -8,20 +8,19 @@
 
 {% endblock pagetitle %}
 
+
 {% block content %}
 
-{% include "crm/cliente/form.html" %}
+{% include "crm/proveedor/form.html" %}
 
 {% endblock content %}
 
+{% include "partials/jquery.html" %}
 
 {% block extra_js %}
-{% include "partials/jquery.html" %}
 
 <!-- App js -->
 <script src="{% static 'js/app.min.js' %}"></script>
-
-
 <script>
     $(document).ready(function () {
 
@@ -130,5 +129,4 @@
     });
 
 </script>
-
 {% endblock extra_js %}

@@ -34,35 +34,52 @@ class UsoCfdi():
 class Proveedor(BaseModel):
     ORIGEN_MEX = "MEX"
     ORIGEN_USA = "USA"
+    ORIGEN_OTRO = "OTR"
     
     ORIGEN_LIST = [
         (ORIGEN_MEX, "México"),
         (ORIGEN_USA, "Estados Unidos"),
+        (ORIGEN_OTRO, "Otro"),
     ]
     
     STATUS_ACTIVO = "ACT"
     STATUS_INACTIVO = "INA"
+    STATUS_DELETE = "DEL"
     STATUS_CHOICES = [
         (STATUS_ACTIVO, "Activo"),
         (STATUS_INACTIVO, "Inactivo"),
     ]
-    origen = models.CharField(max_length=3,choices=ORIGEN_LIST,verbose_name="Origen",default=ORIGEN_MEX)
-    nombre = models.CharField(max_length=200, verbose_name="Nombre del Proveedor", blank=False, null=False)
+    origen = models.CharField(max_length=3,choices=ORIGEN_LIST,verbose_name="Origen",default=ORIGEN_MEX,blank=True, null=True)
+    codigo       = models.CharField(max_length=20, verbose_name="Código", unique=True,blank=True, null=True)
     razon_social = models.CharField(max_length=180,blank=True, null=True,default=None, verbose_name="Razón Social")
+    nombre       = models.CharField(max_length=200, verbose_name="Nombre del Proveedor", blank=False, null=False)
 
-    rfc = models.CharField(max_length=13, verbose_name="RFC", blank=False, null=False)
+    rfc = models.CharField(max_length=15, verbose_name="RFC", blank=True, null=True)
     telefono = models.CharField(max_length=20, verbose_name="Teléfono", blank=True, null=True)
     correo = models.EmailField(max_length=254, verbose_name="Correo Electrónico", blank=True, null=True)
     status = models.CharField(max_length=3,choices=STATUS_CHOICES,default=STATUS_ACTIVO,verbose_name="Estado")
 
     def __str__(self):
-        return self.nombre
+        if self.razon_social != "":
+            return f"{self.codigo} - {self.razon_social}"
+        else:
+            return f"{self.codigo} - {self.nombre}"
+        
+        
+    def save(self, *args, **kwargs):
+        self.rfc = (self.rfc or "").upper().strip() 
+        self.razon_social = (self.razon_social or "").upper().strip()
+        self.nombre = (self.nombre or "").upper().strip()
+        self.codigo = (self.codigo or "").upper().strip()
+        self.telefono = (self.telefono or "").upper().strip()
+        self.correo = (self.correo or "").upper().strip()
+        
+        
+        return super().save(*args, **kwargs)
 
 
 class DireccionProveedor(BaseDireccion):
-    proveedor = models.ForeignKey(
-        Proveedor, on_delete=models.CASCADE, related_name="direccion_proveedor"
-    )
+    proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE, related_name="direccion_proveedor")
 
     def __str__(self):
         return f"{self.calle}, {self.colonia}, {self.municipio.nombre}, {self.estado.nombre}"
@@ -124,23 +141,25 @@ class Producto(BaseModel):
         (STATUS_ACTIVO, "Activo"),
         (STATUS_INACTIVO, "Inactivo"),
     ]
-    status = models.CharField(max_length=3, choices=STATUS_CHOICES, default=STATUS_ACTIVO, verbose_name="Estado")
-    nombre = models.CharField(max_length=50)
+    status = models.CharField(max_length=3, choices=STATUS_CHOICES, default=STATUS_ACTIVO, verbose_name="Estado", blank=False, null=False)
+    codigo = models.CharField(max_length=30, unique=True, verbose_name="Código" , blank=True, null=True)
+    nombre = models.CharField(max_length=50, verbose_name="Nombre", blank=False, null=False)
     categoria = models.ForeignKey(
         Categoria,
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
         verbose_name="Categoría",
-        related_name="productos",
+        related_name="productos_categoria",
     )
     imagen = models.ImageField(upload_to="productos/", blank=True, null=True)
-    proveedores = models.ManyToManyField('Proveedor')
     
-    precio_especial = models.DecimalField(max_digits=10, decimal_places=2,blank=False, null=True,verbose_name="Precio Especial")
-    precio_sub_dist = models.DecimalField(max_digits=10, decimal_places=2,blank=False, null=True,verbose_name="Precio Sub Distribuidor")
-    precio_mayoreo = models.DecimalField(max_digits=10, decimal_places=2,blank=False, null=True,verbose_name="Precio Mayoreo")
-    precio_publico = models.DecimalField(max_digits=10, decimal_places=2,blank=False, null=True,verbose_name="Precio Público")
+    proveedores = models.ManyToManyField('Proveedor',blank=True)
+    
+    precio_especial = models.DecimalField(max_digits=10, decimal_places=2,blank=True, default=None, null=True,verbose_name="Precio Especial")
+    precio_sub_dist = models.DecimalField(max_digits=10, decimal_places=2,blank=False, default=0.0,  null=True,verbose_name="Precio Sub Distribuidor")
+    precio_mayoreo  = models.DecimalField(max_digits=10, decimal_places=2, blank=False, default=0.0,  null=True,verbose_name="Precio Mayoreo")
+    precio_publico  = models.DecimalField(max_digits=10, decimal_places=2, blank=False, default=0.0,  null=True,verbose_name="Precio Público")
     
     unidad_sat = models.ForeignKey(UnidadSAT, on_delete=models.PROTECT, blank=True, null=True, default=None, verbose_name="Unidad SAT")
     clave_sat = models.CharField(max_length=10, blank=True, null=True, verbose_name="Clave SAT (Producto o Servicio)")
@@ -148,7 +167,7 @@ class Producto(BaseModel):
     iva = models.DecimalField(max_digits=5, decimal_places=2, default=0.16)
     ieps = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     
-    descripcion = models.TextField(blank=True, null=True)
+    descripcion = models.TextField(blank=True, null=True, verbose_name="Descripción")
 
 
     @property
@@ -156,11 +175,11 @@ class Producto(BaseModel):
         return f"Precio Especial: {self.precio_especial}\nPrecio Sub Distribuidor: {self.precio_sub_dist}\nPrecio Mayoreo: {self.precio_mayoreo}\nPrecio Público: {self.precio_publico}"
     
     def __str__(self):
-        return self.nombre
+        return f"({self.codigo}) {self.nombre} - {(self.unidad_sat.clave if self.unidad_sat else '')}"
 
     def save(self, *args, **kwargs):
         # Formatea nombre y descripción antes de guardar
-        self.nombre = self.nombre.strip().upper()
+        self.nombre = (self.nombre or "").strip().upper()
         self.descripcion = self.descripcion.strip() if self.descripcion else ""
         super().save(*args, **kwargs)
 

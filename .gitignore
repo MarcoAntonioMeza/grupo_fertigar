@@ -1,5 +1,7 @@
 ### Python template
 # Byte-compiled / optimized / DLL files
+catalogos/
+ipynb/
 __pycache__/
 *media/
 venv

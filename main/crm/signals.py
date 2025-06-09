@@ -2,7 +2,7 @@ from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_migrate
 from django.dispatch import receiver
-from .models import Categoria, Producto, Agente, Almacen,Cliente
+from .models import Categoria, Producto, Agente, Almacen,Cliente,Proveedor
 
 @receiver(post_migrate)
 def crear_permisos_personalizados(sender, **kwargs):
@@ -13,6 +13,7 @@ def crear_permisos_personalizados(sender, **kwargs):
                   ('agente', 'agente',Agente),
                   ('alamcen', 'almacen',Almacen),
                   ('cliente', 'cliente',Cliente),
+                  ('proveedor', 'proveedor',Proveedor),
                   
                   ]
    
@@ -35,6 +36,7 @@ def crear_permisos_personalizados(sender, **kwargs):
             if created:
                 print(f"Permiso '{name}' creado automáticamente")
             else:
-                print(f"Permiso '{name}' ya existe. ::)")
+                pass
+                #print(f"Permiso '{name}' ya existe. ::)")
 
     

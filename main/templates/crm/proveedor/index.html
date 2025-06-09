@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+{{title}}
+{% endblock title %}
+{% block pagetitle %}
+{% include "partials/page-title.html" with subtitle=sub_title title=title %}
+{% endblock pagetitle %}
+
+
+{% block content %}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body text-right py-3">
+                {% if can.create %}
+                <a href="{% url 'crm_proveedor_create' %}" class="btn btn-lg btn-primary">
+                    <i class="fas fa-plus me-2"></i>NUEVO
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <table id="selection-datatable" class="table table-striped dt-responsive nowrap w-100">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Código</th>
+                            <th>Razón social</th>
+                            <th>Nombre</th>
+                            <th>Status</th>
+                            <th>Creado por</th>
+                            <th>Fecha creación</th>
+                            <th>Actualizado por</th>
+                            <th>Fecha actualización</th>
+                        </tr>
+                    </thead>
+                </table>
+
+
+            </div> <!-- end card body-->
+        </div> <!-- end card -->
+    </div><!-- end col-->
+</div>
+
+{% endblock content %}
+
+
+
+{% block extra_js %}
+
+<!-- Datatables js -->
+<script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-fixedcolumns-bs5/js/fixedColumns.bootstrap5.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-select/js/dataTables.select.min.js' %}"></script>
+
+<!-- Datatable Demo Aapp js -->
+<script src="{% static 'js/pages/demo.datatable.js' %}"></script>
+<!-- App js -->
+<script src="{% static 'js/app.min.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#selection-datatable').DataTable().clear().destroy();
+
+        // ✅ Aquí guardas la instancia en una variable
+        var table = $('#selection-datatable').DataTable({
+            processing: true,
+            serverSide: true,
+            pageLength: 25,  // Número de filas por defecto
+            lengthMenu: [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "Todos"]],
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+            },
+            ajax: {
+                url: "{% url 'index_list_ajax_proveedor' %}",
+                type: "GET",
+            },
+            columns: [
+                { data: "id" },
+                { data: "codigo" },
+                {data :"razon_social"},
+                { data: "name" },
+                
+                { data: "status" },
+                { data: "created_by" },
+                {
+                    data: "created_at",
+                    render: function (data) {
+                        if (!data) return "";
+                        const date = new Date(data * 1000);
+                        return date.toLocaleDateString("es-MX") + " " + date.toLocaleTimeString("es-MX");
+                    }
+                },
+                { data: "updated_by" },
+                {
+                    data: "updated_at",
+                    render: function (data) {
+                        if (!data) return "";
+                        const date = new Date(data * 1000);
+                        return date.toLocaleDateString("es-MX") + " " + date.toLocaleTimeString("es-MX");
+                    }
+                }
+            ]
+        });
+
+        // ✅ Ahora sí funciona porque `table` ya está definida
+        $('#selection-datatable tbody').on('dblclick', 'tr', function () {
+            var data = table.row(this).data();
+            if (data && data.id) {
+                window.location.href = "{% url 'crm_proveedor_view' 0 %}".replace('0', data.id);
+            }
+        });
+    });
+
+</script>
+
+
+{% endblock extra_js %}
