@@ -99,41 +99,29 @@ class Categoria(BaseModel):
         descripcion (str): Descripción opcional de la categoría.
     """
 
-    nombre = models.CharField(max_length=50)
-    descripcion = models.TextField(blank=True, null=True)
+    nombre = models.CharField(max_length=50, blank=False, null=False, verbose_name="Nombre")
+    descripcion = models.TextField(blank=True, null=True,  verbose_name="Descripción")
 
     def __str__(self):
         return self.nombre
+    
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.strip()
+        self.descripcion = self.descripcion.strip()
+        super().save(*args, **kwargs)
 
 class UnidadSAT(BaseModel):
     clave = models.CharField(max_length=10, unique=True,verbose_name="Clave")  # Ej: H87
     nombre = models.CharField(max_length=100, verbose_name="Nombre")             # Ej: Pieza
+    
     def __str__(self):
         return f"({self.clave}) {self.nombre} "
     
     def save(self, *args, **kwargs):
-        self.clave.upper().strip()
-        self.nombre.upper().strip()
+        self.clave = self.clave.upper().strip()
+        self.nombre = self.nombre.upper().strip()
         super().save(*args, **kwargs)
 class Producto(BaseModel):
-    """
-    Modelo que representa un producto del catálogo.
-
-    Atributos:
-        nombre (str): Nombre del producto (se guarda en mayúsculas).
-        status (str): Estado del producto ('ACT' para activo, 'INA' para inactivo).
-        imagen (ImageField): Imagen opcional del producto.
-        descripcion (str): Descripción del producto.
-        precio (Decimal): Precio base del producto.
-        clave_sat (str): Clave SAT opcional.
-        iva (Decimal): Tasa de IVA (por defecto 0.16).
-        ieps (Decimal): Tasa de IEPS (por defecto 0.0).
-        categoria (FK): Categoría a la que pertenece el producto.
-
-    Métodos:
-        save(): Sobrescribe el método save para aplicar formato y validaciones antes de guardar.
-    """
-
     STATUS_ACTIVO = "ACT"
     STATUS_INACTIVO = "INA"
     STATUS_DELETED = "DEL"
@@ -144,29 +132,17 @@ class Producto(BaseModel):
     status = models.CharField(max_length=3, choices=STATUS_CHOICES, default=STATUS_ACTIVO, verbose_name="Estado", blank=False, null=False)
     codigo = models.CharField(max_length=30, unique=True, verbose_name="Código" , blank=True, null=True)
     nombre = models.CharField(max_length=50, verbose_name="Nombre", blank=False, null=False)
-    categoria = models.ForeignKey(
-        Categoria,
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-        verbose_name="Categoría",
-        related_name="productos_categoria",
-    )
+    categoria = models.ForeignKey(Categoria,on_delete=models.SET_NULL,blank=True,null=True,verbose_name="Categoría",related_name="productos_categoria")
     imagen = models.ImageField(upload_to="productos/", blank=True, null=True)
-    
     proveedores = models.ManyToManyField('Proveedor',blank=True)
-    
-    precio_especial = models.DecimalField(max_digits=10, decimal_places=2,blank=True, default=None, null=True,verbose_name="Precio Especial")
-    precio_sub_dist = models.DecimalField(max_digits=10, decimal_places=2,blank=False, default=0.0,  null=True,verbose_name="Precio Sub Distribuidor")
+    precio_especial = models.DecimalField(max_digits=10, decimal_places=2,blank=True,   default=0.0,  null=True,verbose_name="Precio Especial")
+    precio_sub_dist = models.DecimalField(max_digits=10, decimal_places=2, blank=False, default=0.0,  null=True,verbose_name="Precio Sub Distribuidor")
     precio_mayoreo  = models.DecimalField(max_digits=10, decimal_places=2, blank=False, default=0.0,  null=True,verbose_name="Precio Mayoreo")
     precio_publico  = models.DecimalField(max_digits=10, decimal_places=2, blank=False, default=0.0,  null=True,verbose_name="Precio Público")
-    
     unidad_sat = models.ForeignKey(UnidadSAT, on_delete=models.PROTECT, blank=True, null=True, default=None, verbose_name="Unidad SAT")
     clave_sat = models.CharField(max_length=10, blank=True, null=True, verbose_name="Clave SAT (Producto o Servicio)")
-    
-    iva = models.DecimalField(max_digits=5, decimal_places=2, default=0.16)
-    ieps = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
-    
+    iva = models.DecimalField(max_digits=5, decimal_places=2, default=0.16 , verbose_name="IVA")
+    ieps = models.DecimalField(max_digits=5, decimal_places=2, default=0.0, verbose_name="IEPS")    
     descripcion = models.TextField(blank=True, null=True, verbose_name="Descripción")
 
 
@@ -180,7 +156,8 @@ class Producto(BaseModel):
     def save(self, *args, **kwargs):
         # Formatea nombre y descripción antes de guardar
         self.nombre = (self.nombre or "").strip().upper()
-        self.descripcion = self.descripcion.strip() if self.descripcion else ""
+        self.descripcion = self.descripcion if self.descripcion else ""
+        self.clave_sat = (self.clave_sat or "").strip()
         super().save(*args, **kwargs)
 
 

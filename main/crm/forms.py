@@ -2,8 +2,8 @@ from django import forms
 
 from .models import (
     Categoria,
-    Producto,
-    Precio,
+    Producto,UnidadSAT,
+    
     Agente,
     Almacen,
     Precio,
@@ -15,6 +15,8 @@ from .models import (
 )
 from main.direccion.models import Estado, Municipio, Colonia, CodigoPostal
 
+
+EXCLUDE_FIELDS = ["created_at", "updated_at", "created_by", "updated_by"]
 
 # ======================================================
 #          FORM  PARA AGREGAR ALMACEN
@@ -357,7 +359,6 @@ class ProveedorForm(forms.ModelForm):
                     }
                 )
                 
-
 class DireccionProveedorForm(forms.ModelForm):
     class Meta:
         model = DireccionProveedor
@@ -485,3 +486,29 @@ class DireccionProveedorForm(forms.ModelForm):
             raise forms.ValidationError("Seleccione una colonia válida.")
         return colonia
 
+
+#=====================================================
+#               FORM PARA PRODCUTOS
+#=====================================================
+class ProductoForm(forms.ModelForm):
+    class Meta:
+        model = Producto
+        exclude  = ["created_at", "updated_at", "created_by", "updated_by","imagen"]
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        self.fields['unidad_sat'].queryset = UnidadSAT.objects.order_by("clave")
+        self.fields['unidad_sat'].label_from_instance = lambda obj: obj.clave
+        
+        self.fields['proveedores'].queryset = Proveedor.objects.filter(status=Proveedor.STATUS_ACTIVO) 
+        
+        self.fields['categoria'].queryset = Categoria.objects.order_by("nombre")
+
+        items_not_required = ["imagen", "comentarios"]
+        for field_name, field in self.fields.items():
+            # Hacer campos requeridos o no requeridos
+            if field_name not in self.Meta.exclude:
+                field.required = field_name not in items_not_required
+          
+            field.widget.attrs["class"] = "form-control"

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+{{title}}
+{% endblock title %}
+{% block pagetitle %}
+{% include "partials/page-title.html" with subtitle=sub_title title=title %}
+
+{% endblock pagetitle %}
+
+
+{% block content %}
+
+{% include "crm/producto/form.html" %}
+
+{% endblock content %}
+
+{% include "partials/jquery.html" %}
+
+{% block extra_js %}
+
+<!-- App js -->
+<script src="{% static 'js/app.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+
+
+        $('select.form-control').select2({
+            width: '100%',
+            allowClear: true,
+            placeholder: function () {
+                return $(this).data('placeholder');
+            }
+        });
+        $('.select2-container .select2-selection--single').css('height', 'calc(1.85rem + 2px)');
+
+    });
+
+</script>
+{% endblock extra_js %}

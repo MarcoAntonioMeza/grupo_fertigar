@@ -21,7 +21,6 @@ urlpatterns = [
     path('almacen/view/<int:id>/',       views.AlmacenDetailView.as_view(),              name=f'{app}_almacen_view'),
     path('almacen/update/<int:id>/',     views.AlmacenUpdateView.as_view(),              name=f'{app}_almacen_update'),
     path('almacen/delete/<int:id>/',     views.AlmacenDeleteView.as_view(),              name=f'{app}_almacen_delete'),
-    
     ###======================================================================
     ###                           PROVEEDOR
     ###======================================================================
@@ -31,4 +30,14 @@ urlpatterns = [
     path('proveedor/update/<int:id>/',        views.ProveedorUpdateView.as_view(),              name=f'{app}_proveedor_update'),
     path('proveedor/delete/<int:id>/',        views.ProveedorDeleteView.as_view(),              name=f'{app}_proveedor_delete'),
     path('proveedor/index-list-ajax/',        login_required(views.proveedor_list_datatable),   name='index_list_ajax_proveedor'),
+    
+    ###======================================================================
+    ###                           PRODUCTO
+    ###======================================================================
+    path('producto/',                        views.ProductoIndexView.as_view(),               name=f'{app}_producto_index'),
+    path('producto/create/',                 views.ProductoCreateView.as_view() ,             name=f'{app}_producto_create'),
+    path('producto/view/<int:id>/',          views.ProductoDetailView.as_view(),              name=f'{app}_producto_view'),
+    path('producto/update/<int:id>/',        views.ProductoUpdateView.as_view(),              name=f'{app}_producto_update'),
+    path('producto/delete/<int:id>/',        views.ProductoDeleteView.as_view(),              name=f'{app}_producto_delete'),
+    path('producto/index-list-ajax/',        login_required(views.producto_list_datatable),   name='index_list_ajax_proveedor'),
 ]

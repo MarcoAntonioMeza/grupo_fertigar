@@ -1,0 +1,154 @@
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+
+    <!-- Botones de Acción (Fijos arriba) -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center py-3">
+                    <button type="submit" class="btn btn-primary btn-lg me-3">
+                        <i class="fas fa-save me-2"></i>GUARDAR
+                    </button>
+                    <a href="{% url 'crm_cliente_index' %}" class="btn btn-lg btn-secondary">
+                        <i class="fas fa-times me-2"></i>CANCELAR
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Sección Dirección -->
+    <div class="row">
+        <!-- CUENTA -->
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 class="mb-0">
+
+                        <i class="fa fa-user me-2"></i> {{title}}
+
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row m-4">
+                        {{ form.as_p }}
+                    </div>
+                    
+
+                    <!-- status y tipo -->
+                    <div class="row mt-3">
+
+                        <div class="col-md-4">
+                            {{ form.origen.label_tag }}
+                            {{ form.origen }}
+                            {% if form.origen.errors %}
+                            <div class="text-danger mt-1">
+                                {% for error in form.origen.errors %}
+                                <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.codigo.label_tag }}
+                            {{ form.codigo }}
+                            {% if form.codigo.errors %}
+                            <div class="text-danger mt-1">
+                                {% for error in form.codigo.errors %}
+                                <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-4">
+                            {{ form.status.label_tag }}
+                            {{ form.status }}
+                            {% if form.status.errors %}
+                            <div class="text-danger mt-1">
+                                {% for error in form.status.errors %}
+                                <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                    <!-- nombres -->
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+
+                            {{ form.rfc.label_tag }}
+                            {{ form.rfc }}
+                            {% if form.rfc.errors %}
+                            <div class="text-danger mt-1">
+                                {% for error in form.rfc.errors %}
+                                <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.nombre.label_tag }}
+                            {{ form.nombre }}
+                            {% if form.nombre.errors %}
+                            <div class="text-danger mt-1">
+                                {% for error in form.nombre.errors %}
+                                <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+
+                        <div class="col-md-4">
+                            {{ form.razon_social.label_tag }}
+                            {{ form.razon_social }}
+                            {% if form.razon_social.errors %}
+                            <div class="text-danger mt-1">
+                                {% for error in form.razon_social.errors %}
+                                <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            {{ form.telefono.label_tag }}
+                            {{ form.telefono }}
+                            {% if form.telefono.errors %}
+                            <div class="text-danger mt-1">
+                                {% for error in form.telefono.errors %}
+                                <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form.correo.label_tag }}
+                            {{ form.correo }}
+                            {% if form.correo.errors %}
+                            <div class="text-danger mt-1">
+                                {% for error in form.correo.errors %}
+                                <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+
+</form>

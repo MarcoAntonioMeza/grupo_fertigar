@@ -1,9 +1,9 @@
 from django.views.generic import (
-    ListView,
     CreateView,
     UpdateView,
     DetailView,
     DeleteView,
+    TemplateView
 )
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -20,7 +20,8 @@ from .models import (Almacen, DireccionAlmacen, Cliente, Proveedor, Producto)
 # FORMS
 from .forms import (AlmacenForm, DireccionAlmacenForm,
                     ClienteForm, DireccionClienteForm,
-                    ProveedorForm, DireccionProveedorForm)
+                    ProveedorForm, DireccionProveedorForm,
+                    ProductoForm)
 
 # ======================================================
 from .services.data_tables import clientes_list, proveedor_list
@@ -48,8 +49,7 @@ BASE_TEMPLATE_ALMACEN = "crm/almacen/"
 # =======================================================================
 #                            VIEW  INDEX
 # ========================================================================
-class AlmacenListView(LoginRequiredMixin, ListView):
-    model = Almacen
+class AlmacenListView(LoginRequiredMixin, TemplateView):
     template_name = BASE_TEMPLATE_ALMACEN + "index.html"
     # context_object_name = "almacenes"
     permission_required = ALMACEN_VIEW
@@ -297,8 +297,7 @@ CAN_CLIENTE = {
 }
 BASE_TEMPLATE_CLIENTE = "crm/cliente/"
 # LIST VIEW
-class ClienteListView(LoginRequiredMixin, ListView):
-    model = Cliente
+class ClienteListView(LoginRequiredMixin, TemplateView):
     permission_required = CLIENTE_VIEW
     raise_exception = True
     template_name = BASE_TEMPLATE_CLIENTE + "index.html"
@@ -540,9 +539,8 @@ CAN_PROVEEDOR = {
 BASE_TEMPLATE_PROVEEDOR = "crm/proveedor/"
 
 #index
-class ProveedorListView(LoginRequiredMixin, ListView):
+class ProveedorListView(LoginRequiredMixin, TemplateView):
     template_name = f"{BASE_TEMPLATE_PROVEEDOR}index.html"
-    model = Proveedor
     permission_required = PROVEEDOR_VIEW
     raise_exception = True
     
@@ -806,3 +804,90 @@ CAN_PRODUCTO = {
     "delete": PRODUCTO_DELETE,
 }
 BASE_TEMPLATE_PRODUCTO = "crm/producto/"
+
+#INDEX
+class ProductoIndexView(LoginRequiredMixin, TemplateView):
+    template_name = f"{BASE_TEMPLATE_PRODUCTO}index.html"
+    permission_required = PRODUCTO_VIEW
+    raise_exception = True
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "PRODUCTOS"
+        context["sub_title"] = "CATALOGOS"
+
+        context["can"] = {
+            key: self.request.user.has_perm(value) for key, value in CAN_PRODUCTO.items()
+        }
+        return context
+#CREATE
+class ProductoCreateView(LoginRequiredMixin, CreateView):
+    model = Producto
+    permission_required = PRODUCTO_CREATE
+    raise_exception = True
+    form_class = ProductoForm
+    template_name = f"{BASE_TEMPLATE_PRODUCTO}create.html"
+    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Crear Producto"
+        context["action"] = "create"
+        return context
+    
+    def get_success_url(self):
+        messages.success(self.request, "Producto creado exitosamente!")
+        return reverse_lazy("crm_producto_view",kwargs={"id": self.object.pk})
+    
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        try:
+            with transaction.atomic():
+                self.object = form.save(commit=False)
+                self.object.save()
+        except Exception as e:
+            messages.error(self.request, f"Error al guardar: {str(e)}")
+            return self.render_to_response(self.get_context_data(form=form))
+        
+#UPDATE
+class ProductoUpdateView(LoginRequiredMixin, UpdateView):
+    model = Producto
+    permission_required = PRODUCTO_UPDATE
+    raise_exception = True
+    #form_class = ProductoForm
+    template_name = f"{BASE_TEMPLATE_PRODUCTO}update.html"
+    success_url = reverse_lazy("crm_producto_index")
+    
+    
+#detail
+class ProductoDetailView(LoginRequiredMixin, DetailView):
+    model = Producto
+    permission_required = PRODUCTO_VIEW
+    raise_exception = True
+#delete 
+class ProductoDeleteView(LoginRequiredMixin, DeleteView):
+    model = Producto
+    permission_required = PRODUCTO_DELETE
+    raise_exception = True
+    pk_url_kwarg = "id"
+    
+
+@permission_required(PROVEEDOR_VIEW, raise_exception=True)
+def producto_list_datatable(request):
+    draw = int(request.GET.get("draw", 0))
+    start = int(request.GET.get("start", 0))
+    length = int(request.GET.get("length", 10))
+    search_value = request.GET.get("search[value]", "").strip()
+    #user_id = request.user.id
+    #campo_formativo = request.GET.get("campo_formativo", "").strip()
+    #grupo = request.GET.get("grupo", "").strip()
+    
+    return JsonResponse(proveedor_list(draw=draw, start=start, length=length, search_value=search_value))
+    
+
+        
+        
+        
+        
+        
