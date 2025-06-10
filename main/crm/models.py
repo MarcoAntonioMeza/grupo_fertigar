@@ -204,40 +204,22 @@ class Almacen(BaseModel):
         (STATUS_ACTIVO, "Activo"),
         (STATUS_INACTIVO, "Inactivo"),
     ]
-    nombre = models.CharField(
-        max_length=200, verbose_name="Nombre", blank=False, null=False
-    )
-    status = models.CharField(
-        max_length=3,
-        choices=STATUS_CHOICES,
-        default=STATUS_ACTIVO,
-        verbose_name="Estado",
-    )
-    codigo = models.CharField(
-        max_length=20,
-        verbose_name="Código",
-        blank=False,
-        null=True,
-        unique=True,
-    )
-    telefono = models.CharField(
-        max_length=20, verbose_name="Teléfono", blank=True, null=True
-    )
-    encargado = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="almacen_encargado",
-        verbose_name="Encargado",
-    )
+    nombre = models.CharField(max_length=200, verbose_name="Nombre", blank=False, null=False)
+    status = models.CharField(max_length=3,choices=STATUS_CHOICES,default=STATUS_ACTIVO,verbose_name="Estado")
+    codigo = models.CharField(max_length=20,verbose_name="Código",blank=False,null=True,unique=True)
+    telefono = models.CharField(max_length=20, verbose_name="Teléfono", blank=True, null=True)
+    encargado = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name="almacen_encargado",verbose_name="Encargado")
     comentarios = models.TextField(blank=True, null=True, verbose_name="Comentarios")
-    info_extra = models.TextField(
-        blank=True, null=True, verbose_name="Información Extra"
-    )
+    info_extra = models.TextField(blank=True, null=True, verbose_name="Información Extra")
 
     def __str__(self):
-        return self.nombre
+        return f"[{self.codigo}] {self.nombre}" 
+    
+    def save(self, *args, **kwargs):
+        #nomalizar nombre
+        self.nombre = self.nombre.upper().strip()
+        super().save(*args, **kwargs)
+        
 
 
 class DireccionAlmacen(BaseDireccion):

@@ -21,6 +21,8 @@ urlpatterns = [
     path('almacen/view/<int:id>/',       views.AlmacenDetailView.as_view(),              name=f'{app}_almacen_view'),
     path('almacen/update/<int:id>/',     views.AlmacenUpdateView.as_view(),              name=f'{app}_almacen_update'),
     path('almacen/delete/<int:id>/',     views.AlmacenDeleteView.as_view(),              name=f'{app}_almacen_delete'),
+    path('almacen/index-list-ajax/',     login_required(views.almacen_list_datatable),   name='index_list_ajax_almacen'),
+    
     ###======================================================================
     ###                           PROVEEDOR
     ###======================================================================

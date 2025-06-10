@@ -13,18 +13,18 @@ from django.http import JsonResponse, HttpResponseRedirect, Http404
 
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
-#from django.contrib.auth.models import Permission
 
+
+#MODELS
 from .models import (Almacen, DireccionAlmacen, Cliente, Proveedor, Producto)
-
 # FORMS
 from .forms import (AlmacenForm, DireccionAlmacenForm,
                     ClienteForm, DireccionClienteForm,
                     ProveedorForm, DireccionProveedorForm,
                     ProductoForm)
 
-# ======================================================
-from .services.data_tables import clientes_list, proveedor_list,producto_list
+# CONSTAS DE INFORMACION
+from .services.data_tables import clientes_list, proveedor_list,producto_list,almacen_list
 
 APP_NAME = "crm"
 
@@ -44,11 +44,6 @@ CAN_ALMACEN = {
     "delete": ALMACEN_DELETE,
 }
 BASE_TEMPLATE_ALMACEN = "crm/almacen/"
-
-
-# =======================================================================
-#                            VIEW  INDEX
-# ========================================================================
 class AlmacenListView(LoginRequiredMixin, TemplateView):
     template_name = BASE_TEMPLATE_ALMACEN + "index.html"
     # context_object_name = "almacenes"
@@ -57,7 +52,7 @@ class AlmacenListView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = "Almacenes"
+        context["title"] = "ALMACEN"
         context["sub_title"] = "CATALOGOS"
 
         context["can"] = {
@@ -85,7 +80,7 @@ class AlmacenDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # context["title"] = "ALMACENES -"
-        context["title"] = f"ALMACENES - {self.object.nombre}".upper()
+        context["title"] = f"ALMACEN - {self.object.nombre}".upper()
         context["sub_title"] = "CATALOGOS"
         context["direccion"] = DireccionAlmacen.objects.filter(
             almacen=self.object
@@ -107,7 +102,7 @@ class AlmacenCreateView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = "ALMACENES - CREAR"
+        context["title"] = "ALMACEN - CREAR"
         context["sub_title"] = "CATALOGOS"
 
         if self.request.POST:
@@ -168,7 +163,7 @@ class AlmacenUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = f"ALMACENES - {self.object} - EDITAR"
+        context["title"] = f"ALMACEN - {self.object} - EDITAR"
         context["sub_title"] = "CATALOGOS"
 
         # Obtenemos la primera dirección asociada (o creamos formulario vacío si no existe)
@@ -193,7 +188,8 @@ class AlmacenUpdateView(LoginRequiredMixin, UpdateView):
         if obj.status == Almacen.STATUS_DELETE:
             raise Http404("Este almacén ha sido eliminado y no puede ser editado")
         return obj
-
+    
+    
     def form_valid(self, form):
         form.instance.updated_by = self.request.user
         context = self.get_context_data()
@@ -204,7 +200,6 @@ class AlmacenUpdateView(LoginRequiredMixin, UpdateView):
                 self.request, "Por favor corrija los errores en la dirección."
             )
             return self.render_to_response(self.get_context_data(form=form))
-
         try:
             with transaction.atomic():
                 # Guardamos primero el almacén
@@ -277,6 +272,21 @@ class AlmacenDeleteView(LoginRequiredMixin, DeleteView):
         if obj.status == Almacen.STATUS_DELETE:
             raise Http404("Este almacén ya ha sido eliminado")
         return obj
+
+
+@permission_required(ALMACEN_VIEW, raise_exception=True)
+def almacen_list_datatable(request):
+    draw = int(request.GET.get("draw", 0))
+    start = int(request.GET.get("start", 0))
+    length = int(request.GET.get("length", 10))
+    search_value = request.GET.get("search[value]", "").strip()
+    #user_id = request.user.id
+    #campo_formativo = request.GET.get("campo_formativo", "").strip()
+    #grupo = request.GET.get("grupo", "").strip()
+    
+    return JsonResponse(almacen_list(draw=draw, start=start, length=length, search_value=search_value))
+
+
 
 
 # =====================================================
@@ -932,8 +942,34 @@ class ProductoDeleteView(LoginRequiredMixin, DeleteView):
     permission_required = PRODUCTO_DELETE
     raise_exception = True
     pk_url_kwarg = "id"
+    success_url = reverse_lazy("crm_producto_index")
     
-
+    def get_object(self, queryset = None):
+        model = super().get_object(queryset)
+        if model.status == Producto.STATUS_DELETE:
+            raise Http404("ELEMENTO NO ENCONTRADO")
+        return model
+    
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.status = Producto.STATUS_DELETE
+        self.object.save()
+        messages.success(request, "Poducto eliminado exitosamente!")
+        return HttpResponseRedirect(self.get_success_url())
+    
+    def post(self, request, *args, **kwargs):
+        """
+        Maneja las solicitudes POST (equivalente a delete)
+        """
+        return self.delete(request, *args, **kwargs)
+    
+    def get(self, request, *args, **kwargs):
+        """
+        Maneja las solicitudes GET (equivalente a get_object)
+        """
+        return self.delete(request, *args, **kwargs)
+    
+    
 @permission_required(PROVEEDOR_VIEW, raise_exception=True)
 def producto_list_datatable(request):
     draw = int(request.GET.get("draw", 0))

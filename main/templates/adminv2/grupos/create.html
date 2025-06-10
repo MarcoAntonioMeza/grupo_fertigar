@@ -12,5 +12,20 @@ GRUPOS DE PERMISOS
 {% endblock content %}
 
 {% block extra_js %}
+{% include "partials/jquery.html" %}
+
 <script src="{% static 'js/app.min.js' %}"></script>
+
+<script>
+
+    $(document).ready(function () {
+        console.log('Inicializando Select2');
+        $('.select2-multiple').select2({
+            placeholder: "-- Selecciona permisos --",
+            allowClear: true,
+            width: '100%'  // Asegurar que ocupe todo el ancho
+        });
+    });
+
+</script>
 {% endblock extra_js %}

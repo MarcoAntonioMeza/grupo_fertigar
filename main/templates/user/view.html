@@ -63,146 +63,200 @@
 
 
 
-<div class="row mb-3">
-    <!-- CARD 1: DATOS GENERALES -->
-    <div class="col-lg-6 mb-4 mb-lg-0">
+<div class="row">
+    <!-- Columna de Información de Cuenta -->
+    <div class="col-lg-6 mb-4">
         <div class="card h-100">
-            <div class="card-header bg-primary text-white text-center">
-                <h3 class="mb-0">
-                    <i class="fa fa-user me-2"></i> CUENTA
-                </h3>
+            <div class="card-header bg-primary text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0">
+                        <i class="fas fa-user-circle me-2"></i> INFORMACIÓN DE LA CUENTA
+                    </h3>
+                    {% if model.is_active %}
+                    <span class="badge bg-success">ACTIVO</span>
+                    {% else %}
+                    <span class="badge bg-secondary">INACTIVO</span>
+                    {% endif %}
+                </div>
             </div>
-            <div class="card-body text-start text-dark text-center">
-                <div class="row m-3">
-                    <div class="col-md-12">
-                        <label class="form-label fw-bold">NOMBRE</label>
-                        <div>{{ model.full_name }}</div>
-                    </div>
-
+            
+            <div class="card-body">
+                <!-- Información Básica -->
+                <div class="border-bottom pb-3 mb-3">
+                    <h5 class="fw-bold">{{ model.full_name }}</h5>
+                    <div class="text-muted">Usuario desde: {{ model.date_joined|date:"d/m/Y" }}</div>
                 </div>
+
+                <!-- Datos de Acceso -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="border-bottom pb-2 mb-2">
+                            <small class="text-muted fw-bold">NOMBRE DE USUARIO</small>
+                            <div class="fw-semibold">{{ model.username }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="border-bottom pb-2 mb-2">
+                            <small class="text-muted fw-bold">CORREO ELECTRÓNICO</small>
+                            <div class="fw-semibold">
+                                {{ model.email|default:"-" }}
+                                {% if model.email_confirmed %}
+                                <span class="badge bg-success ms-2">Verificado</span>
+                                {% else %}
+                                <span class="badge bg-warning ms-2">No verificado</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Estado y Acceso -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="border-bottom pb-2 mb-2">
+                            <small class="text-muted fw-bold">ACCESO A LA APLICACIÓN</small>
+                            <div>
+                                {% if model.access_to_app %}
+                                <span class="badge bg-success"><i class="fas fa-check-circle me-1"></i> Permitido</span>
+                                {% else %}
+                                <span class="badge bg-danger"><i class="fas fa-times-circle me-1"></i> Denegado</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="border-bottom pb-2 mb-2">
+                            <small class="text-muted fw-bold">ÚLTIMO INICIO</small>
+                            <div class="fw-semibold">
+                                {% if model.last_login %}
+                                {{ model.last_login|date:"d/m/Y H:i" }}
+                                <small class="text-muted">({{ model.last_login|timesince }} atrás)</small>
+                                {% else %}
+                                Nunca ha iniciado
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información de Contacto -->
                 <div class="row">
-
-
-
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">{{ labels.username }}</label>
-                        <div>{{ model.username }}</div>
+                        <div class="border-bottom pb-2 mb-2">
+                            <small class="text-muted fw-bold">TELÉFONO</small>
+                            <div class="fw-semibold">
+                                {% if model.telefono %}
+                                <a href="tel:{{ model.telefono }}">{{ model.telefono }}</a>
+                                {% else %}
+                                -
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
-
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">{{ labels.email }}</label>
-                        <div>{{ model.email }}</div>
-
+                        <div class="border-bottom pb-2 mb-2">
+                            <small class="text-muted fw-bold">TIPO DE USUARIO</small>
+                            <div class="fw-semibold">
+                                {{ model.get_user_type_display|default:"-" }}
+                            </div>
+                        </div>
                     </div>
-                </div>
-
-                <!-- status y tipo -->
-                <div class="row mt-3">
-                    <div class="col-md-3"></div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">{{ labels.access_to_app }}</label>
-
-                        {% if model.access_to_app %}
-                        <span class="badge bg-success"><i class="fas fa-check-circle"></i> Permitido</span>
-                        {% else %}
-                        <span class="badge bg-danger"><i class="fas fa-times-circle"></i> Denegado</span>
-                        {% endif %}
-
-                    </div>
-
-                </div>
-
-                <!-- nombres -->
-                <div class="row mt-3">
-                    <div class="col-md-3"></div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">{{ labels.email }}</label>
-                        <div>{{ model.email }}</div>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">{{ labels.telefono }}</label>
-                        <div>{{ model.telefono }}</div>
-                    </div>
-                </div>
-
-                <!-- contacto -->
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">{{ labels.telefono }}</label>
-                        <div>{{ model.telefono }}</div>
-                    </div>
-
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-lg-6 mb-4 mb-lg-0">
-        <div class="card  h-100">
-            <div class="card-header bg-info text-white text-center">
+    <!-- Columna de Dirección -->
+    <div class="col-lg-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-info text-white">
                 <h3 class="mb-0">
-                    <i class="fas fa-map-marker-alt me-2"></i>DIRECCIÓN
+                    <i class="fas fa-map-marked-alt me-2"></i> DIRECCIÓN REGISTRADA
                 </h3>
             </div>
-            <div class="card-body text-start text-dark text-center">
-
-                <!-- Código Postal centrado -->
-                <div class="row mb-4">
-                    <div class="col-md-4"></div>
-                    <div class="col-md-4 text-center">
-                        <label class="form-label fw-bold">Código postal</label>
-                        <div>{{ direccion.codigo_postal }}</div>
+            <div class="card-body">
+                {% if direccion %}
+                <!-- Código Postal -->
+                <div class="row mb-3">
+                    <div class="col-12 text-center">
+                        <div class="badge bg-primary p-2 mb-3">
+                            <i class="fas fa-mail-bulk me-2"></i>
+                            <span class="fw-bold">CP: {{ direccion.codigo_postal|default:"-" }}</span>
+                        </div>
                     </div>
-                    <div class="col-md-4"></div>
                 </div>
 
                 <!-- Estado, Municipio, Colonia -->
                 <div class="row mb-3">
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">Estado</label>
-                        <div>{{ direccion.estado }}</div>
+                        <div class="border-bottom pb-2">
+                            <small class="text-muted fw-bold">ESTADO</small>
+                            <div class="fw-semibold">{{ direccion.estado|default:"-" }}</div>
+                        </div>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">Municipio</label>
-                        <div>{{ direccion.municipio }}</div>
+                        <div class="border-bottom pb-2">
+                            <small class="text-muted fw-bold">MUNICIPIO</small>
+                            <div class="fw-semibold">{{ direccion.municipio|default:"-" }}</div>
+                        </div>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">Colonia</label>
-                        <div>{{ direccion.colonia }}</div>
+                        <div class="border-bottom pb-2">
+                            <small class="text-muted fw-bold">COLONIA</small>
+                            <div class="fw-semibold">{{ direccion.colonia|default:"-" }}</div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Calle -->
                 <div class="row mb-3">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-8">
-                        <label class="form-label fw-bold">Calle</label>
-                        <div>{{ direccion.calle }}</div>
+                    <div class="col-12">
+                        <div class="border-bottom pb-2">
+                            <small class="text-muted fw-bold">CALLE</small>
+                            <div class="fw-semibold">{{ direccion.calle|default:"-" }}</div>
+                        </div>
                     </div>
-                    <div class="col-md-2"></div>
                 </div>
 
-                <!-- Números Interior y Exterior -->
+                <!-- Números -->
                 <div class="row mb-3">
-                    <div class="col-md-3"></div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">Número interior</label>
-                        <div>{{ direccion.numero_interior }}</div>
+                    <div class="col-md-6">
+                        <div class="border-bottom pb-2">
+                            <small class="text-muted fw-bold">NÚMERO EXTERIOR</small>
+                            <div class="fw-semibold">{{ direccion.numero_exterior|default:"-" }}</div>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">Número exterior</label>
-                        <div>{{ direccion.numero_exterior }}</div>
+                    <div class="col-md-6">
+                        <div class="border-bottom pb-2">
+                            <small class="text-muted fw-bold">NÚMERO INTERIOR</small>
+                            <div class="fw-semibold">{{ direccion.numero_interior|default:"-" }}</div>
+                        </div>
                     </div>
-                    <div class="col-md-3"></div>
                 </div>
+
+                <!-- Referencias -->
+                <div class="row">
+                    <div class="col-12">
+                        <div>
+                            <small class="text-muted fw-bold">REFERENCIAS</small>
+                            <div class="bg-light p-3 rounded mt-2">
+                                {{ direccion.referencias|default:"Sin referencias"|linebreaksbr }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-map-marker-alt fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No hay dirección registrada</h5>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
-
-
-
-
 </div>
+
+
 
 
 

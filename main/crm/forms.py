@@ -29,7 +29,7 @@ class AlmacenForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        items_not_required = ["info_extra", "comentarios"]
+        items_not_required = ["info_extra", "comentarios","encargado","telefono"]
         for field_name, field in self.fields.items():
             # Hacer campos requeridos o no requeridos
             if field_name not in self.Meta.exclude:
@@ -162,12 +162,16 @@ class DireccionAlmacenForm(forms.ModelForm):
 
     def clean_municipio(self):
         municipio = self.cleaned_data.get("municipio")
+        if municipio is None:
+            return None
         if municipio not in self.fields["municipio"].queryset:
             raise forms.ValidationError("Seleccione un municipio válido.")
         return municipio
 
     def clean_colonia(self):
         colonia = self.cleaned_data.get("colonia")
+        if colonia is None:
+            return None
         if colonia not in self.fields["colonia"].queryset:
             raise forms.ValidationError("Seleccione una colonia válida.")
         return colonia
@@ -319,12 +323,16 @@ class DireccionClienteForm(forms.ModelForm):
 
     def clean_municipio(self):
         municipio = self.cleaned_data.get("municipio")
+        if municipio is None:
+            return None
         if municipio not in self.fields["municipio"].queryset:
             raise forms.ValidationError("Seleccione un municipio válido.")
         return municipio
 
     def clean_colonia(self):
         colonia = self.cleaned_data.get("colonia")
+        if colonia is None:
+            return None
         if colonia not in self.fields["colonia"].queryset:
             raise forms.ValidationError("Seleccione una colonia válida.")
         return colonia

@@ -65,126 +65,160 @@
 
 <div class="row mb-3">
     <!-- CARD 1: DATOS GENERALES -->
-    <div class="col-lg-6 mb-4 mb-lg-0">
+    <div class="col-lg-6 ">
         <div class="card h-100">
-            <div class="card-header bg-primary text-white text-center">
-                <h3 class="mb-0">
-                    <i class="fa fa-user me-2"></i> {{ title }}
-                </h3>
+            <div class="card-header bg-primary text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0">
+                        <i class="fas fa-user-circle me-2"></i> {{ title|upper }}
+                    </h3>
+                    <span class="badge bg-{% if model.status == 'ACT' %}success{% else %}secondary{% endif %}">
+                        {{ model.get_status_display|upper }}
+                    </span>
+                </div>
             </div>
-            <div class="card-body text-start text-dark text-center">
 
-
-                <!-- status y tipo -->
-                <div class="row mt-3">
+            <div class="card-body">
+                <!-- Información Básica -->
+                <div class="row mb-3">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">{{ labels.codigo }}</label>
-                        <div>{{ model.codigo }}</div>
+                        <div class="border-bottom pb-2 mb-2">
+                            <small class="text-muted fw-bold">CÓDIGO</small>
+                            <div class="fw-semibold">{{ model.codigo|default:"-" }}</div>
+                        </div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">{{ labels.status }}</label>
-                        <div>{{ model.get_status_display }}</div>
+                        <div class="border-bottom pb-2 mb-2">
+                            <small class="text-muted fw-bold">RAZÓN SOCIAL</small>
+                            <div class="fw-semibold">{{ model.razon_social|default:"-" }}</div>
+                        </div>
                     </div>
-                   
                 </div>
 
-                <!-- nombres -->
-                <div class="row mt-3">
+                <!-- Datos Personales -->
+                <div class="row mb-3">
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">{{ labels.nombre }}</label>
-                        <div>{{ model.nombre }}</div>
+                        <div class="border-bottom pb-2 mb-2">
+                            <small class="text-muted fw-bold">NOMBRE</small>
+                            <div class="fw-semibold">{{ model.nombre|default:"-" }}</div>
+                        </div>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">{{ labels.rfc }}</label>
-                        <div>{{ model.rfc }}</div>
+                        <div class="border-bottom pb-2 mb-2">
+                            <small class="text-muted fw-bold">RFC</small>
+                            <div class="fw-semibold">{{ model.rfc|default:"-" }}</div>
+                        </div>
                     </div>
-
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">{{ labels.razon_social }}</label>
-                        <div>{{ model.razon_social }}</div>
+                        <div class="border-bottom pb-2 mb-2">
+                            <small class="text-muted fw-bold">TIPO</small>
+                            <div class="fw-semibold">{{ model.get_tipo_display|default:"-" }}</div>
+                        </div>
                     </div>
                 </div>
-               
 
-                <!-- contacto -->
-                <div class="row mt-3">
+                <!-- Información de Contacto -->
+                <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">{{ labels.telefono }}</label>
-                        <div>{{ model.telefono }}</div>
+                        <div class="border-bottom pb-2 mb-2">
+                            <small class="text-muted fw-bold">TELÉFONO</small>
+                            <div class="fw-semibold">
+                                {% if model.telefono %}
+                                <a href="tel:{{ model.telefono }}" class="text-decoration-none">{{ model.telefono }}</a>
+                                {% else %}
+                                -
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">{{ labels.correo }}</label>
-                        <div>{{ model.correo }}</div>
+                        <div class="border-bottom pb-2 mb-2">
+                            <small class="text-muted fw-bold">CORREO ELECTRÓNICO</small>
+                            <div class="fw-semibold">
+                                {% if model.correo %}
+                                <a href="mailto:{{ model.correo }}" class="text-decoration-none">{{ model.correo }}</a>
+                                {% else %}
+                                -
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-     <div class="col-6">
-        <div class="card  h-100">
-            <div class="card-header bg-info text-white text-center">
+    <div class="col-6">
+        <div class="card h-100">
+            <div class="card-header bg-info text-white">
                 <h3 class="mb-0">
-                    <i class="fas fa-map-marker-alt me-2"></i>DIRECCIÓN
+                    <i class="fas fa-map-marked-alt me-2"></i> DIRECCIÓN
                 </h3>
             </div>
-            <div class="card-body text-start text-dark text-center">
+            <div class="card-body">
+                <!-- Mapa (opcional) -->
 
-                <!-- Código Postal centrado -->
-                <div class="row mb-4">
-                    <div class="col-md-4"></div>
-                    <div class="col-md-4 text-center">
-                        <label class="form-label fw-bold">Código postal</label>
-                        <div>{{ direccion.codigo_postal }}</div>
-                    </div>
-                    <div class="col-md-4"></div>
-                </div>
 
-                <!-- Estado, Municipio, Colonia -->
-                <div class="row mb-3">
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold">Estado</label>
-                        <div>{{ direccion.estado }}</div>
+                <!-- Detalles de Dirección -->
+                <div class="row">
+                    <!-- Código Postal -->
+                    <div class="col-12 text-center mb-3">
+                        <div class="badge bg-primary p-2">
+                            <i class="fas fa-mail-bulk me-2"></i>
+                            <span class="fw-bold">CP: {{ direccion.codigo_postal|default:"-" }}</span>
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold">Municipio</label>
-                        <div>{{ direccion.municipio }}</div>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold">Colonia</label>
-                        <div>{{ direccion.colonia }}</div>
-                    </div>
-                </div>
 
-                <!-- Calle -->
-                <div class="row mb-3">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-8">
-                        <label class="form-label fw-bold">Calle</label>
-                        <div>{{ direccion.calle }}</div>
+                    <!-- Estado, Municipio, Colonia -->
+                    <div class="col-md-4 mb-3">
+                        <div class="border-bottom pb-2">
+                            <small class="text-muted fw-bold">ESTADO</small>
+                            <p class="mb-0">{{ direccion.estado|default:"-" }}</p>
+                        </div>
                     </div>
-                    <div class="col-md-2"></div>
-                </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="border-bottom pb-2">
+                            <small class="text-muted fw-bold">MUNICIPIO</small>
+                            <p class="mb-0">{{ direccion.municipio|default:"-" }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="border-bottom pb-2">
+                            <small class="text-muted fw-bold">COLONIA</small>
+                            <p class="mb-0">{{ direccion.colonia|default:"-" }}</p>
+                        </div>
+                    </div>
 
-                <!-- Números Interior y Exterior -->
-                <div class="row mb-3">
-                    <div class="col-md-3"></div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">Número interior</label>
-                        <div>{{ direccion.numero_interior }}</div>
+                    <!-- Calle -->
+                    <div class="col-12 mb-3">
+                        <div class="border-bottom pb-2">
+                            <small class="text-muted fw-bold">CALLE</small>
+                            <p class="mb-0">{{ direccion.calle|default:"-" }}</p>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">Número exterior</label>
-                        <div>{{ direccion.numero_exterior }}</div>
+
+                    <!-- Números -->
+                    <div class="col-md-6 mb-3">
+                        <div class="border-bottom pb-2">
+                            <small class="text-muted fw-bold">NÚMERO EXTERIOR</small>
+                            <p class="mb-0">{{ direccion.numero_exterior|default:"-" }}</p>
+                        </div>
                     </div>
-                    <div class="col-md-3"></div>
+                    <div class="col-md-6 mb-3">
+                        <div class="border-bottom pb-2">
+                            <small class="text-muted fw-bold">NÚMERO INTERIOR</small>
+                            <p class="mb-0">{{ direccion.numero_interior|default:"-" }}</p>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
         </div>
     </div>
 
     <!-- CARD 3: CONFIGURACIÓN DEL CRÉDITO -->
-   
+
 </div>
 
 

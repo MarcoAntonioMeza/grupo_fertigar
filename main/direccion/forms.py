@@ -49,9 +49,9 @@ class DireccionForm(forms.ModelForm):
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
 
-        self.fields['estado'].widget.attrs.update({'class': 'form-control select2-container select2-selection--single', 'data-placeholder': '-- SELECCIONA UN ESTADO --'})
-        self.fields['municipio'].widget.attrs.update({'class': 'form-control select2-container select2-selection--single', 'data-placeholder': '-- SELECCIONA UN MUNICIPIO --'})
-        self.fields['colonia'].widget.attrs.update({'class': 'form-control select2-container select2-selection--single', 'data-placeholder': '-- SELECCIONA UNA COLONIA --'})
+        self.fields['estado'].widget.attrs.update({'class': 'form-control select2-container select2-selection--single'    })
+        self.fields['municipio'].widget.attrs.update({'class': 'form-control select2-container select2-selection--single' })
+        self.fields['colonia'].widget.attrs.update({'class': 'form-control select2-container select2-selection--single'   })
 
         # Inicializar 'calle' como no obligatorio por defecto
         self.fields['calle'].required = False
