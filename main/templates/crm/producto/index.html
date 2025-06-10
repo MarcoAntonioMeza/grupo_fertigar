@@ -33,7 +33,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Código</th>
-                            <th>Razón social</th>
+                          
                             <th>Nombre</th>
                             <th>Status</th>
                             <th>Creado por</th>
@@ -90,13 +90,13 @@
                 url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
             },
             ajax: {
-                url: "{% url 'index_list_ajax_proveedor' %}",
+                url: "{% url 'index_list_ajax_producto' %}",
                 type: "GET",
             },
             columns: [
                 { data: "id" },
                 { data: "codigo" },
-                {data :"razon_social"},
+                
                 { data: "name" },
                 
                 { data: "status" },
@@ -125,7 +125,7 @@
         $('#selection-datatable tbody').on('dblclick', 'tr', function () {
             var data = table.row(this).data();
             if (data && data.id) {
-                window.location.href = "{% url 'crm_proveedor_view' 0 %}".replace('0', data.id);
+                window.location.href = "{% url 'crm_producto_view' 0 %}".replace('0', data.id);
             }
         });
     });

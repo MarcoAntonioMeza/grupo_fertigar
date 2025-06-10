@@ -18,19 +18,19 @@
                 <div class="row">
                     <div class="col-md-12">
                         {% if can.update %}
-                        <a href="{% url 'crm_proveedor_update' model.id %}" class="btn btn-lg btn-primary">
+                        <a href="{% url 'crm_producto_update' model.id %}" class="btn btn-lg btn-primary">
                             <i class="fas fa-plus me-2"></i>EDITAR
                         </a>
                         {% endif %}
 
                         {% if can.delete %}
-                        <a href="{% url 'crm_proveedor_delete' model.id %}" class="btn btn-danger btn-lg "
+                        <a href="{% url 'crm_producto_delete' model.id %}" class="btn btn-danger btn-lg "
                             onclick="return confirm('¿ESTAS SEGURO DE ELIMINAR A {{ model }}?')">
                             <i class="fas fa-trash-alt"></i> ELIMINAR
                         </a>
                         {% endif %}
 
-                        <a href="{% url 'crm_proveedor_index' %}" class="btn btn-lg btn-secondary">
+                        <a href="{% url 'crm_producto_index' %}" class="btn btn-lg btn-secondary">
                             <i class="fas fa-cancel me-2"></i>CANCELAR
                         </a>
                     </div>
@@ -63,129 +63,183 @@
 
 
 
-<div class="row mb-3">
-    <!-- CARD 1: DATOS GENERALES -->
-    <div class="col-lg-6 mb-4 mb-lg-0">
+<div class="row">
+    <!-- Tarjeta Principal -->
+    <div class="col-lg-12">
         <div class="card h-100">
             <div class="card-header bg-primary text-white text-center">
                 <h3 class="mb-0">
-                    <i class="fa fa-user me-2"></i> {{ title }}
+                    <i class="fa fa-bolt me-2"></i> {{title}}
                 </h3>
             </div>
-            <div class="card-body text-start text-dark text-center">
 
-
-                <!-- status y tipo -->
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">{{ labels.codigo }}</label>
-                        <div>{{ model.codigo }}</div>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">{{ labels.status }}</label>
-                        <div>{{ model.get_status_display }}</div>
-                    </div>
-                   
-                </div>
-
-                <!-- nombres -->
-                <div class="row mt-3">
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold">{{ labels.nombre }}</label>
-                        <div>{{ model.nombre }}</div>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold">{{ labels.rfc }}</label>
-                        <div>{{ model.rfc }}</div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold">{{ labels.razon_social }}</label>
-                        <div>{{ model.razon_social }}</div>
-                    </div>
-                </div>
-               
-
-                <!-- contacto -->
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">{{ labels.telefono }}</label>
-                        <div>{{ model.telefono }}</div>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">{{ labels.correo }}</label>
-                        <div>{{ model.correo }}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-     <div class="col-6">
-        <div class="card  h-100">
-            <div class="card-header bg-info text-white text-center">
-                <h3 class="mb-0">
-                    <i class="fas fa-map-marker-alt me-2"></i>DIRECCIÓN
-                </h3>
-            </div>
-            <div class="card-body text-start text-dark text-center">
-
-                <!-- Código Postal centrado -->
+            <div class="card-body">
+                <!-- Sección Imagen y Código -->
                 <div class="row mb-4">
-                    <div class="col-md-4"></div>
+                    <!-- Columna de Imagen -->
                     <div class="col-md-4 text-center">
-                        <label class="form-label fw-bold">Código postal</label>
-                        <div>{{ direccion.codigo_postal }}</div>
+                        <div class="mb-3">
+                            {% if model.imagen %}
+                            <img src="{{ model.imagen.url }}" alt="{{ model.nombre }}" class="img-thumbnail"
+                                style="max-height: 200px; max-width: 100%;">
+                            {% else %}
+                            <div class="text-muted py-4">
+                                <i class="fas fa-image fa-4x mb-3"></i>
+                                <p>No hay imagen disponible</p>
+                            </div>
+                            {% endif %}
+                        </div>
                     </div>
-                    <div class="col-md-4"></div>
-                </div>
 
-                <!-- Estado, Municipio, Colonia -->
-                <div class="row mb-3">
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold">Estado</label>
-                        <div>{{ direccion.estado }}</div>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold">Municipio</label>
-                        <div>{{ direccion.municipio }}</div>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold">Colonia</label>
-                        <div>{{ direccion.colonia }}</div>
-                    </div>
-                </div>
-
-                <!-- Calle -->
-                <div class="row mb-3">
-                    <div class="col-md-2"></div>
+                    <!-- Columna de Información Básica -->
                     <div class="col-md-8">
-                        <label class="form-label fw-bold">Calle</label>
-                        <div>{{ direccion.calle }}</div>
+                        <div class="row m-2">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <div class="mb-3 text-center">
+                                    <h4><label class="form-label fw-bold">{{ labels.stock }}</label></h4>
+                                    <h4><div class="form-control-plaintext">{{ model.stock }}</div></h4>
+                                </div>
+                            </div>
+                            <div class="col-md-4"></div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">{{ labels.codigo }}</label>
+                                    <div class="form-control-plaintext">{{ model.codigo|default:"-" }}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">{{ labels.nombre }}</label>
+                                    <div class="form-control-plaintext">{{ model.nombre }}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">{{ labels.categoria }}</label>
+                                    <div class="form-control-plaintext">{{ model.categoria|default:"-" }}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Proveedores</label>
+                                    <div class="form-control-plaintext">
+                                        {% if model.proveedores.all %}
+                                        {% for proveedor in model.proveedores.all %}
+                                        {{ proveedor }}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                        {% else %}
+                                        -
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">{{ labels.clave_sat }}</label>
+                                    <div class="form-control-plaintext">{{ model.clave_sat|default:"-" }}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">{{ labels.unidad_sat }}</label>
+                                    <div class="form-control-plaintext">{{ model.unidad_sat|default:"-" }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">{{ labels.descripcion }}</label>
+                                    <div class="form-control-plaintext">{{ model.descripcion|default:"-"|linebreaksbr }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-2"></div>
                 </div>
 
-                <!-- Números Interior y Exterior -->
-                <div class="row mb-3">
-                    <div class="col-md-3"></div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">Número interior</label>
-                        <div>{{ direccion.numero_interior }}</div>
+                <!-- Sección de Precios e Impuestos -->
+                <div class="row">
+                    <!-- Columna de Impuestos -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0">Impuestos</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">{{ labels.iva }}</label>
+                                            <div class="form-control-plaintext">{{ model.iva|default:"0" }}%</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">{{ labels.ieps }}</label>
+                                            <div class="form-control-plaintext">{{ model.ieps|default:"0" }}%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">Número exterior</label>
-                        <div>{{ direccion.numero_exterior }}</div>
+
+                    <!-- Columna de Precios -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0">Precios</h6>
+                            </div>
+                            <div class="card-body">
+                                {% load humanize %}
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">{{ labels.precio_especial }}</label>
+                                            <div class="form-control-plaintext">${{ model.precio_especial|default_if_none:0|floatformat:2|intcomma }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">{{ labels.precio_sub_dist }}</label>
+                                            <div class="form-control-plaintext">${{ model.precio_sub_dist|default_if_none:0|floatformat:2|intcomma }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">{{ labels.precio_mayoreo }}</label>
+                                            <div class="form-control-plaintext">${{ model.precio_mayoreo|default_if_none:0|floatformat:2|intcomma }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">{{ labels.precio_publico }}</label>
+                                            <div class="form-control-plaintext">${{ model.precio_publico|default_if_none:0|floatformat:2|intcomma }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-3"></div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- CARD 3: CONFIGURACIÓN DEL CRÉDITO -->
-   
 </div>
+
 
 
 

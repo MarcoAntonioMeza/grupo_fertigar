@@ -30,11 +30,9 @@ urlpatterns = [
 
     #layouts
     path("layouts/", include("main.layouts.urls")),
-
     #components
     path("components/", include("main.components.urls")),
     path("direccion/", include("main.direccion.urls")),
-    
     #CRM 
     path("crm/", include("main.crm.urls")),
     

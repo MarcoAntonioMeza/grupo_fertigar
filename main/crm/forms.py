@@ -493,7 +493,7 @@ class DireccionProveedorForm(forms.ModelForm):
 class ProductoForm(forms.ModelForm):
     class Meta:
         model = Producto
-        exclude  = ["created_at", "updated_at", "created_by", "updated_by","imagen"]
+        exclude  = ["created_at", "updated_at", "created_by", "updated_by",'stock']
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -505,7 +505,7 @@ class ProductoForm(forms.ModelForm):
         
         self.fields['categoria'].queryset = Categoria.objects.order_by("nombre")
 
-        items_not_required = ["imagen", "comentarios"]
+        items_not_required = ["imagen", "descripcion",'proveedores']
         for field_name, field in self.fields.items():
             # Hacer campos requeridos o no requeridos
             if field_name not in self.Meta.exclude:

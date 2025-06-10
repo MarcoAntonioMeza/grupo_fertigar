@@ -24,7 +24,7 @@ from .forms import (AlmacenForm, DireccionAlmacenForm,
                     ProductoForm)
 
 # ======================================================
-from .services.data_tables import clientes_list, proveedor_list
+from .services.data_tables import clientes_list, proveedor_list,producto_list
 
 APP_NAME = "crm"
 
@@ -831,7 +831,8 @@ class ProductoCreateView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = "Crear Producto"
+        context["title"] = "PRODUCTO"
+        context["sub_title"] = "CATALOGOS"
         context["action"] = "create"
         return context
     
@@ -855,16 +856,76 @@ class ProductoUpdateView(LoginRequiredMixin, UpdateView):
     model = Producto
     permission_required = PRODUCTO_UPDATE
     raise_exception = True
-    #form_class = ProductoForm
+    form_class = ProductoForm
     template_name = f"{BASE_TEMPLATE_PRODUCTO}update.html"
-    success_url = reverse_lazy("crm_producto_index")
+    pk_url_kwarg = "id"
+    context_object_name = "model"
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = f"PRODUCTOS - {self.object} - EDITAR"
+        context["sub_title"] = "CATALOGOS"
+        context["can"] = {
+            key: self.request.user.has_perm(value) for key, value in CAN_PRODUCTO.items()
+        }
+        return context
+
+    def get_success_url(self):
+        messages.success(self.request, "Producto actualizado exitosamente!")
+        return reverse_lazy("crm_producto_view",kwargs={"id": self.object.pk})
+
+    
+    def get_object(self, queryset = None):
+        model = super().get_object(queryset)
+        if model.status == Producto.STATUS_DELETE:
+            raise Http404("ELEMENTO NO ENCONTRADO")
+        return model
+    
+    def form_valid(self, form):
+        form.instance.updated_by = self.request.user
+        try:
+            with transaction.atomic():
+                self.object = form.save(commit=False)
+                self.object.save()
+        except Exception as e:
+            messages.error(self.request, f"Error al guardar: {str(e)}")
+            return self.render_to_response(self.get_context_data(form=form))
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        messages.error(
+            self.request,
+            f"Por favor corrija los errores en el formulario.  {form.errors}",
+        )
+        return super().form_invalid(form)
     
 #detail
 class ProductoDetailView(LoginRequiredMixin, DetailView):
     model = Producto
     permission_required = PRODUCTO_VIEW
     raise_exception = True
+    pk_url_kwarg = "id"
+    template_name = f"{BASE_TEMPLATE_PRODUCTO}view.html"
+    context_object_name = "model"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = f"PRODUCTOS - {self.object} - DETALLE"
+        context["sub_title"] = "CATALOGOS"
+        context["can"] = {
+            key: self.request.user.has_perm(value) for key, value in CAN_PRODUCTO.items()
+        }
+        context["labels"] = {
+            field.name: field.verbose_name for field in Producto._meta.fields
+        }
+        return context
+    
+    
+    def get_object(self, queryset = None):
+        model = super().get_object(queryset)
+        if model.status == Producto.STATUS_DELETE:
+            raise Http404("ELEMENTO NO ENCONTRADO")
+        return model
 #delete 
 class ProductoDeleteView(LoginRequiredMixin, DeleteView):
     model = Producto
@@ -883,7 +944,7 @@ def producto_list_datatable(request):
     #campo_formativo = request.GET.get("campo_formativo", "").strip()
     #grupo = request.GET.get("grupo", "").strip()
     
-    return JsonResponse(proveedor_list(draw=draw, start=start, length=length, search_value=search_value))
+    return JsonResponse(producto_list(draw=draw, start=start, length=length, search_value=search_value))
     
 
         

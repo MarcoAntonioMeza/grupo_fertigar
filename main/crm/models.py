@@ -124,7 +124,7 @@ class UnidadSAT(BaseModel):
 class Producto(BaseModel):
     STATUS_ACTIVO = "ACT"
     STATUS_INACTIVO = "INA"
-    STATUS_DELETED = "DEL"
+    STATUS_DELETE = "DEL"
     STATUS_CHOICES = [
         (STATUS_ACTIVO, "Activo"),
         (STATUS_INACTIVO, "Inactivo"),
@@ -133,6 +133,7 @@ class Producto(BaseModel):
     codigo = models.CharField(max_length=30, unique=True, verbose_name="Código" , blank=True, null=True)
     nombre = models.CharField(max_length=50, verbose_name="Nombre", blank=False, null=False)
     categoria = models.ForeignKey(Categoria,on_delete=models.SET_NULL,blank=True,null=True,verbose_name="Categoría",related_name="productos_categoria")
+    stock = models.PositiveIntegerField(default=0, verbose_name="Stock Global", blank=True, null=False)
     imagen = models.ImageField(upload_to="productos/", blank=True, null=True)
     proveedores = models.ManyToManyField('Proveedor',blank=True)
     precio_especial = models.DecimalField(max_digits=10, decimal_places=2,blank=True,   default=0.0,  null=True,verbose_name="Precio Especial")

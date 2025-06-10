@@ -15,12 +15,15 @@
 
 {% endblock content %}
 
-{% include "partials/jquery.html" %}
 
 {% block extra_js %}
+{% include "partials/jquery.html" %}
+
 
 <!-- App js -->
 <script src="{% static 'js/app.min.js' %}"></script>
+
+
 <script>
     $(document).ready(function () {
 
@@ -34,7 +37,9 @@
         });
         $('.select2-container .select2-selection--single').css('height', 'calc(1.85rem + 2px)');
 
+       
     });
 
 </script>
+
 {% endblock extra_js %}

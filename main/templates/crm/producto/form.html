@@ -1,154 +1,319 @@
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
 
-
     <!-- Botones de Acción (Fijos arriba) -->
     <div class="row mb-4">
         <div class="col-12">
             <div class="card">
                 <div class="card-body text-center py-3">
                     <button type="submit" class="btn btn-primary btn-lg me-3">
-                        <i class="fas fa-save me-2"></i>GUARDAR
+                        <i class="fas fa-save me-2"></i> GUARDAR
                     </button>
-                    <a href="{% url 'crm_cliente_index' %}" class="btn btn-lg btn-secondary">
-                        <i class="fas fa-times me-2"></i>CANCELAR
+                    <a href="{% url 'crm_producto_index' %}" class="btn btn-lg btn-secondary">
+                        <i class="fas fa-times me-2"></i> CANCELAR
                     </a>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <!-- Sección Dirección -->
+    <!-- Sección Principal -->
     <div class="row">
-        <!-- CUENTA -->
-        <div class="col-lg-6 mb-4 mb-lg-0">
+        <div class="col-lg-12">
             <div class="card h-100">
                 <div class="card-header bg-primary text-white text-center">
                     <h3 class="mb-0">
-
-                        <i class="fa fa-user me-2"></i> {{title}}
-
+                        <i class="fa fa-bolt me-2"></i> {{title}}
                     </h3>
                 </div>
+
                 <div class="card-body">
-                    <div class="row m-4">
-                        {{ form.as_p }}
+                    <!-- Sección Imagen y Código -->
+                    <div class="row mb-4">
+                        <!-- Columna de Imagen -->
+                        <div class="col-md-4 text-center">
+                            <div class="mb-3">
+                                {% if form.instance.imagen %}
+                                <img id="image-preview" src="{{ form.instance.imagen.url }}" class="img-thumbnail"
+                                    style="max-height: 200px; max-width: 100%;">
+                                {% else %}
+                                <img id="image-preview" src="https://via.placeholder.com/200" class="img-thumbnail"
+                                    style="max-height: 200px; max-width: 100%;">
+                                {% endif %}
+                            </div>
+                            <div class="custom-file">
+                                {{ form.imagen }}
+                                <label class="custom-file-label" for="{{ form.imagen.id_for_label }}">
+                                    Seleccionar imagen
+                                </label>
+                                {% if form.imagen.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.imagen.errors %}
+                                    <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Columna de Información Básica -->
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        {{ form.status.label_tag }}
+                                        {{ form.status }}
+                                        {% if form.status.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.status.errors %}
+                                            <small>{{ error }}</small>
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        {{ form.codigo.label_tag }}
+                                        {{ form.codigo }}
+                                        {% if form.codigo.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.codigo.errors %}
+                                            <small>{{ error }}</small>
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        {{ form.nombre.label_tag }}
+                                        {{ form.nombre }}
+                                        {% if form.nombre.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.nombre.errors %}
+                                            <small>{{ error }}</small>
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ form.categoria.label_tag }}
+                                        {{ form.categoria }}
+                                        {% if form.categoria.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.categoria.errors %}
+                                            <small>{{ error }}</small>
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ form.proveedores.label_tag }}
+                                        {{ form.proveedores }}
+                                        {% if form.proveedores.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.proveedores.errors %}
+                                            <small>{{ error }}</small>
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    
 
-                    <!-- status y tipo -->
-                    <div class="row mt-3">
-
-                        <div class="col-md-4">
-                            {{ form.origen.label_tag }}
-                            {{ form.origen }}
-                            {% if form.origen.errors %}
-                            <div class="text-danger mt-1">
-                                {% for error in form.origen.errors %}
-                                <small>{{ error }}</small>
-                                {% endfor %}
+                    <!-- Sección SAT -->
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <h5 class="border-bottom pb-2">Información SAT</h5>
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ form.clave_sat.label_tag }}
+                                        {{ form.clave_sat }}
+                                        {% if form.clave_sat.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.clave_sat.errors %}
+                                            <small>{{ error }}</small>
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ form.unidad_sat.label_tag }}
+                                        {{ form.unidad_sat }}
+                                        {% if form.unidad_sat.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.unidad_sat.errors %}
+                                            <small>{{ error }}</small>
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
                             </div>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-4">
-                            {{ form.codigo.label_tag }}
-                            {{ form.codigo }}
-                            {% if form.codigo.errors %}
-                            <div class="text-danger mt-1">
-                                {% for error in form.codigo.errors %}
-                                <small>{{ error }}</small>
-                                {% endfor %}
+
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        {{ form.descripcion.label_tag }}
+                                        {{ form.descripcion }}
+                                        {% if form.descripcion.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.descripcion.errors %}
+                                            <small>{{ error }}</small>
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
                             </div>
-                            {% endif %}
-                        </div>
-
-                        <div class="col-md-4">
-                            {{ form.status.label_tag }}
-                            {{ form.status }}
-                            {% if form.status.errors %}
-                            <div class="text-danger mt-1">
-                                {% for error in form.status.errors %}
-                                <small>{{ error }}</small>
-                                {% endfor %}
-                            </div>
-                            {% endif %}
-                        </div>
-
-                    </div>
-                    <!-- nombres -->
-                    <div class="row mt-3">
-                        <div class="col-md-4">
-
-                            {{ form.rfc.label_tag }}
-                            {{ form.rfc }}
-                            {% if form.rfc.errors %}
-                            <div class="text-danger mt-1">
-                                {% for error in form.rfc.errors %}
-                                <small>{{ error }}</small>
-                                {% endfor %}
-                            </div>
-                            {% endif %}
-
-                        </div>
-                        <div class="col-md-4">
-                            {{ form.nombre.label_tag }}
-                            {{ form.nombre }}
-                            {% if form.nombre.errors %}
-                            <div class="text-danger mt-1">
-                                {% for error in form.nombre.errors %}
-                                <small>{{ error }}</small>
-                                {% endfor %}
-                            </div>
-                            {% endif %}
-                        </div>
-
-
-                        <div class="col-md-4">
-                            {{ form.razon_social.label_tag }}
-                            {{ form.razon_social }}
-                            {% if form.razon_social.errors %}
-                            <div class="text-danger mt-1">
-                                {% for error in form.razon_social.errors %}
-                                <small>{{ error }}</small>
-                                {% endfor %}
-                            </div>
-                            {% endif %}
                         </div>
                     </div>
 
-                    <div class="row mt-3">
+                    <!-- Sección Impuestos y Precios -->
+                    <div class="row">
                         <div class="col-md-6">
-                            {{ form.telefono.label_tag }}
-                            {{ form.telefono }}
-                            {% if form.telefono.errors %}
-                            <div class="text-danger mt-1">
-                                {% for error in form.telefono.errors %}
-                                <small>{{ error }}</small>
-                                {% endfor %}
+                            <div class="card">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">Impuestos</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ form.iva.label_tag }}
+                                                {{ form.iva }}
+                                                {% if form.iva.errors %}
+                                                <div class="text-danger mt-1">
+                                                    {% for error in form.iva.errors %}
+                                                    <small>{{ error }}</small>
+                                                    {% endfor %}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ form.ieps.label_tag }}
+                                                {{ form.ieps }}
+                                                {% if form.ieps.errors %}
+                                                <div class="text-danger mt-1">
+                                                    {% for error in form.ieps.errors %}
+                                                    <small>{{ error }}</small>
+                                                    {% endfor %}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            {% endif %}
                         </div>
+
                         <div class="col-md-6">
-                            {{ form.correo.label_tag }}
-                            {{ form.correo }}
-                            {% if form.correo.errors %}
-                            <div class="text-danger mt-1">
-                                {% for error in form.correo.errors %}
-                                <small>{{ error }}</small>
-                                {% endfor %}
+                            <div class="card">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">Precios</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ form.precio_especial.label_tag }}
+                                                {{ form.precio_especial }}
+                                                {% if form.precio_especial.errors %}
+                                                <div class="text-danger mt-1">
+                                                    {% for error in form.precio_especial.errors %}
+                                                    <small>{{ error }}</small>
+                                                    {% endfor %}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ form.precio_sub_dist.label_tag }}
+                                                {{ form.precio_sub_dist }}
+                                                {% if form.precio_sub_dist.errors %}
+                                                <div class="text-danger mt-1">
+                                                    {% for error in form.precio_sub_dist.errors %}
+                                                    <small>{{ error }}</small>
+                                                    {% endfor %}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ form.precio_mayoreo.label_tag }}
+                                                {{ form.precio_mayoreo }}
+                                                {% if form.precio_mayoreo.errors %}
+                                                <div class="text-danger mt-1">
+                                                    {% for error in form.precio_mayoreo.errors %}
+                                                    <small>{{ error }}</small>
+                                                    {% endfor %}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ form.precio_publico.label_tag }}
+                                                {{ form.precio_publico }}
+                                                {% if form.precio_publico.errors %}
+                                                <div class="text-danger mt-1">
+                                                    {% for error in form.precio_publico.errors %}
+                                                    <small>{{ error }}</small>
+                                                    {% endfor %}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-
-
-
     </div>
-
-
 </form>
+
+<!-- Script para previsualización de imagen -->
+<script>
+    document.getElementById('{{ form.imagen.id_for_label }}').addEventListener('change', function (e) {
+        const preview = document.getElementById('image-preview');
+        const file = e.target.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+            }
+
+            reader.readAsDataURL(file);
+        } else {
+            {% if form.instance.imagen %}
+            preview.src = "{{ form.instance.imagen.url }}";
+            {% else %}
+            preview.src = "https://via.placeholder.com/200";
+            {% endif %}
+        }
+    });
+</script>
