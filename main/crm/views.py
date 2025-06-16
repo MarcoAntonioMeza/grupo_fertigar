@@ -6,7 +6,7 @@ from django.views.generic import (
     TemplateView
 )
 from django.urls import reverse, reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
 from django.db import transaction
 from django.http import JsonResponse, HttpResponseRedirect, Http404
 
@@ -44,11 +44,11 @@ CAN_ALMACEN = {
     "delete": ALMACEN_DELETE,
 }
 BASE_TEMPLATE_ALMACEN = "crm/almacen/"
-class AlmacenListView(LoginRequiredMixin, TemplateView):
+class AlmacenListView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
     template_name = BASE_TEMPLATE_ALMACEN + "index.html"
     # context_object_name = "almacenes"
     permission_required = ALMACEN_VIEW
-    raise_exception = True
+    raise_exception = False
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -62,11 +62,11 @@ class AlmacenListView(LoginRequiredMixin, TemplateView):
 
 
 # DETAIL
-class AlmacenDetailView(LoginRequiredMixin, DetailView):
+class AlmacenDetailView(LoginRequiredMixin,PermissionRequiredMixin, DetailView):
     model = Almacen
     template_name = BASE_TEMPLATE_ALMACEN + "view.html"
     permission_required = ALMACEN_VIEW
-    raise_exception = True
+    raise_exception = False
     context_object_name = "model"
     pk_url_kwarg = "id"
 
@@ -93,12 +93,12 @@ class AlmacenDetailView(LoginRequiredMixin, DetailView):
 
 
 # CREATE
-class AlmacenCreateView(LoginRequiredMixin, CreateView):
+class AlmacenCreateView(LoginRequiredMixin,PermissionRequiredMixin, CreateView):
     model = Almacen
     form_class = AlmacenForm
     template_name = BASE_TEMPLATE_ALMACEN + "create.html"
     permission_required = ALMACEN_CREATE
-    raise_exception = True
+    raise_exception = False
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -152,12 +152,12 @@ class AlmacenCreateView(LoginRequiredMixin, CreateView):
 
 
 # update
-class AlmacenUpdateView(LoginRequiredMixin, UpdateView):
+class AlmacenUpdateView(LoginRequiredMixin,PermissionRequiredMixin, UpdateView):
     model = Almacen
     form_class = AlmacenForm
     template_name = BASE_TEMPLATE_ALMACEN + "update.html"
     permission_required = ALMACEN_UPDATE
-    raise_exception = True
+    raise_exception = False
     pk_url_kwarg = "id"
     context_object_name = "model"
 
@@ -234,10 +234,10 @@ class AlmacenUpdateView(LoginRequiredMixin, UpdateView):
 
 
 # delete
-class AlmacenDeleteView(LoginRequiredMixin, DeleteView):
+class AlmacenDeleteView(LoginRequiredMixin,PermissionRequiredMixin, DeleteView):
     model = Almacen
     permission_required = ALMACEN_DELETE
-    raise_exception = True
+    raise_exception = False
     pk_url_kwarg = "id"
     success_url = reverse_lazy("crm_almacen_index")
 
@@ -307,9 +307,9 @@ CAN_CLIENTE = {
 }
 BASE_TEMPLATE_CLIENTE = "crm/cliente/"
 # LIST VIEW
-class ClienteListView(LoginRequiredMixin, TemplateView):
+class ClienteListView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
     permission_required = CLIENTE_VIEW
-    raise_exception = True
+    raise_exception = False
     template_name = BASE_TEMPLATE_CLIENTE + "index.html"
 
     def get_context_data(self, **kwargs):
@@ -323,10 +323,10 @@ class ClienteListView(LoginRequiredMixin, TemplateView):
         return context
 
 
-class ClienteCreateView(LoginRequiredMixin, CreateView):
+class ClienteCreateView(LoginRequiredMixin,PermissionRequiredMixin, CreateView):
     model = Cliente
     permission_required = CLIENTE_CREATE
-    raise_exception = True
+    raise_exception = False
     form_class = ClienteForm
     template_name = BASE_TEMPLATE_CLIENTE + "create.html"
 
@@ -379,11 +379,10 @@ class ClienteCreateView(LoginRequiredMixin, CreateView):
         )
         return super().form_invalid(form)
 
-
-class ClienteDetailView(LoginRequiredMixin, DetailView):
+class ClienteDetailView(LoginRequiredMixin,PermissionRequiredMixin, DetailView):
     model = Cliente
     permission_required = CLIENTE_VIEW
-    raise_exception = True
+    raise_exception = False
     template_name = BASE_TEMPLATE_CLIENTE + "view.html"
     pk_url_kwarg = "id"
     context_object_name = "model"
@@ -407,11 +406,10 @@ class ClienteDetailView(LoginRequiredMixin, DetailView):
             raise Http404("EELEMENTO NO ENCONTRADO")
         return obj
 
-
-class ClienteUpdateView(LoginRequiredMixin, UpdateView):
+class ClienteUpdateView(LoginRequiredMixin,PermissionRequiredMixin, UpdateView):
     model = Cliente
     permission_required = CLIENTE_UPDATE
-    raise_exception = True
+    raise_exception = False
     form_class = ClienteForm
     template_name = BASE_TEMPLATE_CLIENTE + "update.html"
     pk_url_kwarg = "id"
@@ -483,11 +481,10 @@ class ClienteUpdateView(LoginRequiredMixin, UpdateView):
         messages.error(self.request, "Por favor corrija los errores en el formulario.")
         return super().form_invalid(form)
 
-
-class ClienteDeleteView(LoginRequiredMixin, DeleteView):
+class ClienteDeleteView(LoginRequiredMixin,PermissionRequiredMixin, DeleteView):
     model = Cliente
     permission_required = CLIENTE_DELETE
-    raise_exception = True
+    raise_exception = False
     pk_url_kwarg = "id"
     success_url = reverse_lazy("crm_cliente_index")
     
@@ -515,7 +512,6 @@ class ClienteDeleteView(LoginRequiredMixin, DeleteView):
         Maneja las solicitudes GET (equivalente a get_object)
         """
         return self.delete(request, *args, **kwargs)
-    
     
 @permission_required(CLIENTE_VIEW, raise_exception=True)
 def cliente_list_datatable(request):
@@ -549,10 +545,10 @@ CAN_PROVEEDOR = {
 BASE_TEMPLATE_PROVEEDOR = "crm/proveedor/"
 
 #index
-class ProveedorListView(LoginRequiredMixin, TemplateView):
+class ProveedorListView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
     template_name = f"{BASE_TEMPLATE_PROVEEDOR}index.html"
     permission_required = PROVEEDOR_VIEW
-    raise_exception = True
+    raise_exception = False
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -565,10 +561,10 @@ class ProveedorListView(LoginRequiredMixin, TemplateView):
         return context
 
 #detail
-class ProveedorDetailView(LoginRequiredMixin, DetailView):
+class ProveedorDetailView(LoginRequiredMixin,PermissionRequiredMixin, DetailView):
     model = Proveedor
     permission_required = PROVEEDOR_VIEW
-    raise_exception = True
+    raise_exception = False
     pk_url_kwarg = "id"
     template_name = f"{BASE_TEMPLATE_PROVEEDOR}view.html"
     context_object_name = "model"
@@ -595,10 +591,10 @@ class ProveedorDetailView(LoginRequiredMixin, DetailView):
         return obj
   
 #create
-class ProveedorCreateView(LoginRequiredMixin, CreateView):
+class ProveedorCreateView(LoginRequiredMixin,PermissionRequiredMixin, CreateView):
     model = Proveedor
     permission_required = PROVEEDOR_CREATE
-    raise_exception = True
+    raise_exception = False
     form_class = ProveedorForm
     template_name = f"{BASE_TEMPLATE_PROVEEDOR}create.html"
     
@@ -669,10 +665,10 @@ class ProveedorCreateView(LoginRequiredMixin, CreateView):
         return super().form_invalid(form)
 
 #update
-class ProveedorUpdateView(LoginRequiredMixin, UpdateView):
+class ProveedorUpdateView(LoginRequiredMixin,PermissionRequiredMixin, UpdateView):
     model = Proveedor
     permission_required = PROVEEDOR_UPDATE
-    raise_exception = True
+    raise_exception = False
     form_class = ProveedorForm
     template_name = f"{BASE_TEMPLATE_PROVEEDOR}update.html"
     pk_url_kwarg = "id"
@@ -754,10 +750,10 @@ class ProveedorUpdateView(LoginRequiredMixin, UpdateView):
         messages.error(self.request, "Por favor corrija los errores en el formulario.")
         return super().form_invalid(form)
 #delete
-class ProveedorDeleteView(LoginRequiredMixin, DeleteView):
+class ProveedorDeleteView(LoginRequiredMixin,PermissionRequiredMixin, DeleteView):
     model = Proveedor
     permission_required = PROVEEDOR_DELETE
-    raise_exception = True
+    raise_exception = False
     pk_url_kwarg = "id"
     success_url = reverse_lazy("crm_proveedor_index")
     
@@ -816,10 +812,10 @@ CAN_PRODUCTO = {
 BASE_TEMPLATE_PRODUCTO = "crm/producto/"
 
 #INDEX
-class ProductoIndexView(LoginRequiredMixin, TemplateView):
+class ProductoIndexView(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
     template_name = f"{BASE_TEMPLATE_PRODUCTO}index.html"
     permission_required = PRODUCTO_VIEW
-    raise_exception = True
+    raise_exception = False
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -831,10 +827,10 @@ class ProductoIndexView(LoginRequiredMixin, TemplateView):
         }
         return context
 #CREATE
-class ProductoCreateView(LoginRequiredMixin, CreateView):
+class ProductoCreateView(LoginRequiredMixin,PermissionRequiredMixin, CreateView):
     model = Producto
     permission_required = PRODUCTO_CREATE
-    raise_exception = True
+    raise_exception = False
     form_class = ProductoForm
     template_name = f"{BASE_TEMPLATE_PRODUCTO}create.html"
     
@@ -862,10 +858,10 @@ class ProductoCreateView(LoginRequiredMixin, CreateView):
             return self.render_to_response(self.get_context_data(form=form))
         
 #UPDATE
-class ProductoUpdateView(LoginRequiredMixin, UpdateView):
+class ProductoUpdateView(LoginRequiredMixin,PermissionRequiredMixin, UpdateView):
     model = Producto
     permission_required = PRODUCTO_UPDATE
-    raise_exception = True
+    raise_exception = False
     form_class = ProductoForm
     template_name = f"{BASE_TEMPLATE_PRODUCTO}update.html"
     pk_url_kwarg = "id"
@@ -910,10 +906,10 @@ class ProductoUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_invalid(form)
     
 #detail
-class ProductoDetailView(LoginRequiredMixin, DetailView):
+class ProductoDetailView(LoginRequiredMixin,PermissionRequiredMixin, DetailView):
     model = Producto
     permission_required = PRODUCTO_VIEW
-    raise_exception = True
+    raise_exception = False
     pk_url_kwarg = "id"
     template_name = f"{BASE_TEMPLATE_PRODUCTO}view.html"
     context_object_name = "model"
@@ -937,10 +933,10 @@ class ProductoDetailView(LoginRequiredMixin, DetailView):
             raise Http404("ELEMENTO NO ENCONTRADO")
         return model
 #delete 
-class ProductoDeleteView(LoginRequiredMixin, DeleteView):
+class ProductoDeleteView(LoginRequiredMixin,PermissionRequiredMixin, DeleteView):
     model = Producto
     permission_required = PRODUCTO_DELETE
-    raise_exception = True
+    raise_exception = False
     pk_url_kwarg = "id"
     success_url = reverse_lazy("crm_producto_index")
     

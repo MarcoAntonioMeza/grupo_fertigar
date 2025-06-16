@@ -8,6 +8,9 @@ from django.views import defaults as default_views
 from django.views.generic import TemplateView
 from config.view import index_view
 
+
+from .view import login_view, logout_view
+
 urlpatterns = [
     
     # Django Admin, use {% url 'admin:index' %}
@@ -16,6 +19,8 @@ urlpatterns = [
     
     # User management
     path("users/", include("main.users.urls")),
+    path("login/",  login_view, name="login"),
+    path("logout/", logout_view, name="logout"),
     
     #path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here

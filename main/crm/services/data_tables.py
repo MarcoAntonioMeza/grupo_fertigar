@@ -232,9 +232,8 @@ def producto_list(draw=0, start=0, length=10, search_value=""):
           
         ).distinct()
 
-    # Ordenación inicial (asegurar que haya índice en apellido_paterno)
+    # Ordenación inicial 
     ordered_query = base_query.order_by("-id")
-
     # Paginación optimizada
     paginator = Paginator(ordered_query, length)
     page_number = (start // length) + 1
@@ -243,13 +242,10 @@ def producto_list(draw=0, start=0, length=10, search_value=""):
         page_obj = paginator.page(page_number)
     except EmptyPage:
         page_obj = paginator.page(1)
-        
-
     # Serialización optimizada con values() para evitar crear objetos completos
     list_data = ordered_query.values(
         "id",
-        "nombre",
-        
+        "nombre", 
         "codigo",
         "status",
         "created_at",
@@ -266,7 +262,6 @@ def producto_list(draw=0, start=0, length=10, search_value=""):
             "id": item["id"],
             "name": f"{item['nombre']}".strip(),
             "codigo": f"{item['codigo']}".strip(),
-           
             "status": STATUS_DICT.get(item["status"], "--"),
             "created_at": (item["created_at"] if item["created_at"] else "--"),
             "created_by": item["created_by__username"] or "--",

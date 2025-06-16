@@ -11,7 +11,7 @@ def crear_permisos_personalizados(sender, **kwargs):
     models_str = [('categoria', 'categoria',Categoria),
                   ('producto', 'PRODUCTO',Producto),
                   ('agente', 'agente',Agente),
-                  ('alamcen', 'almacen',Almacen),
+                  ('almacen', 'almacen',Almacen),
                   ('cliente', 'cliente',Cliente),
                   ('proveedor', 'proveedor',Proveedor),
                   
