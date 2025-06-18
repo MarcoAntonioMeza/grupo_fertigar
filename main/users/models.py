@@ -17,7 +17,7 @@ class User(AbstractUser):
     apellido_paterno = models.CharField(max_length=200, null=True, verbose_name='Apellido Paterno')
     apellido_materno = models.CharField(max_length=200, null=True, verbose_name='Apellido Materno')
     access_to_app = models.BooleanField(default=True, verbose_name='Puede acceder a la app')
-    created_at = models.IntegerField(default=None, null=True, blank=True, verbose_name='Fecha de creación')
+    created_at = models.IntegerField(default=True, null=True, blank=True, verbose_name='Fecha de creación')
     updated_at = models.IntegerField(default=None,null=True, blank=True, verbose_name='Fecha de actualización')
     created_by = models.ForeignKey(
         'self', 

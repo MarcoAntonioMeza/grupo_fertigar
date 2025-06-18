@@ -28,7 +28,7 @@ def listado_modulos(request):
             "url": "crm_proveedor_index",
             "app": "crm",
             "permiso": "can_view_proveedor",
-            "icono": "fe-gift",  # Alternativas: fe-user-plus, fe-briefcase, fe-credit-card
+            "icono": "fe-package",  # Alternativas: fe-user-plus, fe-briefcase, fe-credit-card
             "submodulos": [],
         },
         {

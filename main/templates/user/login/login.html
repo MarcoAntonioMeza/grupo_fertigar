@@ -146,8 +146,8 @@
     <!-- Slider de fondo con transición mejorada -->
     <script>
         const images = [
-            "{% static 'images/slides/slide1.jpg' %}",
             "{% static 'images/slides/slide2.jpg' %}",
+            "{% static 'images/slides/slide1.jpg' %}",
             "{% static 'images/slides/slide3.jpg' %}"
         ];
         let index = 0;
@@ -174,7 +174,7 @@
         window.addEventListener('load', () => {
             preloadImages();
             changeBackground();
-            setInterval(changeBackground, 6000);
+            setInterval(changeBackground, 4000);
         });
     </script>
 </body>

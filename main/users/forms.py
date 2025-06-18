@@ -48,7 +48,6 @@ class UserSocialSignupForm(SocialSignupForm):
 
 
 class UsuarioCreationForm(UserCreationForm):
-  
     grupos = forms.ModelMultipleChoiceField(
         queryset=Group.objects.all(),  # Obtiene todos los grupos
         required=False,  # Puede ser opcional

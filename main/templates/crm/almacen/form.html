@@ -142,7 +142,7 @@
                     </h3>
                 </div>
                 <div class="card-body">
-                    
+
                     <!-- Código Postal centrado -->
                     <div class="row mb-4">
                         <div class="col-md-4"></div>
@@ -243,7 +243,33 @@
                         </div>
                         <div class="col-md-3"></div>
                     </div>
-                    
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            {{ direccion_form.latitud.label_tag }}
+                            {{ direccion_form.latitud }}
+                            {% if direccion_form.latitud.errors %}
+                            <div class="text-danger mt-1">
+                                {% for error in direccion_form.latitud.errors %}
+                                <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+
+                            {{ direccion_form.longitud.label_tag }}
+                            {{ direccion_form.longitud }}
+                            {% if direccion_form.longitud.errors %}
+                            <div class="text-danger mt-1">
+                                {% for error in direccion_form.longitud.errors %}
+                                <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
 
                 </div>
             </div>

@@ -133,7 +133,15 @@ class Producto(BaseModel):
     codigo = models.CharField(max_length=30, unique=True, verbose_name="Código" , blank=True, null=True)
     nombre = models.CharField(max_length=50, verbose_name="Nombre", blank=False, null=False)
     categoria = models.ForeignKey(Categoria,on_delete=models.SET_NULL,blank=True,null=True,verbose_name="Categoría",related_name="productos_categoria")
-    stock = models.PositiveIntegerField(default=0, verbose_name="Stock Global", blank=True, null=False)
+    #stock = models.PositiveIntegerField(default=0, verbose_name="Stock Global", blank=True, null=False)
+    stock = models.DecimalField(
+        max_digits=10,          # Total de dígitos (ajusta según tus necesidades)
+        decimal_places=3,       # Número de decimales
+        default=0,
+        verbose_name="Stock Global",
+        blank=True,
+        null=False
+    )
     imagen = models.ImageField(upload_to="productos/", blank=True, null=True)
     proveedores = models.ManyToManyField('Proveedor',blank=True)
     precio_especial = models.DecimalField(max_digits=10, decimal_places=2,blank=True,   default=0.0,  null=True,verbose_name="Precio Especial")
@@ -226,6 +234,8 @@ class DireccionAlmacen(BaseDireccion):
     almacen = models.ForeignKey(
         Almacen, on_delete=models.CASCADE, related_name="direccion_almacen"
     )
+    latitud = models.FloatField(blank=True, null=True, default=None, verbose_name="Latitud")
+    longitud = models.FloatField(blank=True, null=True, default=None, verbose_name="Longitud")
 
     def __str__(self):
         return f"{self.calle}, {self.colonia}, {self.municipio.nombre}, {self.estado.nombre}"
@@ -237,27 +247,33 @@ class DireccionAlmacen(BaseDireccion):
 class Agente(BaseModel):
     STATUS_ACTIVO = "ACT"
     STATUS_INACTIVO = "INA"
+    STATUS_DELETE = "DEL"
     STATUS_CHOICES = [
         (STATUS_ACTIVO, "Activo"),
         (STATUS_INACTIVO, "Inactivo"),
     ]
 
-    nombre = models.CharField(
-        max_length=200, verbose_name="Nombre del Agente", blank=False, null=False
-    )
-    status = models.CharField(
-        max_length=3,
-        choices=STATUS_CHOICES,
-        verbose_name="Estado",
-        default=STATUS_ACTIVO,
-    )
-    codigo = models.CharField(
-        max_length=20,
-        verbose_name="Código del Agente",
-        blank=False,
-        null=True,
-        unique=True,
-    )
+    nombre = models.CharField(max_length=200, verbose_name="Nombres", blank=False, null=False)
+    apellidos = models.CharField(max_length=200, verbose_name="Apellidos", blank=True, null=True)
+    status = models.CharField(max_length=3,choices=STATUS_CHOICES,verbose_name="Estado",default=STATUS_ACTIVO)
+    codigo = models.CharField(max_length=20,verbose_name="Código del Agente",blank=False,null=True,unique=True)
+    telefono = models.CharField(max_length=15, verbose_name="Teléfono", blank=True, null=True)
+    email = models.EmailField(max_length=150,verbose_name="Correo Electrónico", blank=True, null=True)
+    imagen = models.ImageField(upload_to="agentes", blank=True, null=True, verbose_name="Imagen")
+    
+    def __str__(self):
+        return f"{self.codigo} - {self.nombre} {self.apellidos}"
+    
+    def save(self, *args, **kwargs):
+        #nomalizar nombre
+        self.nombre = self.nombre.upper().strip()
+        self.apellidos = (self.apellidos or "").upper().strip()
+        super().save(*args, **kwargs)
+        
+class DireccionAgente(BaseDireccion):
+    cliente = models.ForeignKey(Agente, on_delete=models.CASCADE, related_name="direccion_agente")
+    
+    
 
 
 

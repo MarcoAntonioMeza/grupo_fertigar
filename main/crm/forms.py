@@ -3,10 +3,8 @@ from django import forms
 from .models import (
     Categoria,
     Producto,UnidadSAT,
-    
     Agente,
     Almacen,
-    Precio,
     DireccionAlmacen,
     Proveedor,
     DireccionProveedor,
@@ -64,6 +62,8 @@ class DireccionAlmacenForm(forms.ModelForm):
             "calle",
             "numero_exterior",
             "numero_interior",
+            "longitud",
+            "latitud"
         ]
 
     # Campo extra para la búsqueda del código postal (ahora es opcional)
@@ -180,8 +180,6 @@ class DireccionAlmacenForm(forms.ModelForm):
 # ======================================================
 #          FORM  PARA AGREGAR CLIENTE
 # ======================================================
-
-
 class ClienteForm(forms.ModelForm):
     class Meta:
         model = Cliente
@@ -212,7 +210,6 @@ class ClienteForm(forms.ModelForm):
                         "placeholder": "Ej. 5551234567",
                     }
                 )
-
 
 class DireccionClienteForm(forms.ModelForm):
     class Meta:
@@ -336,6 +333,7 @@ class DireccionClienteForm(forms.ModelForm):
         if colonia not in self.fields["colonia"].queryset:
             raise forms.ValidationError("Seleccione una colonia válida.")
         return colonia
+
 
 
 
