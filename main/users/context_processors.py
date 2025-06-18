@@ -11,105 +11,73 @@ def allauth_settings(request):
     }
 
 
-
-
 def listado_modulos(request):
     modulos = [
-         # =====================================
-        #          GRUPOS SIN AGUPAR
-        # =====================================
-        {
+         {
             "is_main": True,
-            "nombre": "GRUPOS",
-            "url": "escolar_docente_grupo_index",
-            "app": "escolar_docente",
-            "permiso": "can_view_grupo_docente",
-            "icono": "fa-th",
+            "nombre": "PRODUCTOS",
+            "url": "crm_producto_index",
+            "app": "crm",
+            "permiso": "can_view_producto",
+            "icono": "fe-gift",  # Alternativas: fe-user-plus, fe-briefcase, fe-credit-card
             "submodulos": [],
         },
-        # =====================================
-        #          ALUMNOS SIN AGUPAR
-        # =====================================
-        {
+         {
             "is_main": True,
-            "nombre": "ALUMNOS",
-            "url": "escolar_docente_alumnos_index",
-            "app": "escolar_docente",
-            "permiso": "can_view_alumno",
-            "icono": "fa-users",
+            "nombre": "PROVEEDORES",
+            "url": "crm_proveedor_index",
+            "app": "crm",
+            "permiso": "can_view_proveedor",
+            "icono": "fe-gift",  # Alternativas: fe-user-plus, fe-briefcase, fe-credit-card
             "submodulos": [],
         },
         {
             "is_main": True,
-            "nombre": "MATERIAS",
-            "url": "escolar_docente_materia_index",
-            "app": "escolar_docente",
-            "permiso": "can_view_materia",
-            "icono": "fa-book",
+            "nombre": "ALMACENES",
+            "url": "crm_almacen_index",
+            "app": "crm",
+            "permiso": "can_view_almacen",
+            "icono": "fe-layers",  # Alternativas: fe-user-plus, fe-briefcase, fe-credit-card
             "submodulos": [],
         },
-        # =====================================
-        #          CONFIGURACUIO ESCOLAR
-        # =====================================
         {
-            "is_main": False,
-            "nombre": "CONFIGURACIÓN ESCOLAR",
-            "url": "user_index",
-            "app": "escolar",
-            "icono": "fa-star",
-            "submodulos": [
-                {
-                    "app": "escolar",
-                    "nombre": "CICLOS ESCOLARES",
-                    "permiso": "can_view_ciclo_escolar",
-                    "url": "escolar_ciclo_index",
-                    "icono": "fa-book",
-                },
-                {
-                    "app": "escolar",
-                    "nombre": "EVENTOS",
-                    "permiso": "can_view_eventos_globales",
-                    "url": "escolar_eventos_globales_index",
-                    "icono": "fa-calendar-alt",
-                },
-                {
-                    "app": "escolar",
-                    "nombre": "CAMPOS FORMATIVOS",
-                    "permiso": "can_view_campo_formativo",
-                    "url": "escolar_campo_formativo_index",
-                    "icono": "fa fa-pencil-square-o",
-                },
-            ],
+            "is_main": True,
+            "nombre": "CLIENTES",
+            "url": "crm_cliente_index",
+            "app": "crm",
+            "permiso": "can_view_cliente",
+            "icono": "fe-user-plus",  # Alternativas: fe-user-plus, fe-briefcase, fe-credit-card
+            "submodulos": [],
         },
         # =====================================
         #   CONFIGURACIONES DEL SISTEMA
         # =====================================
         {
             "is_main": False,
-            "nombre": "CONFIGURACION",
+            "nombre": "CONFIGURACIóN",
             "url": "user_index",
             "app": "user",
-            "icono": "fa-cogs",  # Icono para el módulo 'USUARIOS'
+            "icono": "fe-settings",  # Alternativas: fe-sliders, fe-tool, fe-server
             "submodulos": [
                 # =====================================
                 #  SUBMÓDULO DE USUARIOS
                 # =====================================
                 {
-                    "app": "user",
+                    "app": "users",
                     "nombre": "Usuarios",
                     "permiso": "can_view_user",
                     "url": "user_index",
-                    "icono": "fa-users",  # Icono para el submódulo 'Ver Usuarios'
+                    "icono": "fe-user-check",  # Alternativas: fe-users, fe-user-check
                 },
                 # =====================================
                 #  SUBMÓDULO DE GRUPOS
                 # =====================================
                 {
                     "app": "auth",
-                    "nombre": "Grupos",
+                    "nombre": "Grupos de permisos",
                     "permiso": "can_view_grupo",
                     "url": "grupos_index",
-                    "icono": "fa-users",  # Icono para el submódulo 'Ver Usuarios'
+                    "icono": "fe-lock",  # Alternativas: fe-user-plus, fe-lock
                 },
             ],
         },
@@ -125,13 +93,13 @@ def listado_modulos(request):
             if modulo["is_main"]:
                 if f'{modulo["app"]}.{modulo["permiso"]}' in permisos_usuario:
                     modulos_accesibles.append(modulo)
-                
+
                 continue
-            
+
             modulos_acc = {
                 "is_main": modulo["is_main"],
                 "nombre": modulo["nombre"],
-                'url': modulo['url'],
+                "url": modulo["url"],
                 "icono": modulo["icono"],  # Incluir el ícono del módulo
                 "submodulos": [],
             }
@@ -141,7 +109,7 @@ def listado_modulos(request):
 
             if modulos_acc["submodulos"]:
                 modulos_accesibles.append(modulos_acc)
-        print(modulos_accesibles,'modulos_accesibles')
+        # print(modulos_accesibles, "modulos_accesibles")
 
         return {"modulos_accesibles": modulos_accesibles}
 

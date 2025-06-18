@@ -6,27 +6,69 @@
     {% include "partials/title-meta.html" with title="INICIO DE SESIÓN" %}
     {% include "partials/head-css.html" %}
     <style>
+        /* Transición suave para todo el body */
         body {
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
             transition: background-image 1s ease-in-out;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-in-out forwards;
         }
 
+        /* Animación de aparición */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Contenedor principal con transición */
         .login-container {
             background-color: rgba(255, 255, 255, 0.70);
-            /* Esto ya da opacidad */
             border-radius: 10px;
             padding: 30px;
-            /* opacity: 0.9; <-- innecesario y puede afectar hijos */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: scale(0.95);
+            animation: scaleUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation-delay: 0.2s;
+            opacity: 0;
         }
 
+        @keyframes scaleUp {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
 
-        /* Estilo más visible para errores */
+       
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Estilo para errores */
         .alert-danger {
             background-color: #ffebeb;
             color: #c30000;
             border: 1px solid #c30000;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+
+        /* Mejora para el botón */
+        .btn-primary {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
@@ -93,7 +135,7 @@
         </div>
     </div>
 
-    <footer class="footer footer-alt text-center mt-3">
+    <footer class="footer footer-alt text-center mt-3" style="opacity: 0; animation: fadeIn 0.5s ease-out forwards; animation-delay: 1s;">
         <script>document.write(new Date().getFullYear())</script> &copy; por
         <a href="https://lerco.mx/" class="text-dark text-decoration-underline">LERCO</a>
     </footer>
@@ -101,7 +143,7 @@
     {% include "partials/footer-script.html" %}
     <script src="{% static 'js/app.min.js' %}"></script>
 
-    <!-- Slider de fondo -->
+    <!-- Slider de fondo con transición mejorada -->
     <script>
         const images = [
             "{% static 'images/slides/slide1.jpg' %}",
@@ -111,15 +153,30 @@
         let index = 0;
         const body = document.getElementById("login-body");
 
+        // Precargar imágenes para transiciones suaves
+        const preloadImages = () => {
+            images.forEach(img => {
+                const image = new Image();
+                image.src = img;
+            });
+        };
+
         function changeBackground() {
-            body.style.backgroundImage = `url('${images[index]}')`;
-            index = (index + 1) % images.length;
+            body.style.opacity = 0;
+            setTimeout(() => {
+                body.style.backgroundImage = `url('${images[index]}')`;
+                body.style.opacity = 1;
+                index = (index + 1) % images.length;
+            }, 500);
         }
 
-        changeBackground();
-        setInterval(changeBackground, 6000);
+        // Precargar y configurar el slider
+        window.addEventListener('load', () => {
+            preloadImages();
+            changeBackground();
+            setInterval(changeBackground, 6000);
+        });
     </script>
-
 </body>
 
 </html>

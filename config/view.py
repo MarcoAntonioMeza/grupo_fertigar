@@ -1,5 +1,7 @@
 from django.shortcuts import render,redirect
-from django.views.generic.base import TemplateView     
+from django.views.generic.base import TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
+
 from django.contrib import messages
 
 
@@ -7,7 +9,7 @@ from main.adminv2.forms.login import LoginForm
 from django.contrib.auth import authenticate, login,logout
 
 
-class DashboardView(TemplateView):
+class DashboardView(LoginRequiredMixin,TemplateView):
      pass
 index_view = DashboardView.as_view(template_name="index.html")
 
@@ -44,4 +46,8 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('login')
+    return render(request, 'user/login/logout.html')
+    
+
+
+

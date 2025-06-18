@@ -19,8 +19,8 @@ urlpatterns = [
     
     # User management
     path("users/", include("main.users.urls")),
-    path("login/",  login_view, name="login"),
-    path("logout/", logout_view, name="logout"),
+    path("login/",  login_view, name="login_v2"),
+    path("logout/", logout_view, name="logout_v2"),
     
     #path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here

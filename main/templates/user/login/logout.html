@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    {% include "partials/title-meta.html" with title="CERRAR SESIÓN" %}
+    {% include "partials/head-css.html" %}
+    <style>
+        body {
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            transition: background-image 1s ease-in-out;
+        }
+
+        .logout-container {
+            background-color: rgba(255, 255, 255, 0.90);
+            border-radius: 10px;
+            padding: 30px;
+        }
+
+        .logout-checkmark {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .logout-checkmark svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 0;
+            animation: dash 2s ease-in-out;
+        }
+
+        .spin {
+            animation: spin 2s;
+        }
+
+        @keyframes dash {
+            0% {
+                stroke-dashoffset: 1000;
+            }
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body class="loading authentication-bg" id="logout-body">
+
+    <!-- Centrado vertical con min-vh-100 y flex -->
+    <div class="container min-vh-100 d-flex justify-content-center align-items-center">
+        <div class="col-md-10 col-lg-8 col-xl-6">
+            <div class="card shadow-none logout-container">
+                <div class="card-body">
+
+                    <div class="text-center w-75 m-auto mb-4">
+                        <img src="{% static 'images/logo-dark.png' %}" alt="Sistema" height="80">
+                    </div>
+
+                    <div class="text-center">
+                        <div class="logout-checkmark">
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 161.2 161.2">
+                                <path class="path" fill="none" stroke="#4bd396" stroke-miterlimit="10" d="M425.9,52.1L425.9,52.1c-2.2-2.6-6-2.6-8.3-0.1l-42.7,46.2l-14.3-16.4
+                                    c-2.3-2.7-6.2-2.7-8.6-0.1c-1.9,2.1-2,5.6-0.1,7.7l17.6,20.3c0.2,0.3,0.4,0.6,0.6,0.9c1.8,2,4.4,2.5,6.6,1.4c0.7-0.3,1.4-0.8,2-1.5
+                                    c0.3-0.3,0.5-0.6,0.7-0.9l46.3-50.1C427.7,57.5,427.7,54.2,425.9,52.1z" />
+                                <circle class="path" fill="none" stroke="#4bd396" stroke-width="4" stroke-miterlimit="10" cx="80.6" cy="80.6" r="62.1" />
+                                <polyline class="path" fill="none" stroke="#4bd396" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="113,52.8
+                                    74.1,108.4 48.2,86.4 " />
+                                <circle class="spin" fill="none" stroke="#4bd396" stroke-width="4" stroke-miterlimit="10" stroke-dasharray="12.2175,12.2175" cx="80.6" cy="80.6" r="73.9" />
+                            </svg>
+                        </div>
+
+                        <h3 class="mt-4">¡Sesión cerrada correctamente!</h3>
+                        <p class="text-muted mt-3">Has cerrado sesión exitosamente. ¿Deseas <a href="{% url 'login_v2' %}" class="text-primary fw-bold">iniciar sesión</a> nuevamente?</p>
+                    </div>
+
+                </div> <!-- end card-body -->
+            </div> <!-- end card -->
+        </div> <!-- end col -->
+    </div> <!-- end container -->
+
+    <footer class="footer footer-alt text-center mt-3">
+        <script>document.write(new Date().getFullYear())</script> &copy; por
+        <a href="https://lerco.mx/" class="text-dark text-decoration-underline">LERCO</a>
+    </footer>
+
+    {% include "partials/footer-script.html" %}
+    <script src="{% static 'js/app.min.js' %}"></script>
+
+    <!-- Slider de fondo -->
+    <script>
+        const images = [
+            "{% static 'images/slides/slide3.jpg' %}",
+            "{% static 'images/slides/slide2.jpg' %}",
+            "{% static 'images/slides/slide1.jpg' %}"
+        ];
+        let index = 0;
+        const body = document.getElementById("logout-body");
+
+        function changeBackground() {
+            body.style.backgroundImage = `url('${images[index]}')`;
+            index = (index + 1) % images.length;
+        }
+
+        // Cambio inmediato al cargar
+        changeBackground();
+        // Rotación cada 6 segundos
+        setInterval(changeBackground, 6000);
+    </script>
+
+</body>
+
+</html>
