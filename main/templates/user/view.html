@@ -18,6 +18,12 @@
                 <div class="row">
                     <div class="col-md-12">
                         {% if can.update %}
+                        <a href="{% url 'reset_password' model.id %}" class="btn btn-lg btn-secondary">
+                            <i class="fas fa-user me-2"></i>CAMBIAR CONTRASEÑA
+                        </a>
+                        {% endif %}
+
+                        {% if can.update %}
                         <a href="{% url 'user_update' model.id %}" class="btn btn-lg btn-primary">
                             <i class="fas fa-plus me-2"></i>EDITAR
                         </a>
@@ -114,9 +120,9 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <div class="border-bottom pb-2 mb-2">
-                            <small class="text-muted fw-bold">ACCESO A LA APLICACIÓN</small>
+                            <small class="text-muted fw-bold">ACCESO AL SISTEMA</small>
                             <div>
-                                {% if model.access_to_app %}
+                                {% if model.is_active %}
                                 <span class="badge bg-success"><i class="fas fa-check-circle me-1"></i> Permitido</span>
                                 {% else %}
                                 <span class="badge bg-danger"><i class="fas fa-times-circle me-1"></i> Denegado</span>

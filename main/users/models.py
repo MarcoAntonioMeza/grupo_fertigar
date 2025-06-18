@@ -16,6 +16,7 @@ class User(AbstractUser):
     segundo_nombre = models.CharField(max_length=200, null=True, verbose_name='Segundo Nombre')
     apellido_paterno = models.CharField(max_length=200, null=True, verbose_name='Apellido Paterno')
     apellido_materno = models.CharField(max_length=200, null=True, verbose_name='Apellido Materno')
+    telefono = models.CharField(max_length=15, null=True, verbose_name='Teléfono', default=None)
     access_to_app = models.BooleanField(default=True, verbose_name='Puede acceder a la app')
     created_at = models.IntegerField(default=True, null=True, blank=True, verbose_name='Fecha de creación')
     updated_at = models.IntegerField(default=None,null=True, blank=True, verbose_name='Fecha de actualización')
@@ -90,10 +91,10 @@ class User(AbstractUser):
             self.updated_at = int(time.time())
         
         
-        self.nombre = self.nombre.strip().upper()
-        self.segundo_nombre = self.segundo_nombre.strip().upper() if self.segundo_nombre else None
-        self.apellido_paterno = self.apellido_paterno.strip().upper() if self.apellido_paterno else None
-        self.apellido_materno = self.apellido_materno.strip().upper() if self.apellido_materno else None
+        self.nombre = (self.nombre or "").strip().upper()
+        self.segundo_nombre = (self.segundo_nombre or "").strip().upper() 
+        self.apellido_paterno = (self.apellido_paterno or "").strip().upper() 
+        self.apellido_materno = (self.apellido_materno or "").strip().upper() 
     
         
         
