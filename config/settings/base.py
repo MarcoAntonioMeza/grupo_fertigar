@@ -499,15 +499,16 @@ ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
 # ------------------------------------------------------------------------------
 # Solo aceptar peticiones CSRF de estos dominios
 if not ES_LOCAL:
-    # pass
-    CSRF_TRUSTED_ORIGINS = [
-        "https://dev-fertigar.lercomx.com",
-        "https://www.dev-fertigar.lercomx.com",
-    ]
-
-    # Seguridad adicional para cookies
-    CSRF_COOKIE_SECURE = True  # Solo envía cookies CSRF sobre HTTPS
-    SESSION_COOKIE_SECURE = True  # Solo envía cookies de sesión sobre HTTPS
-    SECURE_SSL_REDIRECT = True  # Redirige HTTP a HTTPS automáticamente
-    USE_TLS = True
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    pass
+    ## pass
+    #CSRF_TRUSTED_ORIGINS = [
+    #    "https://dev-fertigar.lercomx.com",
+    #    "https://www.dev-fertigar.lercomx.com",
+    #]
+#
+    ## Seguridad adicional para cookies
+    #CSRF_COOKIE_SECURE = True  # Solo envía cookies CSRF sobre HTTPS
+    #SESSION_COOKIE_SECURE = True  # Solo envía cookies de sesión sobre HTTPS
+    #SECURE_SSL_REDIRECT = True  # Redirige HTTP a HTTPS automáticamente
+    #USE_TLS = True
+    #SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
