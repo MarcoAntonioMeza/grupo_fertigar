@@ -61,7 +61,7 @@ LOCALE_PATHS = [str(BASE_DIR / "locale")]
 #        'NAME': BASE_DIR / 'db.sqlite3',
 #    },
 # }
-#DATABASES = {
+# DATABASES = {
 #    "default": {
 #        "ENGINE": "django.db.backends.mysql",
 #        "NAME": "dev_fertigar",
@@ -74,18 +74,18 @@ LOCALE_PATHS = [str(BASE_DIR / "locale")]
 #            "charset": "utf8mb4"
 #        },
 #    }
-#}
+# }
 
 DATABASES = {
-    'default': {
-        'ENGINE': env('DB_ENGINE'), 
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        'HOST': env('DB_HOST'),
-        'PORT': env('DB_PORT'),
-        'OPTIONS': {
-            'charset': env('DB_CHARSET', default='utf8mb4'),
+    "default": {
+        "ENGINE": env("DB_ENGINE"),
+        "NAME": env("DB_NAME"),
+        "USER": env("DB_USER"),
+        "PASSWORD": env("DB_PASSWORD"),
+        "HOST": env("DB_HOST"),
+        "PORT": env("DB_PORT"),
+        "OPTIONS": {
+            "charset": env("DB_CHARSET", default="utf8mb4"),
         },
     }
 }
@@ -105,8 +105,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # APPS
 # ------------------------------------------------------------------------------
 DJANGO_APPS = [
-   'jazzmin',             # tema Material
-    
+    "jazzmin",  # tema Material
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -154,16 +153,13 @@ JAZZMIN_SETTINGS = {
     "site_logo_classes": "img-circle",  # Hace el logo circular
     "welcome_sign": "Bienvenido al Panel Administrativo",
     "copyright": "© 2024 BY LERCO - Todos los derechos reservados",
-    
     # 🌙 CONFIGURACIÓN DE TEMA OSCURO AVANZADA
     "theme": "darkly",
     "dark_mode_theme": "darkly",
     "use_theme_switcher": False,  # Fuerza modo oscuro
-    
     # 🎨 COLORES PERSONALIZADOS PARA MODO OSCURO
     "custom_css": "admin/css/custom_dark.css",  # Archivo CSS personalizado
-    "custom_js": "admin/js/custom_dark.js",     # JavaScript personalizado
-    
+    "custom_js": "admin/js/custom_dark.js",  # JavaScript personalizado
     # 📱 DISEÑO Y LAYOUT
     "layout": "dark",  # Layout específico oscuro
     "changeform_format": "horizontal_tabs",  # Pestañas horizontales más modernas
@@ -173,33 +169,29 @@ JAZZMIN_SETTINGS = {
         "crm.cliente": "single",
         "ventas.factura": "horizontal_tabs",
     },
-    
     # 📦 NAVEGACIÓN Y SIDEBAR MEJORADA
     "show_sidebar": True,
     "navigation_expanded": True,
     "sidebar_nav_small_text": False,  # Texto más grande en sidebar
     "sidebar_disable_expand": False,
     "sidebar_nav_legacy_style": False,  # Estilo moderno
-    "sidebar_nav_flat_style": True,    # Estilo plano moderno
-    
+    "sidebar_nav_flat_style": True,  # Estilo plano moderno
     # 🔍 CONFIGURACIÓN DE BÚSQUEDA
     "search_model": ["auth.user", "crm.cliente", "ventas.factura"],
-    
     # 📋 APPS Y MODELOS ORGANIZADOS
     "hide_apps": ["sites"],  # Ocultar apps innecesarias
     "hide_models": ["auth.group"],  # Ocultar modelos específicos
     "order_with_respect_to": [
         "dashboard",
-        "crm", 
-        "ventas", 
-        "productos", 
-        "clientes", 
+        "crm",
+        "ventas",
+        "productos",
+        "clientes",
         "inventario",
         "reportes",
-        "auth", 
-        "usuarios"
+        "auth",
+        "usuarios",
     ],
-    
     # 🎯 ÍCONOS MODERNOS Y COHERENTES
     "icons": {
         # Apps principales
@@ -210,7 +202,6 @@ JAZZMIN_SETTINGS = {
         "clientes": "fas fa-handshake",
         "inventario": "fas fa-warehouse",
         "reportes": "fas fa-chart-bar",
-        
         # Modelos específicos
         "auth.user": "fas fa-user-circle",
         "auth.group": "fas fa-users-cog",
@@ -225,55 +216,51 @@ JAZZMIN_SETTINGS = {
         "inventario.stock": "fas fa-boxes",
         "reportes.reporte": "fas fa-file-alt",
     },
-    
     # 🏠 DASHBOARD PERSONALIZADO
     "show_ui_builder": False,
     "changeform_format": "horizontal_tabs",
-    
     # 🔧 FUNCIONALIDADES AVANZADAS
     "related_modal_active": True,
     "related_modal_active_tab": "related-object",
     "custom_links": {
-        "crm": [{
-            "name": "Reportes CRM", 
-            "url": "admin:crm_reporte_changelist", 
-            "icon": "fas fa-chart-pie",
-            "permissions": ["crm.view_reporte"]
-        }],
-        "ventas": [{
-            "name": "Dashboard Ventas",
-            "url": "/admin/ventas/dashboard/",
-            "icon": "fas fa-tachometer-alt",
-            "permissions": ["ventas.view_factura"]
-        }]
+        "crm": [
+            {
+                "name": "Reportes CRM",
+                "url": "admin:crm_reporte_changelist",
+                "icon": "fas fa-chart-pie",
+                "permissions": ["crm.view_reporte"],
+            }
+        ],
+        "ventas": [
+            {
+                "name": "Dashboard Ventas",
+                "url": "/admin/ventas/dashboard/",
+                "icon": "fas fa-tachometer-alt",
+                "permissions": ["ventas.view_factura"],
+            }
+        ],
     },
-    
     # 🎨 INTERFAZ DE USUARIO MEJORADA
     "show_sidebar": True,
     "navigation_expanded": True,
     "hide_apps": [],
     "hide_models": [],
     "show_ui_builder": False,
-    
     # 🔒 CONFIGURACIÓN DE SEGURIDAD Y NAVEGACIÓN
     "show_logout_link": True,
     "logout_redirect_url": "/admin/login/",
     "show_sidebar_toggle": True,
     "show_navbar": True,
     "navbar_small_text": False,
-    
     # 📊 WIDGETS Y FORMULARIOS
     "changeform_format": "horizontal_tabs",
     "language_chooser": False,  # Desactivar selector de idioma si no es necesario
-    
     # 🎭 PERSONALIZACIÓN ADICIONAL
     "user_avatar": None,  # o una URL si quieres avatares
     "topmenu_links": [
         # Enlaces adicionales en el menú superior
         {"name": "Inicio", "url": "admin:index", "permissions": ["auth.view_user"]},
-       
     ],
-    
     # 🌐 CONFIGURACIÓN DE IDIOMA
     "language_chooser": False,
 }
@@ -308,8 +295,8 @@ JAZZMIN_UI_TWEAKS = {
         "info": "btn-info",
         "warning": "btn-warning",
         "danger": "btn-danger",
-        "success": "btn-success"
-    }
+        "success": "btn-success",
+    },
 }
 # MIGRATIONS
 # ------------------------------------------------------------------------------
@@ -326,7 +313,7 @@ AUTHENTICATION_BACKENDS = [
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 AUTH_USER_MODEL = "users.User"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
-#LOGIN_REDIRECT_URL = "users:redirect"
+# LOGIN_REDIRECT_URL = "users:redirect"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-url
 LOGIN_URL = "/login/"
 
@@ -373,7 +360,10 @@ STATIC_ROOT = str(BASE_DIR / "staticfiles")
 # https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
-STATICFILES_DIRS = [str(APPS_DIR / "static")]
+STATICFILES_DIRS = [
+    str(APPS_DIR / "static"),
+    BASE_DIR / "main" / "static",
+]
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
@@ -482,40 +472,40 @@ LOGGING = {
     "root": {"level": "INFO", "handlers": ["console"]},
 }
 
-#REDIS_URL = env("REDIS_URL", default="redis://localhost:6379/0")
-#REDIS_SSL = REDIS_URL.startswith("rediss://")
+# REDIS_URL = env("REDIS_URL", default="redis://localhost:6379/0")
+# REDIS_SSL = REDIS_URL.startswith("rediss://")
 
 
 ## django-allauth
 ## ------------------------------------------------------------------------------
 ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
 ## https://docs.allauth.org/en/latest/account/configuration.html
-#ACCOUNT_AUTHENTICATION_METHOD = "username"
+# ACCOUNT_AUTHENTICATION_METHOD = "username"
 ## https://docs.allauth.org/en/latest/account/configuration.html
-#ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_EMAIL_REQUIRED = True
 ## https://docs.allauth.org/en/latest/account/configuration.html
-#ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+# ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ## https://docs.allauth.org/en/latest/account/configuration.html
-#ACCOUNT_ADAPTER = "main.users.adapters.AccountAdapter"
+# ACCOUNT_ADAPTER = "main.users.adapters.AccountAdapter"
 ## https://docs.allauth.org/en/latest/account/forms.html
-#ACCOUNT_FORMS = {"signup": "main.users.forms.UserSignupForm"}
+# ACCOUNT_FORMS = {"signup": "main.users.forms.UserSignupForm"}
 ## https://docs.allauth.org/en/latest/socialaccount/configuration.html
-#SOCIALACCOUNT_ADAPTER = "main.users.adapters.SocialAccountAdapter"
+# SOCIALACCOUNT_ADAPTER = "main.users.adapters.SocialAccountAdapter"
 ## https://docs.allauth.org/en/latest/socialaccount/configuration.html
-#SOCIALACCOUNT_FORMS = {"signup": "main.users.forms.UserSocialSignupForm"}
+# SOCIALACCOUNT_FORMS = {"signup": "main.users.forms.UserSocialSignupForm"}
 
 
 # Your stuff...
 # ------------------------------------------------------------------------------
 # Solo aceptar peticiones CSRF de estos dominios
 if not ES_LOCAL:
-    #pass
+    # pass
     CSRF_TRUSTED_ORIGINS = [
-        'https://dev-fertigar.lercomx.com',
-        'https://www.dev-fertigar.lercomx.com'
+        "https://dev-fertigar.lercomx.com",
+        "https://www.dev-fertigar.lercomx.com",
     ]
 
     # Seguridad adicional para cookies
-    CSRF_COOKIE_SECURE = True      # Solo envía cookies CSRF sobre HTTPS
-    SESSION_COOKIE_SECURE = True   # Solo envía cookies de sesión sobre HTTPS
-    SECURE_SSL_REDIRECT = True    # Redirige HTTP a HTTPS automáticamente
+    CSRF_COOKIE_SECURE = True  # Solo envía cookies CSRF sobre HTTPS
+    SESSION_COOKIE_SECURE = True  # Solo envía cookies de sesión sobre HTTPS
+    SECURE_SSL_REDIRECT = True  # Redirige HTTP a HTTPS automáticamente
