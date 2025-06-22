@@ -6,7 +6,7 @@ from django.urls import include
 from django.urls import path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
-from config.view import index_view
+from config.view import index_view, boleta_pdf
 
 
 from .view import login_view, logout_view
@@ -27,6 +27,8 @@ urlpatterns = [
     
 
     path("", view=index_view, name="index"),
+    path("boleta/", view=boleta_pdf, name="boleta"),
+    
 
     path("apps/", include("main.apps.urls")),
 

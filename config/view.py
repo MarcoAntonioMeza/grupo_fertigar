@@ -9,9 +9,54 @@ from main.adminv2.forms.login import LoginForm
 from django.contrib.auth import authenticate, login,logout
 
 
+
+
+from weasyprint import HTML
+from django.template.loader import render_to_string
+from django.http import HttpResponse
+import datetime
+
+
 class DashboardView(LoginRequiredMixin,TemplateView):
      pass
 index_view = DashboardView.as_view(template_name="index.html")
+
+
+
+
+
+def boleta_pdf(request):
+    cliente = {
+        'nombre': 'Marco Antonio Meza',
+        'numero_cuenta': '1234567890',
+    }
+    fecha_emision = datetime.date.today().strftime('%d/%m/%Y')
+
+    movimientos = [
+        {'fecha': '01/03/2025', 'descripcion': 'Pago en tienda', 'cargo': 200.00, 'abono': 0.00, 'saldo': 1800.00},
+        {'fecha': '05/03/2025', 'descripcion': 'Transferencia recibida', 'cargo': 0.00, 'abono': 500.00, 'saldo': 2300.00},
+        {'fecha': '10/03/2025', 'descripcion': 'Pago de servicios', 'cargo': 150.00, 'abono': 0.00, 'saldo': 2150.00},
+        {'fecha': '15/03/2025', 'descripcion': 'Compra en línea', 'cargo': 320.50, 'abono': 0.00, 'saldo': 1829.50},
+        {'fecha': '20/03/2025', 'descripcion': 'Depósito en ventanilla', 'cargo': 0.00, 'abono': 700.00, 'saldo': 2529.50},
+    ]
+    
+    
+
+    logo_url = request.build_absolute_uri('/static/images/logo-dark.png')
+
+    html_string = render_to_string('boleta.html', {
+        'logo_url': logo_url,
+        'cliente': cliente,
+        'fecha_emision': fecha_emision,
+        'movimientos': movimientos,
+    })
+
+    pdf_file = HTML(string=html_string, base_url=request.build_absolute_uri('/')).write_pdf()
+
+    response = HttpResponse(pdf_file, content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename="boleta.pdf"'
+    return response
+
 
 #==================================================================
 #                            LOGIN

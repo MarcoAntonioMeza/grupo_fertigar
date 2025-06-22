@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Térmico</title>
+    <style>
+        @page {
+            size: 80mm auto; /* Ancho fijo 80mm, alto automático */
+            margin: 2mm 3mm; /* Márgenes mínimos */
+            padding: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            font-size: 8pt;
+            line-height: 1.2;
+            margin: 0;
+            padding: 0;
+            background: #fff;
+            color: #000;
+            width: 74mm; /* 80mm - márgenes */
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 3mm;
+        }
+
+        .logo img {
+            max-width: 60mm;
+            height: auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 12pt;
+            font-weight: bold;
+            margin: 2mm 0;
+            text-transform: uppercase;
+        }
+
+        .separator {
+            text-align: center;
+            font-size: 8pt;
+            margin: 2mm 0;
+        }
+
+        .separator::before {
+            content: "================================";
+            display: block;
+        }
+
+        .info-cliente {
+            font-size: 8pt;
+            margin: 3mm 0;
+            line-height: 1.3;
+        }
+
+        .info-cliente p {
+            margin: 1mm 0;
+            word-wrap: break-word;
+        }
+
+        .tabla-movimientos {
+            width: 100%;
+            margin: 3mm 0;
+            font-size: 7pt;
+        }
+
+        .tabla-header {
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 1px dashed #000;
+            padding-bottom: 1mm;
+            margin-bottom: 2mm;
+        }
+
+        .movimiento {
+            margin-bottom: 1mm;
+            padding-bottom: 1mm;
+            border-bottom: 1px dotted #ccc;
+        }
+
+        .mov-fecha {
+            font-size: 7pt;
+            color: #666;
+        }
+
+        .mov-desc {
+            font-weight: bold;
+            margin: 0.5mm 0;
+        }
+
+        .mov-amounts {
+            display: flex;
+            justify-content: space-between;
+            font-size: 7pt;
+        }
+
+        .total-section {
+            margin-top: 3mm;
+            border-top: 2px dashed #000;
+            padding-top: 2mm;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 7pt;
+            margin-top: 5mm;
+            border-top: 1px dashed #000;
+            padding-top: 3mm;
+        }
+
+        .qr-section {
+            text-align: center;
+            margin: 3mm 0;
+        }
+
+        /* Estilos para diferentes tipos de contenido */
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .text-left { text-align: left; }
+        .bold { font-weight: bold; }
+        .small { font-size: 6pt; }
+
+        /* Espaciado para impresora térmica */
+        .space-small { margin: 1mm 0; }
+        .space-medium { margin: 2mm 0; }
+        .space-large { margin: 4mm 0; }
+
+        /* Evitar salto de página en elementos críticos */
+        .no-break {
+            page-break-inside: avoid;
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo de la empresa -->
+    <div class="logo">
+        <img src="https://via.placeholder.com/150x50/000000/FFFFFF?text=LOGO" alt="Logo Empresa">
+    </div>
+
+    <!-- Título del ticket -->
+    <h1>ESTADO DE CUENTA</h1>
+    
+    <div class="separator"></div>
+
+    <!-- Información del cliente -->
+    <div class="info-cliente no-break">
+        <p><strong>Cliente:</strong> Marco Antonio Meza</p>
+        <p><strong>No. Cuenta:</strong> 1234567890</p>
+        <p><strong>Fecha:</strong> 18/06/2025</p>
+        <p><strong>Hora:</strong> 14:30:25</p>
+    </div>
+
+    <div class="separator"></div>
+
+    <!-- Encabezado de movimientos -->
+    <div class="tabla-header">
+        MOVIMIENTOS RECIENTES
+    </div>
+
+    <!-- Lista de movimientos optimizada para ticket -->
+    <div class="tabla-movimientos">
+        <div class="movimiento no-break">
+            <div class="mov-fecha">01/03/2025</div>
+            <div class="mov-desc">Pago en tienda</div>
+            <div class="mov-amounts">
+                <span>Cargo: $200.00</span>
+                <span>Saldo: $1,800.00</span>
+            </div>
+        </div>
+
+        <div class="movimiento no-break">
+            <div class="mov-fecha">05/03/2025</div>
+            <div class="mov-desc">Transferencia recibida</div>
+            <div class="mov-amounts">
+                <span>Abono: $500.00</span>
+                <span>Saldo: $2,300.00</span>
+            </div>
+        </div>
+
+        <div class="movimiento no-break">
+            <div class="mov-fecha">10/03/2025</div>
+            <div class="mov-desc">Pago de servicios</div>
+            <div class="mov-amounts">
+                <span>Cargo: $150.00</span>
+                <span>Saldo: $2,150.00</span>
+            </div>
+        </div>
+
+        <div class="movimiento no-break">
+            <div class="mov-fecha">15/03/2025</div>
+            <div class="mov-desc">Compra en línea</div>
+            <div class="mov-amounts">
+                <span>Cargo: $320.50</span>
+                <span>Saldo: $1,829.50</span>
+            </div>
+        </div>
+
+        <div class="movimiento no-break">
+            <div class="mov-fecha">20/03/2025</div>
+            <div class="mov-desc">Depósito ventanilla</div>
+            <div class="mov-amounts">
+                <span>Abono: $700.00</span>
+                <span>Saldo: $2,529.50</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Saldo actual -->
+    <div class="total-section no-break">
+        <div class="separator"></div>
+        <p>SALDO ACTUAL: <span class="bold">$2,529.50</span></p>
+    </div>
+
+    <!-- Información adicional -->
+    <div class="space-medium"></div>
+    <div class="text-center small">
+        <p>Consulta realizada:</p>
+        <p>18/06/2025 - 14:30:25</p>
+    </div>
+
+    <!-- Código QR o información de contacto -->
+    <div class="qr-section">
+        <div class="text-center small">
+            <p>Escanea para más información:</p>
+            <!-- Aquí iría el QR code -->
+            <div style="border: 1px solid #000; padding: 5mm; margin: 2mm auto; width: 20mm; font-size: 6pt;">
+                QR CODE
+            </div>
+        </div>
+    </div>
+
+    <!-- Pie del ticket -->
+    <div class="footer">
+        <p class="bold">¡Gracias por confiar en nosotros!</p>
+        <p class="small">www.tuempresa.com</p>
+        <p class="small">Tel: (222) 123-4567</p>
+        <div class="space-small"></div>
+        <p class="small">Este documento es válido sin firma</p>
+    </div>
+
+    <!-- Espacio final para corte -->
+    <div style="height: 10mm;"></div>
+</body>
+</html>

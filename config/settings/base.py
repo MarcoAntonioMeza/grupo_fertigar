@@ -17,7 +17,8 @@ env = environ.Env()
 
 APPLY_LOAD_SEPOMEX = False
 
-READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
+
+READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=True)
 if READ_DOT_ENV_FILE:
     # OS environment variables take precedence over variables from .env
     env.read_env(str(BASE_DIR / ".env"))
@@ -59,17 +60,31 @@ LOCALE_PATHS = [str(BASE_DIR / "locale")]
 #        'NAME': BASE_DIR / 'db.sqlite3',
 #    },
 # }
+#DATABASES = {
+#    "default": {
+#        "ENGINE": "django.db.backends.mysql",
+#        "NAME": "dev_fertigar",
+#        "USER": "root",
+#        "PASSWORD": "2808",
+#        "HOST": "localhost",  # o IP del servidor
+#        "PORT": "3307",
+#        "OPTIONS": {
+#            #'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+#            "charset": "utf8mb4"
+#        },
+#    }
+#}
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "dev_fertigar",
-        "USER": "root",
-        "PASSWORD": "2808",
-        "HOST": "localhost",  # o IP del servidor
-        "PORT": "3307",
-        "OPTIONS": {
-            #'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-            "charset": "utf8mb4"
+    'default': {
+        'ENGINE': env('DB_ENGINE'), 
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
+        'OPTIONS': {
+            'charset': env('DB_CHARSET', default='utf8mb4'),
         },
     }
 }
@@ -89,7 +104,8 @@ WSGI_APPLICATION = "config.wsgi.application"
 # APPS
 # ------------------------------------------------------------------------------
 DJANGO_APPS = [
-    "jazzmin",
+   'jazzmin',             # tema Material
+    
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -125,6 +141,175 @@ LOCAL_APPS = [
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
+# Configuración avanzada para Django Admin con tema oscuro personalizado
+JAZZMIN_SETTINGS = {
+    # 🎨 BRANDING Y TÍTULOS
+    "site_title": "FERTIGAR Admin",
+    "site_header": "GRUPO FERTIGAR",
+    "site_brand": "BY LERCO",
+    "site_logo": "images/logo-light.png",
+    "login_logo": "images/logo-light.png",
+    "login_logo_dark": "images/logo-dark.png",  # Logo específico para modo oscuro
+    "site_logo_classes": "img-circle",  # Hace el logo circular
+    "welcome_sign": "Bienvenido al Panel Administrativo",
+    "copyright": "© 2024 BY LERCO - Todos los derechos reservados",
+    
+    # 🌙 CONFIGURACIÓN DE TEMA OSCURO AVANZADA
+    "theme": "darkly",
+    "dark_mode_theme": "darkly",
+    "use_theme_switcher": False,  # Fuerza modo oscuro
+    
+    # 🎨 COLORES PERSONALIZADOS PARA MODO OSCURO
+    "custom_css": "admin/css/custom_dark.css",  # Archivo CSS personalizado
+    "custom_js": "admin/js/custom_dark.js",     # JavaScript personalizado
+    
+    # 📱 DISEÑO Y LAYOUT
+    "layout": "dark",  # Layout específico oscuro
+    "changeform_format": "horizontal_tabs",  # Pestañas horizontales más modernas
+    "changeform_format_overrides": {
+        "auth.user": "horizontal_tabs",
+        "auth.group": "collapsible",
+        "crm.cliente": "single",
+        "ventas.factura": "horizontal_tabs",
+    },
+    
+    # 📦 NAVEGACIÓN Y SIDEBAR MEJORADA
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "sidebar_nav_small_text": False,  # Texto más grande en sidebar
+    "sidebar_disable_expand": False,
+    "sidebar_nav_legacy_style": False,  # Estilo moderno
+    "sidebar_nav_flat_style": True,    # Estilo plano moderno
+    
+    # 🔍 CONFIGURACIÓN DE BÚSQUEDA
+    "search_model": ["auth.user", "crm.cliente", "ventas.factura"],
+    
+    # 📋 APPS Y MODELOS ORGANIZADOS
+    "hide_apps": ["sites"],  # Ocultar apps innecesarias
+    "hide_models": ["auth.group"],  # Ocultar modelos específicos
+    "order_with_respect_to": [
+        "dashboard",
+        "crm", 
+        "ventas", 
+        "productos", 
+        "clientes", 
+        "inventario",
+        "reportes",
+        "auth", 
+        "usuarios"
+    ],
+    
+    # 🎯 ÍCONOS MODERNOS Y COHERENTES
+    "icons": {
+        # Apps principales
+        "auth": "fas fa-shield-alt",
+        "crm": "fas fa-users",
+        "ventas": "fas fa-chart-line",
+        "productos": "fas fa-seedling",  # Tema agrícola
+        "clientes": "fas fa-handshake",
+        "inventario": "fas fa-warehouse",
+        "reportes": "fas fa-chart-bar",
+        
+        # Modelos específicos
+        "auth.user": "fas fa-user-circle",
+        "auth.group": "fas fa-users-cog",
+        "crm.agente": "fas fa-user-tie",
+        "crm.cliente": "fas fa-address-book",
+        "crm.contacto": "fas fa-id-card",
+        "ventas.factura": "fas fa-file-invoice-dollar",
+        "ventas.cotizacion": "fas fa-file-contract",
+        "ventas.pedido": "fas fa-shopping-cart",
+        "productos.fertilizante": "fas fa-leaf",
+        "productos.categoria": "fas fa-tags",
+        "inventario.stock": "fas fa-boxes",
+        "reportes.reporte": "fas fa-file-alt",
+    },
+    
+    # 🏠 DASHBOARD PERSONALIZADO
+    "show_ui_builder": False,
+    "changeform_format": "horizontal_tabs",
+    
+    # 🔧 FUNCIONALIDADES AVANZADAS
+    "related_modal_active": True,
+    "related_modal_active_tab": "related-object",
+    "custom_links": {
+        "crm": [{
+            "name": "Reportes CRM", 
+            "url": "admin:crm_reporte_changelist", 
+            "icon": "fas fa-chart-pie",
+            "permissions": ["crm.view_reporte"]
+        }],
+        "ventas": [{
+            "name": "Dashboard Ventas",
+            "url": "/admin/ventas/dashboard/",
+            "icon": "fas fa-tachometer-alt",
+            "permissions": ["ventas.view_factura"]
+        }]
+    },
+    
+    # 🎨 INTERFAZ DE USUARIO MEJORADA
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": [],
+    "hide_models": [],
+    "show_ui_builder": False,
+    
+    # 🔒 CONFIGURACIÓN DE SEGURIDAD Y NAVEGACIÓN
+    "show_logout_link": True,
+    "logout_redirect_url": "/admin/login/",
+    "show_sidebar_toggle": True,
+    "show_navbar": True,
+    "navbar_small_text": False,
+    
+    # 📊 WIDGETS Y FORMULARIOS
+    "changeform_format": "horizontal_tabs",
+    "language_chooser": False,  # Desactivar selector de idioma si no es necesario
+    
+    # 🎭 PERSONALIZACIÓN ADICIONAL
+    "user_avatar": None,  # o una URL si quieres avatares
+    "topmenu_links": [
+        # Enlaces adicionales en el menú superior
+        {"name": "Inicio", "url": "admin:index", "permissions": ["auth.view_user"]},
+       
+    ],
+    
+    # 🌐 CONFIGURACIÓN DE IDIOMA
+    "language_chooser": False,
+}
+
+# 🎨 CONFIGURACIÓN CSS PERSONALIZADA ADICIONAL
+JAZZMIN_UI_TWEAKS = {
+    # Colores del tema oscuro personalizados
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": False,
+    "accent": "accent-primary",
+    "navbar": "navbar-dark",
+    "no_navbar_border": False,
+    "navbar_fixed": False,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": False,
+    "sidebar": "sidebar-dark-primary",
+    "sidebar_nav_small_text": False,
+    "sidebar_nav_flat_style": True,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_compact_style": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": False,
+    "theme": "darkly",
+    "dark_mode_theme": "darkly",
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success"
+    }
+}
 # MIGRATIONS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#migration-modules

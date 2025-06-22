@@ -189,16 +189,9 @@ class Precio(BaseModel):
         (MAYOREO, "Mayoreo"),
         (PUBLICO, "Público"),
     ]
-    producto = models.ForeignKey(
-        Producto, on_delete=models.CASCADE, related_name="precios"
-    )
-    precio = models.DecimalField(max_digits=10, decimal_places=2)
-    tipo_precio = models.CharField(
-        max_length=3, choices=TIPO_PRECIO_CHOICES, default=PUBLICO
-    )
+   
 
-    def __str__(self):
-        return f"{self.producto.nombre} - {self.precio}"
+   
 
 
 # =================================================================
@@ -310,6 +303,18 @@ class Cliente(BaseModel):
         (TIPO_PREMIUM, "Premium"),
     ]
     
+    
+    ESPECIAL = "ESP"
+    SUBDISTRIBUIDOR = "SUB"
+    MAYOREO = "MAY"
+    PUBLICO = "PUB"
+    TIPO_PRECIO_CHOICES = [
+        (ESPECIAL, "Especial"),
+        (SUBDISTRIBUIDOR, "Subdistribuidor"),
+        (MAYOREO, "Mayoreo"),
+        (PUBLICO, "Público"),
+    ]
+    
     status = models.CharField(max_length=3,choices=STATUS_CHOICES,verbose_name="Estado",default=STATUS_ACTIVO)
     codigo = models.CharField(max_length=20, verbose_name="Código", blank=False, null=True, unique=True)
     nombre = models.CharField(max_length=200, verbose_name="Nombre", blank=True, null=False,default=None)
@@ -325,6 +330,9 @@ class Cliente(BaseModel):
     limite_credito = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Límite de crédito", default=None, blank=True, null=True)
     total_credito = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total de crédito", default=0.00, blank=True, null=True)
     plazos_semanas = models.IntegerField(verbose_name="Plazos en semanas", default=0, blank=True, null=True)
+    
+    #lista de precios 
+    precio_tipo = models.CharField(max_length=4, choices=TIPO_PRECIO_CHOICES, verbose_name="Lista de precios", default=PUBLICO)
     
     def __str__(self):
         return self.get_full_name

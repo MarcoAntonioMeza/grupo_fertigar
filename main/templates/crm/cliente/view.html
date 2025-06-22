@@ -61,7 +61,6 @@
 
 </div>
 <div class="row">
-    <!-- Columna de Información Principal -->
     <div class="col-lg-8 mb-4">
         <div class="card h-100">
             <div class="card-header bg-primary text-white">
@@ -90,10 +89,16 @@
                                 <h5 class="mb-0">{{ model.codigo|default:"-" }}</h5>
                             </div>
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-md-4">
                             <div class="mb-3">
                                 <small class="text-muted fw-bold">RAZÓN SOCIAL</small>
                                 <h5 class="mb-0">{{ model.razon_social|default:"-" }}</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <small class="text-muted fw-bold">LISTA DE PRECIOS</small>
+                                <h5 class="mb-0">{{ model.get_precio_tipo_display|default:"-" }}</h5>
                             </div>
                         </div>
                     </div>
