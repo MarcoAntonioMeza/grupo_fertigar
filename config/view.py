@@ -17,7 +17,7 @@ from django.http import HttpResponse
 import datetime
 
 
-class DashboardView(LoginRequiredMixin,TemplateView):
+class DashboardView(TemplateView):
      pass
 index_view = DashboardView.as_view(template_name="index.html")
 
