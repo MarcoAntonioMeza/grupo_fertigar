@@ -509,3 +509,5 @@ if not ES_LOCAL:
     CSRF_COOKIE_SECURE = True  # Solo envía cookies CSRF sobre HTTPS
     SESSION_COOKIE_SECURE = True  # Solo envía cookies de sesión sobre HTTPS
     SECURE_SSL_REDIRECT = True  # Redirige HTTP a HTTPS automáticamente
+    USE_TLS = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
