@@ -27,7 +27,7 @@ urlpatterns = [
     
 
     path("", view=index_view, name="index"),
-    path("boleta/", view=boleta_pdf, name="boleta"),
+    #path("boleta/", view=boleta_pdf, name="boleta"),
     
 
     path("apps/", include("main.apps.urls")),
