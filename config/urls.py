@@ -19,8 +19,7 @@ urlpatterns = [
     
     # User management
     path("users/", include("main.users.urls")),
-    path("login/",  login_view, name="login_v2"),
-    path("logout/", logout_view, name="logout_v2"),
+   
     
     #path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
@@ -42,6 +41,10 @@ urlpatterns = [
     path("direccion/", include("main.direccion.urls")),
     #CRM 
     path("crm/", include("main.crm.urls")),
+    
+    
+    path("login/",  login_view, name="login_v2"),
+    path("logout/", logout_view, name="logout_v2"),
     
     # ...
     # Media files
