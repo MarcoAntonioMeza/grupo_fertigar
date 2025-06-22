@@ -6,7 +6,7 @@ from django.urls import include
 from django.urls import path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
-from config.view import index_view, boleta_pdf
+from config.view import index_view
 
 
 from .view import login_view, logout_view
