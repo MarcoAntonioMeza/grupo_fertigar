@@ -16,6 +16,7 @@ APPS_DIR = BASE_DIR / "main"
 env = environ.Env()
 
 APPLY_LOAD_SEPOMEX = False
+ES_LOCAL = env.bool("DJANGO_IS_LOCAL", default=True)
 
 
 READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=True)
@@ -481,28 +482,40 @@ LOGGING = {
     "root": {"level": "INFO", "handlers": ["console"]},
 }
 
-REDIS_URL = env("REDIS_URL", default="redis://localhost:6379/0")
-REDIS_SSL = REDIS_URL.startswith("rediss://")
+#REDIS_URL = env("REDIS_URL", default="redis://localhost:6379/0")
+#REDIS_SSL = REDIS_URL.startswith("rediss://")
 
 
-# django-allauth
-# ------------------------------------------------------------------------------
+## django-allauth
+## ------------------------------------------------------------------------------
 ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
-# https://docs.allauth.org/en/latest/account/configuration.html
-ACCOUNT_AUTHENTICATION_METHOD = "username"
-# https://docs.allauth.org/en/latest/account/configuration.html
-ACCOUNT_EMAIL_REQUIRED = True
-# https://docs.allauth.org/en/latest/account/configuration.html
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-# https://docs.allauth.org/en/latest/account/configuration.html
-ACCOUNT_ADAPTER = "main.users.adapters.AccountAdapter"
-# https://docs.allauth.org/en/latest/account/forms.html
-ACCOUNT_FORMS = {"signup": "main.users.forms.UserSignupForm"}
-# https://docs.allauth.org/en/latest/socialaccount/configuration.html
-SOCIALACCOUNT_ADAPTER = "main.users.adapters.SocialAccountAdapter"
-# https://docs.allauth.org/en/latest/socialaccount/configuration.html
-SOCIALACCOUNT_FORMS = {"signup": "main.users.forms.UserSocialSignupForm"}
+## https://docs.allauth.org/en/latest/account/configuration.html
+#ACCOUNT_AUTHENTICATION_METHOD = "username"
+## https://docs.allauth.org/en/latest/account/configuration.html
+#ACCOUNT_EMAIL_REQUIRED = True
+## https://docs.allauth.org/en/latest/account/configuration.html
+#ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+## https://docs.allauth.org/en/latest/account/configuration.html
+#ACCOUNT_ADAPTER = "main.users.adapters.AccountAdapter"
+## https://docs.allauth.org/en/latest/account/forms.html
+#ACCOUNT_FORMS = {"signup": "main.users.forms.UserSignupForm"}
+## https://docs.allauth.org/en/latest/socialaccount/configuration.html
+#SOCIALACCOUNT_ADAPTER = "main.users.adapters.SocialAccountAdapter"
+## https://docs.allauth.org/en/latest/socialaccount/configuration.html
+#SOCIALACCOUNT_FORMS = {"signup": "main.users.forms.UserSocialSignupForm"}
 
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+# Solo aceptar peticiones CSRF de estos dominios
+if not ES_LOCAL:
+    #pass
+    CSRF_TRUSTED_ORIGINS = [
+        'https://dev-fertigar.lercomx.com',
+        'https://www.dev-fertigar.lercomx.com'
+    ]
+
+    # Seguridad adicional para cookies
+    CSRF_COOKIE_SECURE = True      # Solo envía cookies CSRF sobre HTTPS
+    SESSION_COOKIE_SECURE = True   # Solo envía cookies de sesión sobre HTTPS
+    SECURE_SSL_REDIRECT = True    # Redirige HTTP a HTTPS automáticamente
