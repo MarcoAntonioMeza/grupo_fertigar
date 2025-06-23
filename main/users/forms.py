@@ -62,7 +62,7 @@ class UsuarioCreationForm(UserCreationForm):
     )
     class Meta:
         model = User
-        fields = ['username', 'email', 'nombre', 'segundo_nombre', 'apellido_paterno', 'apellido_materno', 
+        fields = ['username', 'email', 'nombre', 'segundo_nombre', 'apellido_paterno', 'apellido_materno', 'tipo',
                   'access_to_app', 'password1', 'password2','is_active','telefono']
 
     def __init__(self, *args, **kwargs):
@@ -72,7 +72,7 @@ class UsuarioCreationForm(UserCreationForm):
                 field.widget.attrs['class'] = 'form-check-input'
             else:
                 field.widget.attrs['class'] = 'form-control'
-            if field_name == 'segundo_nombre':
+            if field_name in ['segundo_nombre', 'telefono', 'apellido_paterno', 'apellido_materno' , 'nombre']:
                 field.required = False
            
                 
@@ -86,8 +86,9 @@ class UsuarioCreationForm(UserCreationForm):
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if User.objects.filter(email=email).exclude(id=self.instance.id).exists():
-            raise forms.ValidationError("Ya existe un User con este correo electrónico.")
+        #if not email.strip() == "":
+        #    if User.objects.filter(email=email).exclude(id=self.instance.id).exists():
+        #        raise forms.ValidationError("Ya existe un User con este correo electrónico.")
         return email
     
 
@@ -128,8 +129,9 @@ class UsuarioUpdateForm(forms.ModelForm):
     
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if User.objects.filter(email=email).exclude(id=self.instance.id).exists():
-            raise forms.ValidationError("Ya existe un User con este correo electrónico.")
+        if not email.strip() == "":
+            if User.objects.filter(email=email).exclude(id=self.instance.id).exists():
+                raise forms.ValidationError("Ya existe un User con este correo electrónico.")
         return email
 
 

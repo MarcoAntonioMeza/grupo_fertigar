@@ -12,11 +12,26 @@ from django.db import models
 
 
 class User(AbstractUser):
+    TIPO_ADMIN  = 10
+    TIPO_USER   = 20
+    TIPO_AGENTE = 30
+    
+    TIPO_CHOICES = (
+        (TIPO_ADMIN, 'Administrador'),
+        (TIPO_USER, 'Usuario'),
+        (TIPO_AGENTE,'Agente'),
+    )
+     
     nombre = models.CharField(max_length=200, null=False, verbose_name='Primer Nombre')
-    segundo_nombre = models.CharField(max_length=200, null=True, verbose_name='Segundo Nombre')
-    apellido_paterno = models.CharField(max_length=200, null=True, verbose_name='Apellido Paterno')
-    apellido_materno = models.CharField(max_length=200, null=True, verbose_name='Apellido Materno')
-    telefono = models.CharField(max_length=15, null=True, verbose_name='Teléfono', default=None)
+    tipo = models.PositiveSmallIntegerField(
+        choices=TIPO_CHOICES, 
+        default=TIPO_USER, 
+        verbose_name='Tipo de Usuario'
+    )
+    segundo_nombre = models.CharField(max_length=200, null=True, blank=True, verbose_name='Segundo Nombre')
+    apellido_paterno = models.CharField(max_length=200, null=True,blank=True, verbose_name='Apellido Paterno')
+    apellido_materno = models.CharField(max_length=200, null=True, blank=True, verbose_name='Apellido Materno')
+    telefono = models.CharField(max_length=15, null=True, blank=True, verbose_name='Teléfono', default=None)
     access_to_app = models.BooleanField(default=True, verbose_name='Puede acceder a la app')
     created_at = models.IntegerField(default=True, null=True, blank=True, verbose_name='Fecha de creación')
     updated_at = models.IntegerField(default=None,null=True, blank=True, verbose_name='Fecha de actualización')
@@ -73,24 +88,6 @@ class User(AbstractUser):
     
     
     def save(self, *args, **kwargs):
-        ## Solo cambiar el nombre de la foto si es un nuevo registro (sin pk)
-        #if self.profile_picture and not self.pk:
-        #    # Cambiar el nombre del archivo de la imagen a un nombre único aleatorio
-        #    ext = self.profile_picture.name.split('.')[-1]
-        #    new_name = f"{uuid.uuid4().hex}.{ext}"
-        #    self.profile_picture.name = os.path.join(new_name)
-        #
-        ## Si no hay foto, se asegura de que no sea None
-        #elif not self.profile_picture and self.pk:
-        #    old_instance = Usuario.objects.get(pk=self.pk)
-        #    self.profile_picture = old_instance.profile_picture
-        # Asignar las fechas de creación y actualización
-        if not self.created_at:
-            self.created_at = int(time.time())
-        else:
-            self.updated_at = int(time.time())
-        
-        
         self.nombre = (self.nombre or "").strip().upper()
         self.segundo_nombre = (self.segundo_nombre or "").strip().upper() 
         self.apellido_paterno = (self.apellido_paterno or "").strip().upper() 

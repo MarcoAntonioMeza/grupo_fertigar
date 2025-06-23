@@ -8,6 +8,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.db import transaction
 
+import time
+
 from .forms import UsuarioCreationForm, UsuarioUpdateForm,PasswordUpdateForm
 from .models import User, Direccion
 from main.direccion.forms import DireccionForm
@@ -62,7 +64,6 @@ def view_usuario(request, id):
 
 @permission_required(USER_CREATE, raise_exception=True)
 def crear_usuario(request):
-
     # estados = Estado.objects.all()
     if request.method == "POST":
         # Crear los formularios con los datos del POST
@@ -74,6 +75,10 @@ def crear_usuario(request):
             usuario = user_form.save(commit=False)  # Guardar el usuario
             grupo = user_form.cleaned_data["grupos"]
             permisos = user_form.cleaned_data["permisos"]
+            usuario.created_by = request.user  # Asignar el creador del usuario
+            usuario.created_at = int(time.time())
+            usuario.is_active = True
+            
             usuario.save()  # Guardar el usuario
 
             # Asignar los grupos (si hay varios, usamos .set())
@@ -146,8 +151,8 @@ def update_usuario(request, id):
         direccion_form = DireccionForm(data=request.POST, instance=direccion)
 
         if not (user_form.is_valid() and direccion_form.is_valid()):
-            print("Errores user_form:", user_form.errors)
-            print("Errores direccion_form:", direccion_form.errors)
+            #print("Errores user_form:", user_form.errors)
+            #print("Errores direccion_form:", direccion_form.errors)
             context = {
                 "title": f"USUARIO -{usuario.username}".upper(),
                 "user_form": user_form,
@@ -162,6 +167,7 @@ def update_usuario(request, id):
                 usuario.password = usuario.__class__.objects.get(pk=usuario.pk).password
                 usuario.is_active = True
                 usuario.updated_by = request.user
+                usuario.updated_at = int(time.time())
                 usuario.save()
 
                 grupos = user_form.cleaned_data.get("grupos")
@@ -232,7 +238,14 @@ def cambiar_contraseña_usuario(request, id):
 
 @permission_required(USER_DELETE, raise_exception=True)
 def delete_usuario(request, id):
-    messages.error(request, "ACCION NO SOPORTADA")
+    usuario = get_object_or_404(User, id=id)
+    if usuario.is_superuser:
+        messages.error(request, "No puedes eliminar el usuario administrador.")
+        return redirect("user_view", id=id)
+    else:
+        usuario.delete()
+        messages.success(request, "Usuario eliminado correctamente.")
+    #messages.error(request, "ACCIÓN NO SOPORTADA")
     return redirect("user_index")
 
 

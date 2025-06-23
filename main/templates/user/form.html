@@ -44,6 +44,26 @@
                     </div>
                     
                 </div>
+                <!-- Usuario y Email -->
+                <div class="row ">
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                              <div class="border p-2" style="max-height: 150px; overflow-y: auto;">
+                            </div>
+                                 {{ user_form.tipo }}
+
+                            <label for="{{ user_form.username.id_for_label }}">{{ user_form.tipo.label }}</label>
+                            {% if user_form.tipo.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in user_form.tipo.errors %}
+                                {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                </div>
 
                 <div class="row ">
                     <div class="col-md-6">
@@ -249,6 +269,8 @@
                 <div class="row mb-3">
                     <div class="col-md-4">
                         <div class="form-floating mb-3">
+                            <div class="border p-2" style="max-height: 150px; overflow-y: auto;">
+                            </div>
                             {{ direccion_form.estado }}
                             <label for="{{ direccion_form.estado.id_for_label }}">{{ direccion_form.estado.label }}</label>
                             {% if direccion_form.estado.errors %}
@@ -262,6 +284,8 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-floating mb-3">
+                            <div class="border p-2" style="max-height: 150px; overflow-y: auto;">
+                            </div>
                             {{ direccion_form.municipio }}
                             <label for="{{ direccion_form.municipio.id_for_label }}">{{ direccion_form.municipio.label }}</label>
                             {% if direccion_form.municipio.errors %}
@@ -275,6 +299,8 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-floating mb-3">
+                            <div class="border p-2" style="max-height: 150px; overflow-y: auto;">
+                            </div>
                             {{ direccion_form.colonia }}
                             <label for="{{ direccion_form.colonia.id_for_label }}">{{ direccion_form.colonia.label }}</label>
                             {% if direccion_form.colonia.errors %}
