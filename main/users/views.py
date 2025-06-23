@@ -225,6 +225,10 @@ def update_usuario(request, id):
 @permission_required(USER_UPDATE, raise_exception=True)
 def cambiar_contraseña_usuario(request, id):
     usuario = get_object_or_404(User, id=id)
+    if usuario.is_superuser and not request.user.is_superuser:
+        messages.error(request, "No puedes editar el usuario administrador. si no eres administrador.")
+        return redirect("user_view", id=id)
+    
     if request.method == "POST":
         form = PasswordUpdateForm(request.POST, instance=usuario)
         if form.is_valid():
