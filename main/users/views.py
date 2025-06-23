@@ -132,8 +132,11 @@ def crear_usuario(request):
 
 @permission_required(USER_UPDATE, raise_exception=True)
 def update_usuario(request, id):
-    
     usuario = get_object_or_404(User, id=id)
+    if usuario.is_superuser:
+        messages.error(request, "No puedes editar el usuario administrador.")
+        return redirect("user_view", id=id)
+    
     direccion = Direccion.objects.filter(usuario=usuario).first()
 
     if request.method == "POST":

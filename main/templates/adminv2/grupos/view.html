@@ -1,82 +1,76 @@
 {% extends "base.html" %}
 {% load static %}
+
 {% block title %}
 USUARIOS
 {% endblock title %}
+
 {% block pagetitle %}
-{% include "partials/page-title.html" with subtitle="GRUPOS DE PERMISOS " title=group %}
+{% include "partials/page-title.html" with subtitle="GRUPOS DE PERMISOS" title=group %}
 {% endblock pagetitle %}
+
 {% block content %}
 
-
 {% if messages %}
-<div class="alert alert-dismissible fade show" role="alert">
     {% for message in messages %}
     <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
         {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     {% endfor %}
-</div>
 {% endif %}
-<!-- Title  -->
-<div class="card shadow-lg p-3 ">
-    <div class="d-flex justify-content-center align-items-center ">
 
-        <div class="mb-0">
-            {% if perms.auth.can_update_grupo %}
-            <a href="{% url 'grupos_update' group.id %}" class="btn btn-lg btn-primary">EDITAR</a>
-            {% endif %}
-            {% if perms.auth.can_delete_grupo %}
-            <a href="{% url 'grupos_delete' group.id %}" class="btn btn-lg btn-danger">ELIMINAR</a>
-            {% endif %}
-            <a href="{% url 'grupos_index' %}" class="btn btn-lg btn-secondary">CANCELAR</a>
-        </div>
+<!-- ACCIONES -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body d-flex justify-content-end gap-2">
+        {% if perms.auth.can_update_grupo %}
+        <a href="{% url 'grupos_update' group.id %}" class="btn btn-primary btn-lg">
+            <i class="fas fa-edit me-1"></i> Editar
+        </a>
+        {% endif %}
+        {% if perms.auth.can_delete_grupo %}
+        <a href="{% url 'grupos_delete' group.id %}" class="btn btn-danger btn-lg">
+            <i class="fas fa-trash-alt me-1"></i> Eliminar
+        </a>
+        {% endif %}
+        <a href="{% url 'grupos_index' %}" class="btn btn-secondary btn-lg">
+            <i class="fas fa-arrow-left me-1"></i> Cancelar
+        </a>
     </div>
 </div>
 
-
-
-
-<!-- Título de la página -->
+<!-- DETALLES DEL GRUPO -->
 <div class="card shadow">
-    <div class="card-header border-0">
-        <div class="row align-items-center">
-            <div class="col-8">
-                <h3 class="mb-0">Detalles del Grupo: {{ group.name }}</h3>
-            </div>
-        </div>
+    <div class="card-header bg-info border-bottom">
+        <h5 class="mb-0">Detalles del Grupo: <strong>{{ group.name }}</strong></h5>
     </div>
     <div class="card-body">
-        <!-- Nombre del grupo -->
-        <div class="form-group mb-4">
-            <label for="group_name" class="form-label">Nombre del Grupo</label>
-            <input type="text" id="group_name" class="form-control form-control-alternative" value="{{ group.name }}"
-                readonly>
+        <!-- Nombre -->
+        <div class="mb-4">
+            <label class="form-label fw-bold">Nombre del Grupo</label>
+            <input type="text" class="form-control" value="{{ group.name }}" readonly>
         </div>
 
-        <!-- Permisos del grupo (listado de permisos en lugar de un select) -->
-        <div class="form-group">
-            <label for="group_permissions" class="form-label">Permisos Asignados</label>
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <div class="list-group list-group-flush">
+        <!-- Permisos -->
+        <div>
+            <label class="form-label fw-bold">Permisos Asignados</label>
+            <div class="card border shadow-sm">
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
                         {% for permiso in group.permissions.all %}
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span>{{ permiso.name }}</span>
-                            <span class="badge badge-pill badge-primary">Asignado</span>
-                        </div>
+                            <span class="badge bg-primary">Asignado</span>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item text-muted">No hay permisos asignados.</li>
                         {% endfor %}
-                    </div>
+                    </ul>
                 </div>
             </div>
         </div>
-
-
     </div>
 </div>
-
-
-
 
 {% endblock content %}
 

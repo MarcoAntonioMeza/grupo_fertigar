@@ -40,6 +40,7 @@
                             <th>Fecha creación</th>
                             <th>Actualizado por</th>
                             <th>Fecha actualización</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                 </table>
@@ -117,6 +118,10 @@
                         const date = new Date(data * 1000);
                         return date.toLocaleDateString("es-MX") + " " + date.toLocaleTimeString("es-MX");
                     }
+                },
+                {
+                    data: null,
+                    defaultContent: '<button class="btn btn-sm btn-primary btn-eye">Ver</button>'
                 }
             ]
         });
@@ -124,6 +129,13 @@
         // ✅ Ahora sí funciona porque `table` ya está definida
         $('#selection-datatable tbody').on('dblclick', 'tr', function () {
             var data = table.row(this).data();
+            if (data && data.id) {
+                window.location.href = "{% url 'crm_proveedor_view' 0 %}".replace('0', data.id);
+            }
+        });
+
+         $('#selection-datatable tbody').on('click', '.btn', function () {
+            var data = table.row($(this).closest('tr')).data();
             if (data && data.id) {
                 window.location.href = "{% url 'crm_proveedor_view' 0 %}".replace('0', data.id);
             }

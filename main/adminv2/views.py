@@ -93,15 +93,6 @@ def index_list_ajax(request):
         {
             "id": s.id,
             "name": f"{s.name}".upper(),
-            #"phone": str(s.telefono),
-            #"phone2": str(s.telefono2),
-            #'tipo': s.get_tipo_display(),
-            #'estado': s.get_status_display(),
-            #
-            #"email": str(s.email),
-            ##"created_at": s.created_at,
-            #"created_at": format(s.created_at, 'd-m-Y h:i:s'),
-            ##"created_by": str(s.created_by.username) if s.created_by else "",
         }
         for s in page_obj
     ]
