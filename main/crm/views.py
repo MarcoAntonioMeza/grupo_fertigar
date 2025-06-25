@@ -857,6 +857,8 @@ class ProductoCreateView(LoginRequiredMixin,PermissionRequiredMixin, CreateView)
             messages.error(self.request, f"Error al guardar: {str(e)}")
             return self.render_to_response(self.get_context_data(form=form))
         
+        return super().form_valid(form)
+        
 #UPDATE
 class ProductoUpdateView(LoginRequiredMixin,PermissionRequiredMixin, UpdateView):
     model = Producto

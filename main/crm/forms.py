@@ -511,7 +511,7 @@ class ProductoForm(forms.ModelForm):
         
         self.fields['categoria'].queryset = Categoria.objects.order_by("nombre")
 
-        items_not_required = ["imagen", "descripcion",'proveedores']
+        items_not_required = ["imagen", "descripcion",'proveedores','unidad_sat','categoria']
         for field_name, field in self.fields.items():
             # Hacer campos requeridos o no requeridos
             if field_name not in self.Meta.exclude:
